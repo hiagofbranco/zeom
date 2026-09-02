@@ -1,0 +1,129 @@
+<!-- 01 · ONBOARDING · Código de confirmação (Pré-KYC)
+Gatilho: envio do código de verificação no cadastro (V0, imediato)
+Objetivo CRM: execução do código em até 10 minutos, sem abandono no minuto zero
+Composição: header simples · tile de código em superfície escura (momento único, sem concorrência visual) · stepper horizontal de 3 etapas (variação da trilha vertical usada nos demais e-mails da régua) · suporte · rodapé institucional
+-->
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<meta name="supported-color-schemes" content="light">
+<title>Zeom · Seu código de confirmação</title>
+<!--[if mso]>
+<noscript><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml></noscript>
+<![endif]-->
+<style>
+body,table,td{margin:0;padding:0}
+img{border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic}
+table{border-collapse:collapse}
+@media (max-width:600px){
+  .container{width:100% !important;max-width:100% !important}
+  .px{padding-left:24px !important;padding-right:24px !important}
+  .code-val{font-size:32px !important;letter-spacing:6px !important}
+  .card-pad{padding:24px !important}
+  .step-lbl{font-size:11px !important}
+}
+</style>
+</head>
+<body style="margin:0;padding:0;background-color:#FFFFFF;-webkit-font-smoothing:antialiased">
+<div style="display:none;max-height:0;overflow:hidden;mso-hide:all;font-size:1px;line-height:1px;color:#FFFFFF;opacity:0">Use o código abaixo para confirmar seu acesso à Zeom.&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;</div>
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="#FFFFFF" style="background-color:#FFFFFF">
+<tr><td align="center" style="padding:32px 20px">
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" class="container" style="width:600px;max-width:600px">
+<!-- header -->
+<!-- header · imagem / faixa sob o header (blocks/header-imagem/faixa.html) -->
+<tr><td class="px" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:24px 40px 20px"><table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td valign="middle" style="line-height:0;font-size:0"><img src="../../assets/zeom-icone-96.png" width="29" height="29" alt="" style="display:block;width:29px;height:29px"></td><td width="12" style="width:12px">&nbsp;</td><td valign="middle" style="font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:28px;letter-spacing:.5px;color:#282621;line-height:29px;mso-line-height-rule:exactly">zeom</td></tr></table></td></tr>
+<tr><td style="padding:0;border-bottom:1px solid rgba(40,38,33,.14)"><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td height="120" background="../../assets/img/pessoa-cafe.jpg" bgcolor="#DDD9C5" style="height:120px;background-color:#DDD9C5;background-image:url(../../assets/img/pessoa-cafe.jpg);background-position:center 25%;background-size:cover;font-size:0;line-height:120px">&nbsp;</td></tr></table></td></tr>
+<tr><td style="height:48px;line-height:48px;font-size:0">&nbsp;</td></tr>
+<!-- seção 1 · contexto -->
+<tr><td class="px" style="padding:0 40px">
+<div style="font-family:'Geist',Helvetica,Arial,sans-serif;font-size:12px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:#6C664E;mso-line-height-rule:exactly;line-height:16px">Verificação</div>
+<div style="height:16px;line-height:16px;font-size:0">&nbsp;</div>
+<div style="font-family:'Geist',Helvetica,Arial,sans-serif;font-size:24px;font-weight:600;letter-spacing:-0.3px;color:#282621;mso-line-height-rule:exactly;line-height:31px">Confirmação de acesso</div>
+<div style="height:16px;line-height:16px;font-size:0">&nbsp;</div>
+<p style="margin:0;font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:15px;line-height:23px;color:#3A362C;mso-line-height-rule:exactly">Insira o código abaixo no aplicativo para avançar no seu cadastro e liberar os recursos da sua conta.</p>
+</td></tr>
+<tr><td style="height:48px;line-height:48px;font-size:0">&nbsp;</td></tr>
+<!-- seção 2 · tile de código, superfície escura — único momento de contraste da peça -->
+<tr><td class="px" style="padding:0 40px">
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="#282621" style="background-color:#282621;border-radius:12px">
+<tr><td bgcolor="#CCC290" style="background-color:#CCC290;border-radius:12px 12px 0 0;height:3px;line-height:3px;font-size:0">&nbsp;</td></tr>
+<tr><td align="center" class="card-pad" style="padding:32px">
+<div style="font-family:'Geist',Helvetica,Arial,sans-serif;font-size:12px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:#CCC290;mso-line-height-rule:exactly;line-height:16px">Código de confirmação</div>
+<div style="height:14px;line-height:14px;font-size:0">&nbsp;</div>
+<div class="code-val" style="font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:600;font-size:40px;letter-spacing:9px;color:#FFFFFF;line-height:44px">{{codigo}}</div>
+<div style="height:16px;line-height:16px;font-size:0">&nbsp;</div>
+<p style="margin:0;font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:13px;line-height:19px;color:rgba(246,245,239,.6);mso-line-height-rule:exactly">Este código é de uso pessoal e expira em 10 minutos.</p>
+</td></tr>
+</table>
+</td></tr>
+<tr><td style="height:48px;line-height:48px;font-size:0">&nbsp;</td></tr>
+<!-- seção 3 · stepper horizontal (variação da trilha vertical) -->
+<tr><td class="px" style="padding:0 40px">
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="#ECEADC" style="background-color:#ECEADC;border-radius:12px"><tr><td class="card-pad" style="padding:32px">
+<div style="font-family:'Geist',Helvetica,Arial,sans-serif;font-size:12px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:#6C664E;mso-line-height-rule:exactly;line-height:16px">Progresso do cadastro</div>
+<div style="height:6px;line-height:6px;font-size:0">&nbsp;</div>
+<div style="font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:600;font-size:15px;letter-spacing:-0.1px;color:#282621;line-height:20px">Etapa 1 de 3 — Confirmação de acesso</div>
+<div style="height:22px;line-height:22px;font-size:0">&nbsp;</div>
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
+<td width="72" align="center" valign="top">
+<img src="../../assets/icons/png/enviar-gold.png" width="28" height="28" alt="" style="display:block;width:28px;height:28px;margin:0 auto">
+<div style="height:8px;line-height:8px;font-size:0">&nbsp;</div>
+<div class="step-lbl" style="font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:600;font-size:12px;line-height:15px;color:#282621;text-align:center">Confirmação<br>de e-mail</div>
+</td>
+<td valign="top" style="padding-top:13px"><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td height="2" bgcolor="#DDD9C5" style="height:2px;background-color:#DDD9C5;font-size:0;line-height:0">&nbsp;</td></tr></table></td>
+<td width="72" align="center" valign="top">
+<img src="../../assets/icons/png/perfil-muted.png" width="28" height="28" alt="" style="display:block;width:28px;height:28px;margin:0 auto">
+<div style="height:8px;line-height:8px;font-size:0">&nbsp;</div>
+<div class="step-lbl" style="font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:12px;line-height:15px;color:rgba(58,54,44,.45);text-align:center">Verificação<br>de identidade</div>
+</td>
+<td valign="top" style="padding-top:13px"><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td height="2" bgcolor="#DDD9C5" style="height:2px;background-color:#DDD9C5;font-size:0;line-height:0">&nbsp;</td></tr></table></td>
+<td width="72" align="center" valign="top">
+<img src="../../assets/icons/png/estrela-muted.png" width="28" height="28" alt="" style="display:block;width:28px;height:28px;margin:0 auto">
+<div style="height:8px;line-height:8px;font-size:0">&nbsp;</div>
+<div class="step-lbl" style="font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:12px;line-height:15px;color:rgba(58,54,44,.45);text-align:center">Ativação<br>da conta</div>
+</td>
+</tr></table>
+</td></tr></table>
+</td></tr>
+<tr><td style="height:48px;line-height:48px;font-size:0">&nbsp;</td></tr>
+<!-- seção 4 · suporte (mesmo ritmo, CTA secundário) -->
+<tr><td class="px" style="padding:0 40px">
+<div style="font-family:'Geist',Helvetica,Arial,sans-serif;font-size:12px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:#6C664E;mso-line-height-rule:exactly;line-height:16px">Dúvidas e suporte</div>
+<div style="height:16px;line-height:16px;font-size:0">&nbsp;</div>
+<p style="margin:0;font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:15px;line-height:23px;color:#3A362C;mso-line-height-rule:exactly">Qualquer dúvida durante a confirmação, nossa equipe está pronta para ajudar você. Entre em contato conosco.</p>
+<div style="height:24px;line-height:24px;font-size:0">&nbsp;</div>
+<!--[if mso]>
+<v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="{{LINK_whatsapp_suporte}}" style="height:46px;v-text-anchor:middle;width:260px;" arcsize="17%" strokecolor="rgba(40,38,33,.14)" strokeweight="1px" fillcolor="#FFFFFF">
+<w:anchorlock/>
+<center style="color:#282621;font-family:Helvetica,Arial,sans-serif;font-size:13px;font-weight:600;">Falar no WhatsApp da Zeom</center>
+</v:roundrect>
+<![endif]-->
+<!--[if !mso]><!-->
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="mso-hide:all"><tr><td align="center" bgcolor="#FFFFFF" style="background-color:#FFFFFF;border:1px solid rgba(40,38,33,.14);border-radius:8px">
+<a href="{{LINK_whatsapp_suporte}}" target="_blank" style="display:inline-block;padding:12px 24px;font-family:'Geist',Helvetica,Arial,sans-serif;font-size:13px;font-weight:600;color:#282621;text-decoration:none;border-radius:8px;mso-hide:all">Falar no WhatsApp da Zeom &#8594;</a>
+</td></tr></table>
+<!--<![endif]-->
+</td></tr>
+<tr><td style="height:0;line-height:0;font-size:0">&nbsp;</td></tr>
+</table>
+</td></tr>
+<!-- rodapé institucional · dark, full-bleed — fechamento fixo da régua -->
+<tr><td bgcolor="#21211C" style="background-color:#21211C"><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td align="center" class="px" style="padding:56px 40px 48px">
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" class="container" style="width:100%;max-width:600px">
+<tr><td align="center"><table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td valign="middle" style="line-height:0;font-size:0"><img src="../../assets/zeom-esfera-96.png" width="26" height="26" alt="" style="display:block;width:26px;height:26px"></td><td width="10" style="width:10px">&nbsp;</td><td valign="middle" style="font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:21px;letter-spacing:.3px;color:#FAFAF9;line-height:26px;mso-line-height-rule:exactly">zeom</td></tr></table></td></tr>
+<tr><td align="center" style="padding-top:20px"><table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center"><tr>
+<td align="center" width="28" style="width:28px;line-height:0;font-size:0"><a href="{{LINK_instagram}}" target="_blank" style="text-decoration:none"><img src="../../assets/icons/png/instagram-soc-dark.png" width="28" height="28" alt="Instagram" style="display:block;width:28px;height:28px"></a></td>
+<td width="10" style="width:10px">&nbsp;</td>
+<td align="center" width="28" style="width:28px;line-height:0;font-size:0"><a href="{{LINK_linkedin}}" target="_blank" style="text-decoration:none"><img src="../../assets/icons/png/linkedin-soc-dark.png" width="28" height="28" alt="LinkedIn" style="display:block;width:28px;height:28px"></a></td>
+<td width="10" style="width:10px">&nbsp;</td>
+<td align="center" width="28" style="width:28px;line-height:0;font-size:0"><a href="{{LINK_x}}" target="_blank" style="text-decoration:none"><img src="../../assets/icons/png/x-soc-dark.png" width="28" height="28" alt="X" style="display:block;width:28px;height:28px"></a></td>
+</tr></table></td></tr>
+<tr><td align="center" style="padding-top:20px;font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:11px;line-height:17px;color:#B3B3A8;text-align:center">Este é um e-mail transacional enviado para confirmar o acesso à sua conta Zeom.<br>{{RAZAO_SOCIAL}} · {{ENDERECO_POSTAL}}<br><br><a href="{{LINK_privacidade}}" style="color:#B3B3A8;text-decoration:underline">Privacidade</a> · <a href="{{LINK_termos}}" style="color:#B3B3A8;text-decoration:underline">Termos</a> · <a href="{{LINK_preferencias}}" style="color:#B3B3A8;text-decoration:underline">Preferências</a> · <a href="{{LINK_cancelar_inscricao}}" style="color:#B3B3A8;text-decoration:underline">Cancelar inscrição</a></td></tr>
+</table>
+</td></tr></table></td></tr>
+</table>
+</body>
+</html>

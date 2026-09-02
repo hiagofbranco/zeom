@@ -1,0 +1,825 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8"><title>Zeom — Sistema de e-mail marketing · apresentação</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@200;300;400;600&display=swap" rel="stylesheet">
+<style>
+:root{--type-display:104px;--type-title:64px;--type-subtitle:44px;--type-body:34px;--type-small:28px;--type-micro:24px;
+--pad-top:100px;--pad-bottom:80px;--pad-x:100px;--gap-title:52px;--gap-item:28px;
+--bg:#21211C;--card:#34342D;--group:#2C2C25;--line:#3D3D34;
+--champagne:#CCC290;--cta:#9E9671;--muted:#B3B3A8;--icon:#6C664E;--fg:#FAFAF9;
+--ouro:#C9A84C;--bitcoin:#C17A2B;--bolsa:#7A8FAE;--renda:#7A9E88;--stable:#9E9E8F;
+--ok:#22c55e;--proc:#eab308;--err:#dc2626}
+*{box-sizing:border-box}
+deck-stage{background:#16160F}
+section{background:var(--bg);color:var(--fg);font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;overflow:hidden}
+.f{padding:var(--pad-top) var(--pad-x) var(--pad-bottom);height:100%;display:flex;flex-direction:column}
+.eyebrow{font-size:var(--type-micro);font-weight:400;letter-spacing:1px;text-transform:lowercase;color:var(--champagne)}
+h1{margin:0;font-size:var(--type-display);line-height:1.02;letter-spacing:-4px;font-weight:200;color:var(--fg)}
+h2{margin:0;font-size:var(--type-title);line-height:1.08;letter-spacing:-2px;font-weight:300;color:var(--fg)}
+h3{margin:0;font-size:var(--type-subtitle);line-height:1.12;letter-spacing:-1.2px;font-weight:300;color:var(--fg)}
+p{margin:0;font-size:var(--type-body);line-height:1.45;color:var(--muted);font-weight:300}
+.small{font-size:var(--type-small);line-height:1.45;color:var(--muted);font-weight:300}
+.micro{font-size:var(--type-micro);line-height:1.4;color:var(--muted);font-weight:300}
+.dark{background:var(--group)}
+.dark .card{background:#21211C}
+.rule{width:88px;height:3px;background:var(--champagne);flex:none}
+.cols{display:grid;gap:60px;flex:1;min-height:0}
+.c2{grid-template-columns:1fr 1fr}
+.c3{grid-template-columns:repeat(3,1fr)}
+.c4{grid-template-columns:repeat(4,1fr)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:38px 40px}
+.card .k{font-size:var(--type-micro);font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--champagne);margin-bottom:18px}
+.card .t{font-size:var(--type-subtitle);line-height:1.1;letter-spacing:-1px;margin-bottom:14px;font-weight:300;color:var(--fg)}
+.card .d{font-size:var(--type-small);line-height:1.4;color:var(--muted);font-weight:300}
+.big{font-size:150px;line-height:.94;letter-spacing:-7px;font-weight:200}
+.list{list-style:none;margin:0;padding:0}
+.list li{font-size:var(--type-body);line-height:1.35;padding:26px 0;border-top:1px solid var(--line);display:flex;gap:26px;color:var(--muted);font-weight:300}
+.list li:last-child{border-bottom:1px solid var(--line)}
+.list .n{color:var(--champagne);font-weight:600;font-size:var(--type-small);min-width:44px}
+.sw{border-radius:12px;height:190px;display:flex;align-items:flex-end;padding:22px 24px;font-size:var(--type-micro);font-weight:600;letter-spacing:.06em}
+.frame{background:var(--group);border:1px solid var(--line);border-radius:12px;overflow:hidden;position:relative;display:flex;align-items:flex-start;justify-content:center}
+.frame iframe{border:0;transform-origin:top center;display:block}
+.tag{display:inline-block;font-size:var(--type-micro);font-weight:400;letter-spacing:.1em;text-transform:lowercase;color:var(--muted);border:1px solid var(--line);border-radius:8px;padding:9px 16px}
+.kv{display:flex;justify-content:space-between;gap:30px;padding:22px 0;border-top:1px solid var(--line);font-size:var(--type-small);color:var(--muted);font-weight:300}
+.kv:last-child{border-bottom:1px solid var(--line)}
+.kv b{font-weight:600;color:var(--fg)}
+.vlab{font-size:var(--type-micro);font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;line-height:1.25;overflow:hidden}
+.chead h2{display:inline}
+.chead .count{font-weight:400;color:var(--icon)}
+a{color:var(--champagne)}a:hover{color:var(--cta)}
+</style></head><body>
+<script src="deck-stage.js"></script>
+<deck-stage width="1920" height="1080">
+
+<section data-label="Capa" data-screen-label="Capa" class="dark">
+<div class="f" style="justify-content:space-between">
+<div style="display:flex;align-items:center;gap:22px;align-self:flex-start"><img src="assets/zeom-icone.svg" alt="" width="52" height="52" style="display:block;width:52px;height:52px"><span style="font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:49px;letter-spacing:1.0px;color:#FAFAF9;line-height:1">zeom</span></div>
+<div>
+<div class="eyebrow" style="margin-bottom:34px">Sistema de e-mail marketing</div>
+<h1>Comunicação que<br>sustenta confiança</h1>
+<p style="margin-top:44px;max-width:1050px">Estrutura completa de e-mail marketing para a Zeom: quatro tipos de mensagem, biblioteca de blocos modulares e fundação visual aplicada.</p>
+</div>
+<div style="display:flex;gap:22px;flex-wrap:wrap">
+<span class="tag">cliente · zeom</span>
+<span class="tag">agosto de 2026</span>
+<span class="tag">versão 1.0</span>
+<span class="tag">design de e-mail</span>
+</div>
+</div></section>
+
+<section data-label="Objetivo" data-screen-label="Objetivo">
+<div class="f">
+<div class="rule"></div>
+<h2 style="margin-top:var(--gap-title);max-width:1250px">Objetivo do projeto</h2>
+<p style="margin-top:36px;max-width:1180px">Dar à Zeom um sistema de e-mail que funcione como extensão do produto: sóbrio, previsível e reconhecível, capaz de sustentar desde um comprovante de câmbio até uma campanha de reativação sem trocar de identidade.</p>
+<div class="cols c3" style="margin-top:70px;align-items:start">
+<div class="card"><div class="k">Consistência</div><div class="t">Uma só fundação</div><div class="d">A mesma paleta, tipografia e geometria em todos os disparos, do transacional ao promocional.</div></div>
+<div class="card"><div class="k">Autonomia</div><div class="t">Blocos reutilizáveis</div><div class="d">O time monta qualquer e-mail empilhando peças já testadas, sem recorrer a design a cada envio.</div></div>
+<div class="card"><div class="k">Entregabilidade</div><div class="t">HTML de produção</div><div class="d">Tabela e estilos inline, com fallback declarado para Gmail e Outlook.</div></div>
+</div>
+</div></section>
+
+<section data-label="Contexto" data-screen-label="Contexto e desafios">
+<div class="f">
+<div class="rule"></div>
+<h2 style="margin-top:var(--gap-title)">Contexto e desafios</h2>
+<div class="cols c2" style="margin-top:56px;align-items:start">
+<div>
+<h3 style="color:var(--champagne)">O público</h3>
+<p style="margin-top:24px">O cidadão globalizado: creators e profissionais liberais de renda alta, digital-first, que faturam em uma moeda e vivem em outra. Já usam produtos financeiros globais e reconhecem quando algo soa amador.</p>
+<p style="margin-top:28px">Esse público não responde a urgência fabricada. Responde a clareza: taxa visível, comprovante na hora, saída fácil.</p>
+</div>
+<div>
+<h3 style="color:var(--champagne)">Os desafios</h3>
+<ul class="list" style="margin-top:24px">
+<li><span class="n">01</span><span>Manter tom institucional mesmo em peça promocional</span></li>
+<li><span class="n">02</span><span>Sustentar compliance regulatório sem enfeitar o layout</span></li>
+<li><span class="n">03</span><span>Sobreviver a clientes que bloqueiam imagem e ignoram webfont</span></li>
+<li><span class="n">04</span><span>Escalar para dezenas de disparos sem perder coerência</span></li>
+</ul>
+</div>
+</div>
+</div></section>
+
+<section data-label="Conceito" data-screen-label="Conceito visual" class="dark">
+<div class="f">
+<div class="rule"></div>
+<h2 style="margin-top:var(--gap-title);max-width:1300px">Conceito visual</h2>
+<p style="margin-top:36px;max-width:1150px">A fundação do produto predomina em todos os e-mails. O warm-black #21211C é o ar; o card #34342D é o peso; o champagne aparece uma vez por peça, sempre onde há uma decisão a tomar.</p>
+<p class="small" style="margin-top:24px;max-width:1150px">Nesta entrega, cada área de imagem traz uma foto da biblioteca no tamanho e na proporção da arte final, com a etiqueta <b style="font-weight:600">[coloque sua imagem aqui]</b> sobreposta — a foto indica o enquadramento esperado; o time de conteúdo troca pelo asset definitivo sem tocar no layout.</p>
+<div class="cols c3" style="margin-top:70px;align-items:start">
+<div class="card"><div class="k">Silêncio</div><div class="t">Espaço antes de ornamento</div><div class="d">Respiro generoso e um único acento por bloco. Nada compete com o número.</div></div>
+<div class="card"><div class="k">Precisão</div><div class="t">Moeda sempre explícita</div><div class="d">Todo valor carrega a moeda. Peso 600 reservado a numerais e rótulos.</div></div>
+<div class="card"><div class="k">Presença</div><div class="t">Gente, não sistema</div><div class="d">Carta assinada, rosto de quem atende, a tela do app na mão de alguém — áreas reservadas para a arte final.</div></div>
+</div>
+</div></section>
+
+<section data-label="DS · Paleta" data-screen-label="Design System · Paleta">
+<div class="f">
+<div class="eyebrow">design system</div>
+<h2 style="margin-top:26px">Paleta base</h2>
+<p class="small" style="margin-top:22px;max-width:1300px">A base é warm-black. O champagne é o único acento de marca — botão primário, esfera armilar e numerais. Toda superfície elevada carrega borda de 1&nbsp;px.</p>
+<div class="cols c4" style="margin-top:44px;align-items:start;gap:26px;flex:none">
+<div><div class="sw" style="background:#21211C;color:var(--fg);height:190px">#21211C</div><p class="micro" style="margin-top:16px">Fundo · warm-black, base de tudo</p></div>
+<div><div class="sw" style="background:#34342D;color:var(--fg);height:190px">#34342D</div><p class="micro" style="margin-top:16px">Card · superfície elevada</p></div>
+<div><div class="sw" style="background:#CCC290;color:#21211C;height:190px">#CCC290</div><p class="micro" style="margin-top:16px">Champagne · acento de marca</p></div>
+<div><div class="sw" style="background:#9E9671;color:#21211C;height:190px">#9E9671</div><p class="micro" style="margin-top:16px">Khaki · botão primário</p></div>
+</div>
+<div class="cols c4" style="margin-top:40px;align-items:start;gap:26px;flex:none">
+<div><div class="sw" style="background:#2C2C25;color:var(--fg);height:130px">#2C2C25</div><p class="micro" style="margin-top:16px">Grupo · agrupamento interno</p></div>
+<div><div class="sw" style="background:#3D3D34;color:var(--fg);height:130px">#3D3D34</div><p class="micro" style="margin-top:16px">Borda · 1 px em toda superfície</p></div>
+<div><div class="sw" style="background:#B3B3A8;color:#21211C;height:130px">#B3B3A8</div><p class="micro" style="margin-top:16px">Muted · texto de apoio</p></div>
+<div><div class="sw" style="background:#6C664E;color:var(--fg);height:130px">#6C664E</div><p class="micro" style="margin-top:16px">Ícone muted · ícones inativos</p></div>
+</div>
+</div></section>
+
+<section data-label="DS · Ativos" data-screen-label="Design System · Cores de ativo e status">
+<div class="f">
+<div class="eyebrow">design system</div>
+<h2 style="margin-top:26px">Ativos e status</h2>
+<p class="small" style="margin-top:22px;max-width:1300px">Cada classe de ativo tem seu tom. Status aparece sempre pequeno — ponto, palavra ou seta —, nunca como preenchimento grande.</p>
+<div class="cols c4" style="margin-top:44px;align-items:start;gap:26px;flex:none">
+<div><div class="sw" style="background:#C9A84C;color:#21211C;height:150px">Ouro</div><p class="micro" style="margin-top:14px">#C9A84C · ouro tokenizado</p></div>
+<div><div class="sw" style="background:#C17A2B;color:#21211C;height:150px">Bitcoin</div><p class="micro" style="margin-top:14px">#C17A2B · bitcoin</p></div>
+<div><div class="sw" style="background:#7A8FAE;color:#21211C;height:150px">Bolsa</div><p class="micro" style="margin-top:14px">#7A8FAE · bolsa americana</p></div>
+<div><div class="sw" style="background:#7A9E88;color:#21211C;height:150px">Renda fixa</div><p class="micro" style="margin-top:14px">#7A9E88 · juros em dólar</p></div>
+</div>
+<div class="cols c4" style="margin-top:40px;align-items:start;gap:26px;flex:none">
+<div><div class="sw" style="background:#9E9E8F;color:#21211C;height:108px">Stablecoin</div><p class="micro" style="margin-top:14px">#9E9E8F · reserva em dólar</p></div>
+<div><div class="sw" style="background:#22c55e;color:#21211C;height:108px">Concluído</div><p class="micro" style="margin-top:14px">#22c55e · confirmado</p></div>
+<div><div class="sw" style="background:#eab308;color:#21211C;height:108px">Processando</div><p class="micro" style="margin-top:14px">#eab308 · pendente</p></div>
+<div><div class="sw" style="background:#dc2626;color:#21211C;height:108px">Erro</div><p class="micro" style="margin-top:14px">#dc2626 · falhou · perda</p></div>
+</div>
+</div></section>
+
+<section data-label="DS · Tipografia" data-screen-label="Design System · Tipografia">
+<div class="f">
+<div class="eyebrow">Design System</div>
+<h2 style="margin-top:26px">Geist, família única</h2>
+<div class="cols c2" style="margin-top:52px;align-items:start;gap:80px">
+<div>
+<div style="font-size:88px;line-height:1;letter-spacing:-3px;font-weight:300">Conversão concluída</div>
+<p class="micro" style="margin-top:20px">Título · Light 300 · tracking negativo</p>
+<div style="font-size:var(--type-body);line-height:1.45;margin-top:52px;color:var(--muted)">O valor já está disponível na sua conta em dólar. Abaixo, o comprovante completo da operação.</div>
+<p class="micro" style="margin-top:20px">Corpo · Light 300 · caixa de frase</p>
+<div style="font-size:var(--type-small);font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--champagne);margin-top:52px">SEUS ATIVOS</div>
+<p class="micro" style="margin-top:20px">Seção · SemiBold 600 · maiúsculas · tracking +0,8&nbsp;px</p>
+</div>
+<div>
+<div class="kv"><span>Família</span><b>Geist</b></div>
+<div class="kv"><span>Pesos em uso</span><b>200 · 300 · 400 · 600</b></div>
+<div class="kv"><span>Padrão de corpo</span><b>Light 300</b></div>
+<div class="kv"><span>Itálico</span><b>Só em “processando”</b></div>
+<div class="kv"><span>600 reservado a</span><b>Numerais e títulos</b></div>
+<div class="kv"><span>Numeral</span><b>$ champagne + valor 600</b></div>
+<p class="small" style="margin-top:38px">Três níveis de caixa e dois valores de tracking dão o ritmo: eyebrow em minúsculas com +1&nbsp;px, seção em maiúsculas SemiBold com +0,8&nbsp;px, corpo em caixa de frase. Em e-mail a família cai para Helvetica, e a hierarquia se mantém por tamanho e tracking.</p>
+</div>
+</div>
+</div></section>
+
+<section data-label="DS · Ícones" data-screen-label="Design System · Ícones">
+<div class="f">
+<div class="eyebrow">Design System</div>
+<h2 style="margin-top:26px">Ícones construídos a partir da marca</h2>
+<p style="margin-top:30px;max-width:1200px">O centro da marca é a esfera armilar — meridiano, equador e eclíptica em champagne sobre warm-black. O set do app repete essa gramática: traço de 1,5 a 2&nbsp;px, pontas redondas, sem preenchimento. Para o que o set autoral não cobre, Phosphor bold completa.</p>
+<div style="margin-top:56px;display:flex;gap:34px;flex-wrap:wrap">
+<img src="assets/icons/globo-gold.svg" alt="Globo" width="92" height="92">
+<img src="assets/icons/sacar-gold.svg" alt="Dólar" width="92" height="92">
+<img src="assets/icons/cartao-gold.svg" alt="Cartão" width="92" height="92">
+<img src="assets/icons/investir-gold.svg" alt="Investimento" width="92" height="92">
+<img src="assets/icons/escudo-gold.svg" alt="Escudo" width="92" height="92">
+<img src="assets/icons/sino-gold.svg" alt="Relógio" width="92" height="92">
+<img src="assets/icons/enviar-gold.svg" alt="Viagem" width="92" height="92">
+<img src="assets/icons/transferir-gold.svg" alt="Câmbio" width="92" height="92">
+</div>
+<div class="cols c3" style="margin-top:60px;align-items:start">
+<div><div class="k" style="font-size:var(--type-micro);font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--champagne);margin-bottom:16px">Sistema</div><p class="small">16 ícones de sistema — seta, transferir, chevron, fechar, sino, olho, enviar, perfil, globo, cartão, cadeado, chat, estrela, escudo, alerta e sair.</p></div>
+<div><div class="k" style="font-size:var(--type-micro);font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--champagne);margin-bottom:16px">Ações da home</div><p class="small">Investir, resgatar, depositar e sacar, desenhados como família única. Fora dessas listas, Phosphor bold completa o set na mesma cor e peso.</p></div>
+<div><div class="k" style="font-size:var(--type-micro);font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--champagne);margin-bottom:16px">Em e-mail</div><p class="small">Sempre PNG em champagne. Cliente de e-mail não renderiza SVG.</p></div>
+</div>
+</div></section>
+
+<section data-label="DS · Grid" data-screen-label="Design System · Grid e espaçamentos" class="dark">
+<div class="f">
+<div class="eyebrow">Design System</div>
+<h2 style="margin-top:26px">Grid e espaçamentos</h2>
+<div class="cols c2" style="margin-top:52px;align-items:start;gap:80px">
+<div>
+<div class="kv" ><span>Container</span><b>600&nbsp;px</b></div>
+<div class="kv" ><span>Padding lateral</span><b>40&nbsp;px · 24&nbsp;px no mobile</b></div>
+<div class="kv" ><span>Raio de canto</span><b>8&nbsp;px</b></div>
+<div class="kv" ><span>Respiro entre blocos</span><b>26 a 40&nbsp;px</b></div>
+<div class="kv" ><span>Duas colunas</span><b>48% + 4% de calha</b></div>
+<div class="kv" ><span>Empilha abaixo de</span><b>620&nbsp;px</b></div>
+</div>
+<div>
+<h3>Ritmo</h3>
+<p style="margin-top:26px">Três recursos organizam a leitura, na ordem: filete de acento de 34×2&nbsp;px abre a seção; hairline de 1&nbsp;px separa itens de mesma hierarquia; espaçador de 32&nbsp;px dá respiro sem traçar linha.</p>
+<p style="margin-top:30px">Nenhum bloco encosta em outro. O espaço entre eles é estrutural, não sobra de layout.</p>
+</div>
+</div>
+</div></section>
+
+<section data-label="DS · Botões" data-screen-label="Design System · Botões">
+<div class="f">
+<div class="eyebrow">Design System</div>
+<h2 style="margin-top:26px">Botões e chamadas</h2>
+<p style="margin-top:30px;max-width:1180px">Um CTA dominante por e-mail. O dourado sólido é o primário; contorno e link sublinhado são apoio e nunca aparecem sozinhos numa peça de conversão.</p>
+<div class="cols c3" style="margin-top:62px;align-items:start">
+<div>
+<div style="background:#9E9671;border-radius:8px;padding:30px 40px;font-size:var(--type-body);font-weight:600;text-align:center;color:#21211C">Investir</div>
+<p class="micro" style="margin-top:22px"><b style="font-weight:600;color:var(--fg)">Primário.</b> Khaki #9E9671, texto no tom do fundo — nunca branco. Verbo único. Desabilitado é opacidade 0.4.</p>
+</div>
+<div>
+<div style="border:1px solid #3D3D34;border-radius:8px;padding:28px 40px;font-size:var(--type-body);font-weight:600;text-align:center;color:var(--fg)">Ver conta</div>
+<p class="micro" style="margin-top:22px"><b style="font-weight:600;color:var(--fg)">Secundário.</b> Contorno #3D3D34, fundo transparente. Para ação alternativa.</p>
+</div>
+<div>
+<div style="padding:28px 0;font-size:var(--type-body);font-weight:400;color:var(--fg)"><span style="border-bottom:1px solid #CCC290;padding-bottom:8px">Compartilhar convite &#8594;</span></div>
+<p class="micro" style="margin-top:22px"><b style="font-weight:600;color:var(--fg)">Link.</b> Sublinhado champagne de 1&nbsp;px. Links de próximo passo terminam em &#8594;, nunca em &gt;.</p>
+</div>
+</div>
+</div></section>
+
+<section data-label="DS · Componentes" data-screen-label="Design System · Componentes">
+<div class="f">
+<div class="eyebrow">Design System</div>
+<h2 style="margin-top:26px">127 blocos em 24 categorias</h2>
+<p style="margin-top:30px;max-width:1200px">Cada bloco é um arquivo HTML autônomo, pronto para envio. O time monta qualquer e-mail empilhando peças dentro do container de 600&nbsp;px.</p>
+<div class="cols c4" style="margin-top:56px;align-items:start;gap:26px">
+<div><div class="kv" style="padding:18px 0"><span>Header</span><b>6</b></div><div class="kv" style="padding:18px 0"><span>Header com imagem</span><b>6</b></div><div class="kv" style="padding:18px 0"><span>Menu</span><b>2</b></div><div class="kv" style="padding:18px 0"><span>Banner</span><b>6</b></div><div class="kv" style="padding:18px 0"><span>Hero</span><b>4</b></div><div class="kv" style="padding:18px 0"><span>Fundos</span><b>6</b></div></div>
+<div><div class="kv" style="padding:18px 0"><span>Simulação</span><b>6</b></div><div class="kv" style="padding:18px 0"><span>Mockup</span><b>7</b></div><div class="kv" style="padding:18px 0"><span>Humano</span><b>6</b></div><div class="kv" style="padding:18px 0"><span>Corpo</span><b>3</b></div><div class="kv" style="padding:18px 0"><span>Ícones</span><b>6</b></div><div class="kv" style="padding:18px 0"><span>Features</span><b>6</b></div></div>
+<div><div class="kv" style="padding:18px 0"><span>Comparação</span><b>6</b></div><div class="kv" style="padding:18px 0"><span>Dados</span><b>3</b></div><div class="kv" style="padding:18px 0"><span>Cards</span><b>3</b></div><div class="kv" style="padding:18px 0"><span>Imagens</span><b>6</b></div><div class="kv" style="padding:18px 0"><span>Depoimento</span><b>6</b></div><div class="kv" style="padding:18px 0"><span>Blog</span><b>6</b></div></div>
+<div><div class="kv" style="padding:18px 0"><span>FAQ</span><b>6</b></div><div class="kv" style="padding:18px 0"><span>Selos</span><b>6</b></div><div class="kv" style="padding:18px 0"><span>App</span><b>6</b></div><div class="kv" style="padding:18px 0"><span>CTA</span><b>4</b></div><div class="kv" style="padding:18px 0"><span>Divisor</span><b>3</b></div><div class="kv" style="padding:18px 0"><span>Footer</span><b>8</b></div></div>
+</div>
+</div></section>
+
+<section data-label="Jornada" data-screen-label="Jornada das páginas" class="dark">
+<div class="f">
+<div class="rule"></div>
+<h2 style="margin-top:var(--gap-title)">Jornada dos e-mails</h2>
+<p style="margin-top:34px;max-width:1200px">Quatro momentos, quatro tons. A fundação é a mesma; o que muda é quanto a marca aparece e onde fica o peso da peça.</p>
+<div class="cols c4" style="margin-top:64px;align-items:start;gap:26px">
+<div class="card"><div class="k">01 · Transacional</div><div class="t">Comprovante</div><div class="d">Funcional e sóbrio. A marca recua para o dado ficar no centro.</div></div>
+<div class="card"><div class="k">02 · Onboarding</div><div class="t">Boas-vindas</div><div class="d">A marca no auge da personalidade. Hero com imagem e carta assinada.</div></div>
+<div class="card"><div class="k">03 · Ongoing</div><div class="t">Panorama</div><div class="d">Modular e editorial. Cards com acento de produto e seção de blog.</div></div>
+<div class="card"><div class="k">04 · Churn</div><div class="t">Reativação</div><div class="d">Direto, com urgência elegante. Um CTA dominante e saída digna.</div></div>
+</div>
+</div></section>
+
+
+<section data-label="Os quatro e-mails" data-screen-label="Os quatro e-mails">
+<div class="f" style="padding-bottom:60px">
+<div class="rule"></div>
+<h2 style="margin-top:var(--gap-title)">Os quatro e-mails montados</h2>
+<p class="small" style="margin-top:20px;max-width:1400px">Cada tipo existe em três versões: campos rotulados para o time de copy, copy de exemplo e fundo escuro. Abaixo, a versão com copy.</p>
+<div style="margin-top:28px;display:flex;gap:34px;align-items:flex-start">
+<div style="width:400px"><div class="vlab">Transacional</div><div class="frame" style="height:600px;width:400px"><iframe src="emails/01-transacional-conversao.html?v=3" width="600" height="900" style="transform:scale(0.6667)" title="Transacional" scrolling="no"></iframe></div></div><div style="width:400px"><div class="vlab">Onboarding</div><div class="frame" style="height:600px;width:400px"><iframe src="emails/02-onboarding-boas-vindas.html?v=3" width="600" height="900" style="transform:scale(0.6667)" title="Onboarding" scrolling="no"></iframe></div></div><div style="width:400px"><div class="vlab">Ongoing</div><div class="frame" style="height:600px;width:400px"><iframe src="emails/03-ongoing-panorama.html?v=3" width="600" height="900" style="transform:scale(0.6667)" title="Ongoing" scrolling="no"></iframe></div></div><div style="width:400px"><div class="vlab">Prevenção de churn</div><div class="frame" style="height:600px;width:400px"><iframe src="emails/04-churn-reativacao.html?v=3" width="600" height="900" style="transform:scale(0.6667)" title="Prevenção de churn" scrolling="no"></iframe></div></div>
+</div>
+</div></section>
+
+
+
+<section data-label="Blocos · Header 1" data-screen-label="Blocos · Header · 1 de 2">
+<div class="f" style="padding-bottom:60px">
+<div class="eyebrow">Blocos · 6 versões · 1 de 2</div>
+<h2 style="margin-top:20px">Header</h2>
+<p class="small" style="margin-top:20px;max-width:1400px">Abertura do e-mail. Sempre com o logotipo; o eyebrow à direita declara a natureza da mensagem.</p>
+<div style="margin-top:32px;display:flex;gap:26px;align-items:flex-start">
+<div style="width:556px"><div class="vlab" style="height:62px">Logo simples</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/header/logo.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Logo simples" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Logo + eyebrow</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/header/logo-eyebrow.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Logo + eyebrow" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Logo centralizado</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/header/logo-center.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Logo centralizado" scrolling="no"></iframe></div></div>
+</div>
+</div></section>
+<section data-label="Blocos · Header 2" data-screen-label="Blocos · Header · 2 de 2">
+<div class="f" style="padding-bottom:60px">
+<div class="eyebrow">Blocos · 6 versões · 2 de 2</div>
+<h2 style="margin-top:20px">Header</h2>
+<p class="small" style="margin-top:20px;max-width:1400px">Continuação das versões desta categoria.</p>
+<div style="margin-top:32px;display:flex;gap:26px;align-items:flex-start">
+<div style="width:556px"><div class="vlab" style="height:62px">Logo + menu</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/header/logo-menu.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Logo + menu" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Header negativo</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/header/dark.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Header negativo" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Logo + CTA de app</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/header/logo-cta.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Logo + CTA de app" scrolling="no"></iframe></div></div>
+</div>
+</div></section>
+<section data-label="Blocos · Header · imagem 1" data-screen-label="Blocos · Header · imagem · 1 de 2">
+<div class="f" style="padding-bottom:60px">
+<div class="eyebrow">Blocos · 6 versões · 1 de 2</div>
+<h2 style="margin-top:20px">Header · imagem</h2>
+<p class="small" style="margin-top:20px;max-width:1400px">Variações com imagem, foto do remetente ou textura, cada área no tamanho e na proporção da arte final.</p>
+<div style="margin-top:32px;display:flex;gap:26px;align-items:flex-start">
+<div style="width:556px"><div class="vlab" style="height:62px">Faixa de imagem sob o header</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/header-imagem/faixa.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Faixa de imagem sob o header" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Logo sobre imagem</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/header-imagem/overlay.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Logo sobre imagem" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Header dividido</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/header-imagem/split.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Header dividido" scrolling="no"></iframe></div></div>
+</div>
+</div></section>
+<section data-label="Blocos · Header · imagem 2" data-screen-label="Blocos · Header · imagem · 2 de 2">
+<div class="f" style="padding-bottom:60px">
+<div class="eyebrow">Blocos · 6 versões · 2 de 2</div>
+<h2 style="margin-top:20px">Header · imagem</h2>
+<p class="small" style="margin-top:20px;max-width:1400px">Continuação das versões desta categoria.</p>
+<div style="margin-top:32px;display:flex;gap:26px;align-items:flex-start">
+<div style="width:556px"><div class="vlab" style="height:62px">Header de produto</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/header-imagem/produto.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Header de produto" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Header pessoal</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/header-imagem/avatar.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Header pessoal" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Header com textura</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/header-imagem/padrao.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Header com textura" scrolling="no"></iframe></div></div>
+</div>
+</div></section>
+<section data-label="Blocos · Menu" data-screen-label="Blocos · Menu">
+<div class="f" style="padding-bottom:60px">
+<div class="eyebrow">Blocos · 2 versões</div>
+<h2 style="margin-top:20px">Menu</h2>
+<p class="small" style="margin-top:20px;max-width:1400px">Navegação opcional, só quando há mais de um destino legítimo. Evitar em transacional.</p>
+<div style="margin-top:32px;display:flex;gap:26px;align-items:flex-start">
+<div style="width:556px"><div class="vlab" style="height:62px">Menu institucional</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/menu/inline.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Menu institucional" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Menu de produtos</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/menu/products.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Menu de produtos" scrolling="no"></iframe></div></div>
+</div>
+</div></section>
+<section data-label="Blocos · Banner 1" data-screen-label="Blocos · Banner · 1 de 2">
+<div class="f" style="padding-bottom:60px">
+<div class="eyebrow">Blocos · 6 versões · 1 de 2</div>
+<h2 style="margin-top:20px">Banner</h2>
+<p class="small" style="margin-top:20px;max-width:1400px">Peça de abertura de campanha. Um por e-mail, sempre acima do primeiro CTA.</p>
+<div style="margin-top:32px;display:flex;gap:26px;align-items:flex-start">
+<div style="width:556px"><div class="vlab" style="height:62px">Banner full-bleed</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/banner/fullbleed.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Banner full-bleed" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Banner com overlay</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/banner/overlay.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Banner com overlay" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Banner dividido</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/banner/split.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Banner dividido" scrolling="no"></iframe></div></div>
+</div>
+</div></section>
+<section data-label="Blocos · Banner 2" data-screen-label="Blocos · Banner · 2 de 2">
+<div class="f" style="padding-bottom:60px">
+<div class="eyebrow">Blocos · 6 versões · 2 de 2</div>
+<h2 style="margin-top:20px">Banner</h2>
+<p class="small" style="margin-top:20px;max-width:1400px">Continuação das versões desta categoria.</p>
+<div style="margin-top:32px;display:flex;gap:26px;align-items:flex-start">
+<div style="width:556px"><div class="vlab" style="height:62px">Banner de cor sólida</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/banner/solid.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Banner de cor sólida" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Banner de numeral</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/banner/numeral.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Banner de numeral" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Faixa de anúncio</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/banner/faixa.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Faixa de anúncio" scrolling="no"></iframe></div></div>
+</div>
+</div></section>
+<section data-label="Blocos · Hero 1" data-screen-label="Blocos · Hero · 1 de 2">
+<div class="f" style="padding-bottom:60px">
+<div class="eyebrow">Blocos · 4 versões · 1 de 2</div>
+<h2 style="margin-top:20px">Hero</h2>
+<p class="small" style="margin-top:20px;max-width:1400px">Primeiro bloco de conteúdo quando não há banner. O negativo é reservado a momentos de marca.</p>
+<div style="margin-top:32px;display:flex;gap:26px;align-items:flex-start">
+<div style="width:556px"><div class="vlab" style="height:62px">Hero claro</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/hero/light.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Hero claro" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Hero negativo</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/hero/dark.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Hero negativo" scrolling="no"></iframe></div></div>
+</div>
+</div></section>
+<section data-label="Blocos · Hero 2" data-screen-label="Blocos · Hero · 2 de 2">
+<div class="f" style="padding-bottom:60px">
+<div class="eyebrow">Blocos · 4 versões · 2 de 2</div>
+<h2 style="margin-top:20px">Hero</h2>
+<p class="small" style="margin-top:20px;max-width:1400px">Continuação das versões desta categoria.</p>
+<div style="margin-top:32px;display:flex;gap:26px;align-items:flex-start">
+<div style="width:556px"><div class="vlab" style="height:62px">Hero de benefício</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/hero/benefit.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Hero de benefício" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Hero de numeral</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/hero/numeral.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Hero de numeral" scrolling="no"></iframe></div></div>
+</div>
+</div></section>
+<section data-label="Blocos · Fundos 1" data-screen-label="Blocos · Fundos · 1 de 2">
+<div class="f" style="padding-bottom:60px">
+<div class="eyebrow">Blocos · 6 versões · 1 de 2</div>
+<h2 style="margin-top:20px">Fundos</h2>
+<p class="small" style="margin-top:20px;max-width:1400px">Fundos escuros sólidos em cor da marca e degradês como arquivo de imagem — CSS gradient não renderiza no Outlook.</p>
+<div style="margin-top:32px;display:flex;gap:26px;align-items:flex-start">
+<div style="width:556px"><div class="vlab" style="height:62px">Bloco negativo sólido</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/fundos/negativo.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Bloco negativo sólido" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Degradê escuro</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/fundos/degrade-escuro.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Degradê escuro" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Degradê claro</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/fundos/degrade-areia.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Degradê claro" scrolling="no"></iframe></div></div>
+</div>
+</div></section>
+<section data-label="Blocos · Fundos 2" data-screen-label="Blocos · Fundos · 2 de 2">
+<div class="f" style="padding-bottom:60px">
+<div class="eyebrow">Blocos · 6 versões · 2 de 2</div>
+<h2 style="margin-top:20px">Fundos</h2>
+<p class="small" style="margin-top:20px;max-width:1400px">Continuação das versões desta categoria.</p>
+<div style="margin-top:32px;display:flex;gap:26px;align-items:flex-start">
+<div style="width:556px"><div class="vlab" style="height:62px">Faixa dourada em degradê</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/fundos/degrade-ouro.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Faixa dourada em degradê" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Imagem com proteção</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/fundos/protecao.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Imagem com proteção" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Claro sobre escuro</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/fundos/dividido.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Claro sobre escuro" scrolling="no"></iframe></div></div>
+</div>
+</div></section>
+<section data-label="Blocos · Simulação 1" data-screen-label="Blocos · Simulação · 1 de 2">
+<div class="f" style="padding-bottom:60px">
+<div class="eyebrow">Blocos · 6 versões · 1 de 2</div>
+<h2 style="margin-top:20px">Simulação</h2>
+<p class="small" style="margin-top:20px;max-width:1400px">A tela do app desenhada em tabela. Sobrevive a imagens bloqueadas e não depende de asset.</p>
+<div style="margin-top:32px;display:flex;gap:26px;align-items:flex-start">
+<div style="width:556px"><div class="vlab" style="height:62px">Tela de conversão</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/simulacao/conversao.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Tela de conversão" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Push de confirmação</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/simulacao/notificacao.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Push de confirmação" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Tela de saldo</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/simulacao/saldo.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Tela de saldo" scrolling="no"></iframe></div></div>
+</div>
+</div></section>
+<section data-label="Blocos · Simulação 2" data-screen-label="Blocos · Simulação · 2 de 2">
+<div class="f" style="padding-bottom:60px">
+<div class="eyebrow">Blocos · 6 versões · 2 de 2</div>
+<h2 style="margin-top:20px">Simulação</h2>
+<p class="small" style="margin-top:20px;max-width:1400px">Continuação das versões desta categoria.</p>
+<div style="margin-top:32px;display:flex;gap:26px;align-items:flex-start">
+<div style="width:556px"><div class="vlab" style="height:62px">Tela do cartão</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/simulacao/cartao.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Tela do cartão" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Fluxo em três telas</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/simulacao/fluxo.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Fluxo em três telas" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Conversa com o suporte</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/simulacao/chat.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Conversa com o suporte" scrolling="no"></iframe></div></div>
+</div>
+</div></section>
+<section data-label="Blocos · Mockup 1" data-screen-label="Blocos · Mockup · 1 de 3">
+<div class="f" style="padding-bottom:60px">
+<div class="eyebrow">Blocos · 7 versões · 1 de 3</div>
+<h2 style="margin-top:20px">Mockup</h2>
+<p class="small" style="margin-top:20px;max-width:1400px">Telas do app compostas em perspectiva dentro do mockup de mão, no tamanho final.</p>
+<div style="margin-top:32px;display:flex;gap:26px;align-items:flex-start">
+<div style="width:556px"><div class="vlab" style="height:62px">Celular centralizado</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/mockup/centro.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Celular centralizado" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Celular + texto</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/mockup/lado.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Celular + texto" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Dois aparelhos</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/mockup/dois.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Dois aparelhos" scrolling="no"></iframe></div></div>
+</div>
+</div></section>
+<section data-label="Blocos · Mockup 2" data-screen-label="Blocos · Mockup · 2 de 3">
+<div class="f" style="padding-bottom:60px">
+<div class="eyebrow">Blocos · 7 versões · 2 de 3</div>
+<h2 style="margin-top:20px">Mockup</h2>
+<p class="small" style="margin-top:20px;max-width:1400px">Continuação das versões desta categoria.</p>
+<div style="margin-top:32px;display:flex;gap:26px;align-items:flex-start">
+<div style="width:556px"><div class="vlab" style="height:62px">Celular em bloco negativo</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/mockup/negativo.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Celular em bloco negativo" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Cartão + celular</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/mockup/cartao.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Cartão + celular" scrolling="no"></iframe></div></div>
+</div>
+</div></section>
+<section data-label="Blocos · Mockup 3" data-screen-label="Blocos · Mockup · 3 de 3">
+<div class="f" style="padding-bottom:60px">
+<div class="eyebrow">Blocos · 7 versões · 3 de 3</div>
+<h2 style="margin-top:20px">Mockup</h2>
+<p class="small" style="margin-top:20px;max-width:1400px">Continuação das versões desta categoria.</p>
+<div style="margin-top:32px;display:flex;gap:26px;align-items:flex-start">
+<div style="width:556px"><div class="vlab" style="height:62px">Celular recortado no rodapé</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/mockup/recorte.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Celular recortado no rodapé" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Aparelho em bloco negativo</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/mockup/foto-negativo.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Aparelho em bloco negativo" scrolling="no"></iframe></div></div>
+</div>
+</div></section>
+<section data-label="Blocos · Humano 1" data-screen-label="Blocos · Humano · 1 de 2">
+<div class="f" style="padding-bottom:60px">
+<div class="eyebrow">Blocos · 6 versões · 1 de 2</div>
+<h2 style="margin-top:20px">Humano</h2>
+<p class="small" style="margin-top:20px;max-width:1400px">Gente no lugar de sistema: carta, rosto de quem atende, P.S., história de cliente.</p>
+<div style="margin-top:32px;display:flex;gap:26px;align-items:flex-start">
+<div style="width:556px"><div class="vlab" style="height:62px">Abertura em carta</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/humano/carta.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Abertura em carta" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Assinatura de pessoa</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/humano/assinatura.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Assinatura de pessoa" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Post scriptum</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/humano/ps.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Post scriptum" scrolling="no"></iframe></div></div>
+</div>
+</div></section>
+<section data-label="Blocos · Humano 2" data-screen-label="Blocos · Humano · 2 de 2">
+<div class="f" style="padding-bottom:60px">
+<div class="eyebrow">Blocos · 6 versões · 2 de 2</div>
+<h2 style="margin-top:20px">Humano</h2>
+<p class="small" style="margin-top:20px;max-width:1400px">Continuação das versões desta categoria.</p>
+<div style="margin-top:32px;display:flex;gap:26px;align-items:flex-start">
+<div style="width:556px"><div class="vlab" style="height:62px">Quem te atende</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/humano/time.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Quem te atende" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">História de cliente</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/humano/historia.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="História de cliente" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Convite para responder</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/humano/resposta.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Convite para responder" scrolling="no"></iframe></div></div>
+</div>
+</div></section>
+<section data-label="Blocos · Corpo" data-screen-label="Blocos · Corpo">
+<div class="f" style="padding-bottom:60px">
+<div class="eyebrow">Blocos · 3 versões</div>
+<h2 style="margin-top:20px">Corpo</h2>
+<p class="small" style="margin-top:20px;max-width:1400px">Blocos de texto e sequências. 17 px é o piso de leitura confortável.</p>
+<div style="margin-top:32px;display:flex;gap:26px;align-items:flex-start">
+<div style="width:556px"><div class="vlab" style="height:62px">Parágrafo</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/corpo/para.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Parágrafo" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Lista de itens</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/corpo/list.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Lista de itens" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Passos numerados</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/corpo/steps.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Passos numerados" scrolling="no"></iframe></div></div>
+</div>
+</div></section>
+<section data-label="Blocos · Ícones 1" data-screen-label="Blocos · Ícones · 1 de 2">
+<div class="f" style="padding-bottom:60px">
+<div class="eyebrow">Blocos · 6 versões · 1 de 2</div>
+<h2 style="margin-top:20px">Ícones</h2>
+<p class="small" style="margin-top:20px;max-width:1400px">Listas e grades com o set autoral de 24 ícones, aplicados em círculo dourado.</p>
+<div style="margin-top:32px;display:flex;gap:26px;align-items:flex-start">
+<div style="width:556px"><div class="vlab" style="height:62px">Lista com ícone</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/icones/lista.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Lista com ícone" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Ícones em duas colunas</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/icones/duas-colunas.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Ícones em duas colunas" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Três ícones centralizados</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/icones/tres.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Três ícones centralizados" scrolling="no"></iframe></div></div>
+</div>
+</div></section>
+<section data-label="Blocos · Ícones 2" data-screen-label="Blocos · Ícones · 2 de 2">
+<div class="f" style="padding-bottom:60px">
+<div class="eyebrow">Blocos · 6 versões · 2 de 2</div>
+<h2 style="margin-top:20px">Ícones</h2>
+<p class="small" style="margin-top:20px;max-width:1400px">Continuação das versões desta categoria.</p>
+<div style="margin-top:32px;display:flex;gap:26px;align-items:flex-start">
+<div style="width:556px"><div class="vlab" style="height:62px">Faixa de quatro ícones</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/icones/faixa.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Faixa de quatro ícones" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Ícone grande + texto</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/icones/grande.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Ícone grande + texto" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Ícones em bloco negativo</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/icones/negativo.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Ícones em bloco negativo" scrolling="no"></iframe></div></div>
+</div>
+</div></section>
+<section data-label="Blocos · Features 1" data-screen-label="Blocos · Features · 1 de 2">
+<div class="f" style="padding-bottom:60px">
+<div class="eyebrow">Blocos · 6 versões · 1 de 2</div>
+<h2 style="margin-top:20px">Features</h2>
+<p class="small" style="margin-top:20px;max-width:1400px">Seção de recursos: grade, lista, destaque com imagem, três colunas e números.</p>
+<div style="margin-top:32px;display:flex;gap:26px;align-items:flex-start">
+<div style="width:556px"><div class="vlab" style="height:62px">Grade de features</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/features/grade.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Grade de features" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Features em lista</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/features/lista.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Features em lista" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Feature em destaque</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/features/destaque.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Feature em destaque" scrolling="no"></iframe></div></div>
+</div>
+</div></section>
+<section data-label="Blocos · Features 2" data-screen-label="Blocos · Features · 2 de 2">
+<div class="f" style="padding-bottom:60px">
+<div class="eyebrow">Blocos · 6 versões · 2 de 2</div>
+<h2 style="margin-top:20px">Features</h2>
+<p class="small" style="margin-top:20px;max-width:1400px">Continuação das versões desta categoria.</p>
+<div style="margin-top:32px;display:flex;gap:26px;align-items:flex-start">
+<div style="width:556px"><div class="vlab" style="height:62px">Três features centralizadas</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/features/tres.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Três features centralizadas" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Features em bloco negativo</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/features/negativo.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Features em bloco negativo" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Features com número</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/features/numeros.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Features com número" scrolling="no"></iframe></div></div>
+</div>
+</div></section>
+<section data-label="Blocos · Comparação 1" data-screen-label="Blocos · Comparação · 1 de 2">
+<div class="f" style="padding-bottom:60px">
+<div class="eyebrow">Blocos · 6 versões · 1 de 2</div>
+<h2 style="margin-top:20px">Comparação</h2>
+<p class="small" style="margin-top:20px;max-width:1400px">Zeom frente a frente com a alternativa. Coluna Zeom sempre destacada.</p>
+<div style="margin-top:32px;display:flex;gap:26px;align-items:flex-start">
+<div style="width:556px"><div class="vlab" style="height:62px">Tabela comparativa</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/comparacao/tabela.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Tabela comparativa" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Comparação de custo</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/comparacao/custo.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Comparação de custo" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Antes e depois</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/comparacao/antes-depois.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Antes e depois" scrolling="no"></iframe></div></div>
+</div>
+</div></section>
+<section data-label="Blocos · Comparação 2" data-screen-label="Blocos · Comparação · 2 de 2">
+<div class="f" style="padding-bottom:60px">
+<div class="eyebrow">Blocos · 6 versões · 2 de 2</div>
+<h2 style="margin-top:20px">Comparação</h2>
+<p class="small" style="margin-top:20px;max-width:1400px">Continuação das versões desta categoria.</p>
+<div style="margin-top:32px;display:flex;gap:26px;align-items:flex-start">
+<div style="width:556px"><div class="vlab" style="height:62px">Checklist comparativo</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/comparacao/checklist.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Checklist comparativo" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Três opções</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/comparacao/planos.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Três opções" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Real x dólar</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/comparacao/moeda.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Real x dólar" scrolling="no"></iframe></div></div>
+</div>
+</div></section>
+<section data-label="Blocos · Dados" data-screen-label="Blocos · Dados">
+<div class="f" style="padding-bottom:60px">
+<div class="eyebrow">Blocos · 3 versões</div>
+<h2 style="margin-top:20px">Dados</h2>
+<p class="small" style="margin-top:20px;max-width:1400px">Números e status. Moeda sempre explícita, valores em peso 600.</p>
+<div style="margin-top:32px;display:flex;gap:26px;align-items:flex-start">
+<div style="width:556px"><div class="vlab" style="height:62px">Bloco de dados com destaque</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/dados/highlight.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Bloco de dados com destaque" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Linhas label / valor</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/dados/rows.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Linhas label / valor" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Bloco de reforço negativo</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/dados/dark.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Bloco de reforço negativo" scrolling="no"></iframe></div></div>
+</div>
+</div></section>
+<section data-label="Blocos · Cards" data-screen-label="Blocos · Cards">
+<div class="f" style="padding-bottom:60px">
+<div class="eyebrow">Blocos · 3 versões</div>
+<h2 style="margin-top:20px">Cards</h2>
+<p class="small" style="margin-top:20px;max-width:1400px">Blocos modulares editoriais. O acento de produto entra só na barra de 3 px.</p>
+<div style="margin-top:32px;display:flex;gap:26px;align-items:flex-start">
+<div style="width:556px"><div class="vlab" style="height:62px">Card com acento de produto</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/cards/accent.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Card com acento de produto" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Dois cards lado a lado</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/cards/two-col.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Dois cards lado a lado" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Destaque editorial</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/cards/feature.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Destaque editorial" scrolling="no"></iframe></div></div>
+</div>
+</div></section>
+<section data-label="Blocos · Imagens 1" data-screen-label="Blocos · Imagens · 1 de 2">
+<div class="f" style="padding-bottom:60px">
+<div class="eyebrow">Blocos · 6 versões · 1 de 2</div>
+<h2 style="margin-top:20px">Imagens</h2>
+<p class="small" style="margin-top:20px;max-width:1400px">Composições de mais de uma coluna: duas, três, grade, mosaico e faixa sangrada, todas com foto da biblioteca.</p>
+<div style="margin-top:32px;display:flex;gap:26px;align-items:flex-start">
+<div style="width:556px"><div class="vlab" style="height:62px">Duas colunas</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/imagens/duas.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Duas colunas" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Três colunas</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/imagens/tres.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Três colunas" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Grade 2×2</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/imagens/grade.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Grade 2×2" scrolling="no"></iframe></div></div>
+</div>
+</div></section>
+<section data-label="Blocos · Imagens 2" data-screen-label="Blocos · Imagens · 2 de 2">
+<div class="f" style="padding-bottom:60px">
+<div class="eyebrow">Blocos · 6 versões · 2 de 2</div>
+<h2 style="margin-top:20px">Imagens</h2>
+<p class="small" style="margin-top:20px;max-width:1400px">Continuação das versões desta categoria.</p>
+<div style="margin-top:32px;display:flex;gap:26px;align-items:flex-start">
+<div style="width:556px"><div class="vlab" style="height:62px">Mosaico 1 + 2</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/imagens/mosaico.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Mosaico 1 + 2" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Faixa dividida em três</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/imagens/sangramento.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Faixa dividida em três" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Imagem + texto alternado</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/imagens/texto.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Imagem + texto alternado" scrolling="no"></iframe></div></div>
+</div>
+</div></section>
+<section data-label="Blocos · Depoimento 1" data-screen-label="Blocos · Depoimento · 1 de 2">
+<div class="f" style="padding-bottom:60px">
+<div class="eyebrow">Blocos · 6 versões · 1 de 2</div>
+<h2 style="margin-top:20px">Depoimento</h2>
+<p class="small" style="margin-top:20px;max-width:1400px">Prova social, sempre identificada. Sem foto aprovada, usar a versão em números.</p>
+<div style="margin-top:32px;display:flex;gap:26px;align-items:flex-start">
+<div style="width:556px"><div class="vlab" style="height:62px">Citação simples</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/depoimento/citacao.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Citação simples" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Citação com foto</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/depoimento/foto.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Citação com foto" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Citação com avaliação</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/depoimento/rating.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Citação com avaliação" scrolling="no"></iframe></div></div>
+</div>
+</div></section>
+<section data-label="Blocos · Depoimento 2" data-screen-label="Blocos · Depoimento · 2 de 2">
+<div class="f" style="padding-bottom:60px">
+<div class="eyebrow">Blocos · 6 versões · 2 de 2</div>
+<h2 style="margin-top:20px">Depoimento</h2>
+<p class="small" style="margin-top:20px;max-width:1400px">Continuação das versões desta categoria.</p>
+<div style="margin-top:32px;display:flex;gap:26px;align-items:flex-start">
+<div style="width:556px"><div class="vlab" style="height:62px">Depoimento negativo</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/depoimento/negativo.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Depoimento negativo" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Dois depoimentos</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/depoimento/duplo.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Dois depoimentos" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Prova em números</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/depoimento/numeros.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Prova em números" scrolling="no"></iframe></div></div>
+</div>
+</div></section>
+<section data-label="Blocos · Blog 1" data-screen-label="Blocos · Blog · 1 de 2">
+<div class="f" style="padding-bottom:60px">
+<div class="eyebrow">Blocos · 6 versões · 1 de 2</div>
+<h2 style="margin-top:20px">Blog</h2>
+<p class="small" style="margin-top:20px;max-width:1400px">Divulgação editorial. Categoria em dourado escuro, título com tracking negativo.</p>
+<div style="margin-top:32px;display:flex;gap:26px;align-items:flex-start">
+<div style="width:556px"><div class="vlab" style="height:62px">Post em destaque</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/blog/destaque.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Post em destaque" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Lista com thumbnail</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/blog/lista.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Lista com thumbnail" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Grade de dois</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/blog/grid.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Grade de dois" scrolling="no"></iframe></div></div>
+</div>
+</div></section>
+<section data-label="Blocos · Blog 2" data-screen-label="Blocos · Blog · 2 de 2">
+<div class="f" style="padding-bottom:60px">
+<div class="eyebrow">Blocos · 6 versões · 2 de 2</div>
+<h2 style="margin-top:20px">Blog</h2>
+<p class="small" style="margin-top:20px;max-width:1400px">Continuação das versões desta categoria.</p>
+<div style="margin-top:32px;display:flex;gap:26px;align-items:flex-start">
+<div style="width:556px"><div class="vlab" style="height:62px">Lista sem imagem</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/blog/texto.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Lista sem imagem" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Destaque + secundários</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/blog/misto.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Destaque + secundários" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Post com autor</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/blog/autor.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Post com autor" scrolling="no"></iframe></div></div>
+</div>
+</div></section>
+<section data-label="Blocos · FAQ 1" data-screen-label="Blocos · FAQ · 1 de 2">
+<div class="f" style="padding-bottom:60px">
+<div class="eyebrow">Blocos · 6 versões · 1 de 2</div>
+<h2 style="margin-top:20px">FAQ</h2>
+<p class="small" style="margin-top:20px;max-width:1400px">Redução de dúvida antes do CTA. Pergunta e resposta separadas por filete.</p>
+<div style="margin-top:32px;display:flex;gap:26px;align-items:flex-start">
+<div style="width:556px"><div class="vlab" style="height:62px">FAQ simples</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/faq/simples.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="FAQ simples" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">FAQ numerada</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/faq/numerado.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="FAQ numerada" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">FAQ em cards</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/faq/cards.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="FAQ em cards" scrolling="no"></iframe></div></div>
+</div>
+</div></section>
+<section data-label="Blocos · FAQ 2" data-screen-label="Blocos · FAQ · 2 de 2">
+<div class="f" style="padding-bottom:60px">
+<div class="eyebrow">Blocos · 6 versões · 2 de 2</div>
+<h2 style="margin-top:20px">FAQ</h2>
+<p class="small" style="margin-top:20px;max-width:1400px">Continuação das versões desta categoria.</p>
+<div style="margin-top:32px;display:flex;gap:26px;align-items:flex-start">
+<div style="width:556px"><div class="vlab" style="height:62px">FAQ em duas colunas</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/faq/duas-colunas.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="FAQ em duas colunas" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">FAQ com central de ajuda</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/faq/link.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="FAQ com central de ajuda" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">FAQ negativa</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/faq/negativo.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="FAQ negativa" scrolling="no"></iframe></div></div>
+</div>
+</div></section>
+<section data-label="Blocos · Selos 1" data-screen-label="Blocos · Selos · 1 de 2">
+<div class="f" style="padding-bottom:60px">
+<div class="eyebrow">Blocos · 6 versões · 1 de 2</div>
+<h2 style="margin-top:20px">Selos</h2>
+<p class="small" style="margin-top:20px;max-width:1400px">Indícios de confiança equivalentes aos do site: regulatório, segurança, avaliação.</p>
+<div style="margin-top:32px;display:flex;gap:26px;align-items:flex-start">
+<div style="width:556px"><div class="vlab" style="height:62px">Selo regulatório</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/selos/regulatorio.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Selo regulatório" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Três garantias</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/selos/tres.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Três garantias" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Faixa de números</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/selos/faixa.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Faixa de números" scrolling="no"></iframe></div></div>
+</div>
+</div></section>
+<section data-label="Blocos · Selos 2" data-screen-label="Blocos · Selos · 2 de 2">
+<div class="f" style="padding-bottom:60px">
+<div class="eyebrow">Blocos · 6 versões · 2 de 2</div>
+<h2 style="margin-top:20px">Selos</h2>
+<p class="small" style="margin-top:20px;max-width:1400px">Continuação das versões desta categoria.</p>
+<div style="margin-top:32px;display:flex;gap:26px;align-items:flex-start">
+<div style="width:556px"><div class="vlab" style="height:62px">Selo de segurança</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/selos/seguranca.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Selo de segurança" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Faixa de parceiros</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/selos/parceiros.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Faixa de parceiros" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Avaliação nas lojas</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/selos/avaliacao.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Avaliação nas lojas" scrolling="no"></iframe></div></div>
+</div>
+</div></section>
+<section data-label="Blocos · App 1" data-screen-label="Blocos · App · 1 de 2">
+<div class="f" style="padding-bottom:60px">
+<div class="eyebrow">Blocos · 6 versões · 1 de 2</div>
+<h2 style="margin-top:20px">App</h2>
+<p class="small" style="margin-top:20px;max-width:1400px">Download e ativação. Badges das lojas sempre nos arquivos oficiais.</p>
+<div style="margin-top:32px;display:flex;gap:26px;align-items:flex-start">
+<div style="width:556px"><div class="vlab" style="height:62px">Badges das lojas</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/app/badges.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Badges das lojas" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Download com QR</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/app/qr.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Download com QR" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Banner de app negativo</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/app/negativo.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Banner de app negativo" scrolling="no"></iframe></div></div>
+</div>
+</div></section>
+<section data-label="Blocos · App 2" data-screen-label="Blocos · App · 2 de 2">
+<div class="f" style="padding-bottom:60px">
+<div class="eyebrow">Blocos · 6 versões · 2 de 2</div>
+<h2 style="margin-top:20px">App</h2>
+<p class="small" style="margin-top:20px;max-width:1400px">Continuação das versões desta categoria.</p>
+<div style="margin-top:32px;display:flex;gap:26px;align-items:flex-start">
+<div style="width:556px"><div class="vlab" style="height:62px">Faixa fina de download</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/app/faixa.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Faixa fina de download" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Download com benefícios</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/app/beneficios.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Download com benefícios" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Download com aparelho</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/app/celular.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Download com aparelho" scrolling="no"></iframe></div></div>
+</div>
+</div></section>
+<section data-label="Blocos · CTA 1" data-screen-label="Blocos · CTA · 1 de 2">
+<div class="f" style="padding-bottom:60px">
+<div class="eyebrow">Blocos · 4 versões · 1 de 2</div>
+<h2 style="margin-top:20px">CTA</h2>
+<p class="small" style="margin-top:20px;max-width:1400px">Um CTA dominante por e-mail. Dourado sólido é o primário.</p>
+<div style="margin-top:32px;display:flex;gap:26px;align-items:flex-start">
+<div style="width:556px"><div class="vlab" style="height:62px">Botão primário (full)</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/cta/primary.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Botão primário (full)" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Botão primário (inline)</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/cta/inline.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Botão primário (inline)" scrolling="no"></iframe></div></div>
+</div>
+</div></section>
+<section data-label="Blocos · CTA 2" data-screen-label="Blocos · CTA · 2 de 2">
+<div class="f" style="padding-bottom:60px">
+<div class="eyebrow">Blocos · 4 versões · 2 de 2</div>
+<h2 style="margin-top:20px">CTA</h2>
+<p class="small" style="margin-top:20px;max-width:1400px">Continuação das versões desta categoria.</p>
+<div style="margin-top:32px;display:flex;gap:26px;align-items:flex-start">
+<div style="width:556px"><div class="vlab" style="height:62px">Botão secundário</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/cta/secondary.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Botão secundário" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">CTA em link</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/cta/link.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="CTA em link" scrolling="no"></iframe></div></div>
+</div>
+</div></section>
+<section data-label="Blocos · Divisor" data-screen-label="Blocos · Divisor">
+<div class="f" style="padding-bottom:60px">
+<div class="eyebrow">Blocos · 3 versões</div>
+<h2 style="margin-top:20px">Divisor</h2>
+<p class="small" style="margin-top:20px;max-width:1400px">Ritmo entre blocos. Filete de acento abre seção; hairline separa iguais.</p>
+<div style="margin-top:32px;display:flex;gap:26px;align-items:flex-start">
+<div style="width:556px"><div class="vlab" style="height:62px">Filete de acento</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/divisor/rule.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Filete de acento" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Hairline</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/divisor/hairline.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Hairline" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Espaçador</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/divisor/spacer.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Espaçador" scrolling="no"></iframe></div></div>
+</div>
+</div></section>
+<section data-label="Blocos · Footer 1" data-screen-label="Blocos · Footer · 1 de 3">
+<div class="f" style="padding-bottom:60px">
+<div class="eyebrow">Blocos · 8 versões · 1 de 3</div>
+<h2 style="margin-top:20px">Footer</h2>
+<p class="small" style="margin-top:20px;max-width:1400px">Fechamento e compliance. Nenhum e-mail sai sem endereço postal e descadastro.</p>
+<div style="margin-top:32px;display:flex;gap:26px;align-items:flex-start">
+<div style="width:556px"><div class="vlab" style="height:62px">Bloco de compliance</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/footer/compliance.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Bloco de compliance" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Rodapé institucional</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/footer/full.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Rodapé institucional" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Rodapé mínimo</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/footer/min.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Rodapé mínimo" scrolling="no"></iframe></div></div>
+</div>
+</div></section>
+<section data-label="Blocos · Footer 2" data-screen-label="Blocos · Footer · 2 de 3">
+<div class="f" style="padding-bottom:60px">
+<div class="eyebrow">Blocos · 8 versões · 2 de 3</div>
+<h2 style="margin-top:20px">Footer</h2>
+<p class="small" style="margin-top:20px;max-width:1400px">Continuação das versões desta categoria.</p>
+<div style="margin-top:32px;display:flex;gap:26px;align-items:flex-start">
+<div style="width:556px"><div class="vlab" style="height:62px">Rodapé negativo</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/footer/dark.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Rodapé negativo" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Rodapé com redes</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/footer/social.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Rodapé com redes" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Rodapé com app</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/footer/app.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Rodapé com app" scrolling="no"></iframe></div></div>
+</div>
+</div></section>
+<section data-label="Blocos · Footer 3" data-screen-label="Blocos · Footer · 3 de 3">
+<div class="f" style="padding-bottom:60px">
+<div class="eyebrow">Blocos · 8 versões · 3 de 3</div>
+<h2 style="margin-top:20px">Footer</h2>
+<p class="small" style="margin-top:20px;max-width:1400px">Continuação das versões desta categoria.</p>
+<div style="margin-top:32px;display:flex;gap:26px;align-items:flex-start">
+<div style="width:556px"><div class="vlab" style="height:62px">Rodapé com ícones de redes</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/footer/icones.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Rodapé com ícones de redes" scrolling="no"></iframe></div></div><div style="width:556px"><div class="vlab" style="height:62px">Rodapé negativo com redes</div><div class="frame" style="height:650px;width:556px"><iframe src="blocks/footer/icones-negativo.html?v=3" width="600" height="701" style="transform:scale(0.9267)" title="Rodapé negativo com redes" scrolling="no"></iframe></div></div>
+</div>
+</div></section>
+<section data-label="Responsividade" data-screen-label="Responsividade">
+<div class="f">
+<div class="rule"></div>
+<h2 style="margin-top:var(--gap-title)">Responsividade</h2>
+<p style="margin-top:32px;max-width:1200px">Todo bloco foi verificado a 600&nbsp;px e a 390&nbsp;px. Nenhum apresenta rolagem horizontal em nenhuma das duas larguras.</p>
+<div class="cols c3" style="margin-top:62px;align-items:start">
+<div class="card"><div class="k">Container</div><div class="t">600 → 100%</div><div class="d">Largura fixa no desktop, fluida abaixo de 620&nbsp;px, com padding lateral caindo de 40 para 24&nbsp;px.</div></div>
+<div class="card"><div class="k">Colunas</div><div class="t">Empilham</div><div class="d">Duas e três colunas viram bloco único, com a calha convertida em espaçador vertical.</div></div>
+<div class="card"><div class="k">Tipografia</div><div class="t">Reduz nos heros</div><div class="d">Títulos de 40&nbsp;px caem para 30; numerais de 96&nbsp;px caem para 62. O corpo permanece.</div></div>
+</div>
+<p class="small" style="margin-top:52px;max-width:1250px">As áreas de imagem são fluidas: <code style="font-family:ui-monospace,Menlo,monospace;font-size:.85em">width:100%</code> com <code style="font-family:ui-monospace,Menlo,monospace;font-size:.85em">max-width</code> na medida da arte, altura em atributo para o Outlook e <code style="font-family:ui-monospace,Menlo,monospace;font-size:.85em">background-size:cover</code> no recorte. No Outlook desktop as colunas permanecem lado a lado por limitação do renderizador — o comportamento é conhecido e os blocos foram dimensionados para funcionar nas duas situações.</p>
+</div></section>
+
+<section data-label="Acessibilidade" data-screen-label="Contraste e acessibilidade">
+<div class="f">
+<div class="rule"></div>
+<h2 style="margin-top:var(--gap-title)">Contraste verificado, não estimado</h2>
+<p style="margin-top:28px;max-width:1250px">Cada texto do sistema foi medido contra o fundo que realmente aparece atrás dele — inclusive quando esse fundo é um degradê ou uma foto tratada. O piso é 4,5:1, o mínimo da WCAG&nbsp;AA para texto corrido.</p>
+<div class="cols c3" style="margin-top:32px;align-items:start;gap:70px;flex:0 0 auto">
+<div><div style="font-size:88px;font-weight:600;letter-spacing:-2.5px;color:var(--champagne);line-height:1">139</div><div class="small" style="margin-top:12px;color:var(--muted)">arquivos auditados</div></div>
+<div><div style="font-size:88px;font-weight:600;letter-spacing:-2.5px;color:var(--champagne);line-height:1">11</div><div class="small" style="margin-top:12px;color:var(--muted)">pares reprovados, todos corrigidos</div></div>
+<div><div style="font-size:88px;font-weight:600;letter-spacing:-2.5px;color:#4ade80;line-height:1">0</div><div class="small" style="margin-top:12px;color:var(--muted)">abaixo de 4,5:1 hoje</div></div>
+</div>
+<div class="cols c2" style="margin-top:36px;align-items:start;gap:80px;flex:0 0 auto">
+<div>
+<h3 style="color:var(--champagne)">O que estava quebrado</h3>
+<div class="kv" style="margin-top:22px"><span>Texto claro sobre champagne</span><b>2,19:1 → 12,4:1</b></div>
+<div class="kv"><span>Apoio sobre faixa dourada</span><b>1,08:1 → 9,8:1</b></div>
+<div class="kv"><span>Rótulo de botão de contorno</span><b>1,15:1 → 13,1:1</b></div>
+<div class="kv"><span>Acento de bolsa em card</span><b>4,26:1 → 6,1:1</b></div>
+</div>
+<div>
+<h3 style="color:var(--champagne)">Como foi medido</h3>
+<p class="small" style="margin-top:22px;color:var(--muted)">Um auditor resolve o fundo efetivo de cada texto subindo pelos ancestrais — o degradê entra pela cor dominante do arquivo, não por suposição. A verificação é reexecutável antes de cada envio.</p>
+</div>
+</div>
+</div></section>
+
+<section data-label="Limites técnicos" data-screen-label="Compatibilidade e limites">
+<div class="f">
+<div class="rule"></div>
+<h2 style="margin-top:var(--gap-title)">Compatibilidade e limites técnicos</h2>
+<div class="cols c2" style="margin-top:52px;align-items:start;gap:80px">
+<div>
+<div class="kv"><span>Estrutura</span><b>Tabela + estilos inline</b></div>
+<div class="kv"><span>JavaScript</span><b>Nenhum</b></div>
+<div class="kv"><span>Webfont</span><b>Apple Mail renderiza</b></div>
+<div class="kv"><span>Gmail e Outlook</span><b>Caem em Helvetica</b></div>
+<div class="kv"><span>Áreas de imagem</span><b>Foto + etiqueta</b></div>
+<div class="kv"><span>Degradês</span><b>Imagem, não CSS</b></div>
+<div class="kv"><span>Ícones</span><b>PNG 2×</b></div>
+</div>
+<div>
+<h3 style="color:var(--champagne)">Antes do primeiro envio</h3>
+<ul class="list" style="margin-top:26px">
+<li><span class="n">01</span><span>Trocar as fotos de referência pela arte final, remover as etiquetas e hospedar em URLs https</span></li>
+<li><span class="n">02</span><span>Substituir os badges de App Store e Google Play pelos arquivos oficiais</span></li>
+<li><span class="n">03</span><span>Envolver blocos de fundo em VML para cobertura no Outlook desktop</span></li>
+<li><span class="n">04</span><span>Rodar teste de renderização em Litmus ou Email on Acid</span></li>
+</ul>
+</div>
+</div>
+</div></section>
+
+<section data-label="Próximos passos" data-screen-label="Próximos passos" class="dark">
+<div class="f">
+<div class="rule"></div>
+<h2 style="margin-top:var(--gap-title)">Próximos passos</h2>
+<div class="cols c2" style="margin-top:56px;align-items:start;gap:80px">
+<div>
+<h3>Do lado da Zeom</h3>
+<ul class="list" style="margin-top:26px">
+<li><span class="n">01</span><span>Arte final para cada área de imagem, incluindo o cartão em PNG transparente</span></li>
+<li><span class="n">02</span><span>Capturas reais do aplicativo para os mockups</span></li>
+<li><span class="n">03</span><span>Fotos do time para os blocos assinados</span></li>
+<li><span class="n">04</span><span>Aprovação jurídica dos textos de compliance</span></li>
+</ul>
+</div>
+<div>
+<h3>Do lado do design</h3>
+<ul class="list" style="margin-top:26px">
+<li><span class="n">05</span><span>Integração dos blocos à ferramenta de disparo</span></li>
+<li><span class="n">06</span><span>Versões em inglês e espanhol</span></li>
+<li><span class="n">07</span><span>Blocos de pesquisa e NPS</span></li>
+<li><span class="n">08</span><span>Teste de renderização e ajuste fino por cliente</span></li>
+</ul>
+</div>
+</div>
+</div></section>
+
+<section data-label="Encerramento" data-screen-label="Encerramento" class="dark">
+<div class="f" style="justify-content:space-between">
+<div style="display:flex;align-items:center;gap:22px;align-self:flex-start"><img src="assets/zeom-icone.svg" alt="" width="52" height="52" style="display:block;width:52px;height:52px"><span style="font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:49px;letter-spacing:1.0px;color:#FAFAF9;line-height:1">zeom</span></div>
+<div>
+<h1 style="max-width:1400px">Um sistema, não<br>uma peça avulsa</h1>
+<p style="margin-top:44px;max-width:1050px">127 blocos, quatro tipos de e-mail em três versões cada, 29 ícones e a fundação visual aplicada — com cada área de imagem já enquadrada, à espera da arte final.</p>
+</div>
+<div style="display:flex;gap:22px;flex-wrap:wrap">
+<span class="tag">obrigado</span>
+<span class="tag">dúvidas e ajustes</span>
+<span class="tag">versão 1.0 · agosto de 2026</span>
+</div>
+</div></section>
+
+
+</deck-stage>
+<script>
+(function(){
+function fit(f){try{const d=f.contentDocument;if(!d||!d.body)return;
+ const bw=f.parentElement.clientWidth,bh=f.parentElement.clientHeight;if(!bw||!bh)return;
+ f.setAttribute('scrolling','no');
+ f.style.transform='none';f.style.height='10px';
+ const W=Math.max(d.documentElement.scrollWidth,d.body.scrollWidth,600);
+ f.width=W;f.style.width=W+'px';f.style.flex='0 0 auto';f.style.maxWidth='none';f.style.minWidth='0';
+ const H=Math.max(d.documentElement.scrollHeight,d.body.scrollHeight,10);
+ f.style.height=H+'px';
+ const s=Math.min(bw/W,bh/H);
+ f.style.transformOrigin='top center';f.style.transform='scale('+s+')';
+}catch(e){}}
+function metrics(f){try{const d=f.contentDocument;if(!d||!d.body)return null;
+ const bw=f.parentElement.clientWidth,bh=f.parentElement.clientHeight;if(!bw||!bh)return null;
+ f.setAttribute('scrolling','no');f.style.transform='none';f.style.height='10px';
+ const W=Math.max(d.documentElement.scrollWidth,d.body.scrollWidth,600);
+ f.width=W;f.style.width=W+'px';f.style.flex='0 0 auto';f.style.maxWidth='none';f.style.minWidth='0';
+ const H=Math.max(d.documentElement.scrollHeight,d.body.scrollHeight,10);
+ f.style.height=H+'px';
+ return {f,s:Math.min(bw/W,bh/H)}}catch(e){return null}}
+function all(){document.querySelectorAll('section').forEach(sec=>{
+ const rows=new Map();
+ sec.querySelectorAll('.frame iframe').forEach(f=>{const m=metrics(f);if(!m)return;
+  const fr=f.closest('.frame');const key=(fr.parentElement&&fr.parentElement.parentElement)||fr.parentElement||sec;
+  if(!rows.has(key))rows.set(key,[]);rows.get(key).push(m)});
+ rows.forEach(list=>{const s=Math.min.apply(null,list.map(m=>m.s));
+  list.forEach(m=>{m.f.style.transformOrigin='top center';m.f.style.transform='scale('+s+')'})})})}
+document.querySelectorAll('.frame iframe').forEach(f=>f.addEventListener('load',()=>{fit(f);setTimeout(()=>fit(f),300)}));
+addEventListener('load',()=>{all();setTimeout(all,700);setTimeout(all,1800);setTimeout(all,3500)});
+addEventListener('resize',()=>setTimeout(all,150));
+})();
+</script>
+</body></html>

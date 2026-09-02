@@ -1,0 +1,108 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8"><title>Zeom — Mockups de e-mail</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#ECEADC;font-family:'Instrument Sans',Helvetica,Arial,sans-serif;font-weight:400;color:#282621}
+a{color:#282621}a:hover{color:#956233}
+header.pg{padding:56px 48px 40px;border-bottom:1px solid #DDD9C5}
+header.pg h1{margin:0;font-weight:400;font-size:54px;line-height:58px;letter-spacing:-1.4px}
+header.pg p{margin:12px 0 0;max-width:620px;font-size:15px;line-height:24px;color:#3A362C}
+.legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+.chip{display:flex;align-items:center;gap:8px;padding:7px 12px;border:1px solid #DDD9C5;border-radius:8px;font-size:12px;color:#3A362C;background:#F6F5EF}
+.dot{width:12px;height:12px;border-radius:3px;display:block}
+section.email{padding:52px 48px;border-bottom:1px solid #DDD9C5}
+.head{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:6px}
+.kicker{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#956233}
+h2{margin:0;font-weight:400;font-size:34px;line-height:38px;letter-spacing:-0.8px}
+.note{margin:10px 0 0;max-width:680px;font-size:14px;line-height:23px;color:#3A362C}
+.meta{margin:14px 0 0;font-size:13px;line-height:22px;color:#3A362C}
+.meta b{font-weight:600;color:#282621}.note b{font-weight:600}
+.frames{display:flex;gap:40px;align-items:flex-start;margin-top:30px;flex-wrap:wrap}
+.frame{display:flex;flex-direction:column;gap:10px}
+.flabel{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#3A362C}
+.bar{position:sticky;top:0;z-index:5;display:flex;gap:8px;align-items:center;padding:14px 48px;background:#F6F5EF;border-bottom:1px solid #DDD9C5}.bar span.lbl{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#3A362C;margin-right:6px}.bar button{font-family:inherit;font-weight:400;font-size:13px;padding:9px 16px;border:1px solid #BFBA99;border-radius:8px;background:transparent;color:#282621;cursor:pointer}.bar button:hover{background:#ECEADC}.bar button[aria-pressed="true"]{background:#CCC290;border-color:#CCC290;font-weight:600}body.blocks .meta{display:none}
+iframe{border:1px solid #DDD9C5;border-radius:8px;background:#DDD9C5;display:block}
+.phone{border:10px solid #3A362C;border-radius:28px;overflow:hidden;background:#3A362C;line-height:0}
+.phone iframe{border:0;border-radius:0}
+</style></head><body>
+<div class="bar"><span class="lbl">Modo</span><button id="mBlocks" aria-pressed="true">Blocos de conteúdo</button><button id="mCopy" aria-pressed="false">Com copy de exemplo</button><span class="lbl" style="margin-left:18px">Tema</span><button id="mLight" aria-pressed="true">Light</button><button id="mDark" aria-pressed="false">Dark</button></div>
+<header class="pg">
+<img src="assets/zeom-logo.svg" alt="zeom" width="132" height="36" style="display:block;height:36px;width:auto;margin-bottom:22px"><div class="kicker" style="margin-bottom:14px">Global banking</div>
+<h1>E-mail marketing — quatro tipos</h1>
+<p>Três modos no topo: <b style="font-weight:600">Blocos de conteúdo</b> (campos rotulados), <b style="font-weight:600">Com copy de exemplo</b> e <b style="font-weight:600">Light</b> e <b style="font-weight:600">Dark</b> — o mesmo arquivo nos dois temas. Light é o padrão: card #FFFFFF sobre mesa #E4E1D5. Dark troca só os tokens de superfície, borda e texto — container #2C2C25 sobre #21211C, painel #34342D, texto #FAFAF9 — mantendo estrutura, espaçamento e o CTA #9E9671 idênticos. Em todos, as áreas de imagem — heros, cards e telas de aparelho — estão reservadas como placeholder cinza no tamanho e na proporção da arte final. Estrutura de blocos dos quatro tipos de e-mail — os campos de texto já vêm com a copy aplicada e as áreas de imagem aguardam a arte final. Fundação institucional: canvas off-white, Instrument Sans como família única (títulos em 400 com tracking negativo, SemiBold 600 só em eyebrows e numerais, sem itálico e sem serifada), container de 600&nbsp;px, cantos de 8&nbsp;px e botão sólido bulletproof. Cores de produto entram apenas como acento pontual. Cada arquivo em <code>emails/</code> é HTML pronto para envio.</p>
+<div class="legend">
+<span class="chip"><span class="dot" style="background:#F6F5EF;border:1px solid #DDD9C5"></span>Canvas #F6F5EF</span>
+<span class="chip"><span class="dot" style="background:#3A362C"></span>Negativo #3A362C</span>
+<span class="chip"><span class="dot" style="background:#CCC290"></span>Acento / CTA #CCC290</span>
+<span class="chip"><span class="dot" style="background:#956233"></span>Dólar</span>
+<span class="chip"><span class="dot" style="background:#9DA371"></span>Juros</span>
+<span class="chip"><span class="dot" style="background:#839CB8"></span>Bolsa</span>
+<span class="chip"><span class="dot" style="background:#D6B55B"></span>Ouro</span>
+<span class="chip"><span class="dot" style="background:#CD8867"></span>Bitcoin</span>
+</div>
+</header>
+
+<section class="email" data-screen-label="01">
+<div class="head"><span class="kicker">01 · Transacional</span></div>
+<h2>Confirmação de conversão de moeda</h2>
+<p class="note">Sem hero e sem persuasão: header simples, título curto, bloco de dados com moeda explícita em cada linha, um CTA e compliance no pé. O acento dólar aparece só como filete de 2&nbsp;px acima do título.</p>
+<p class="meta"><b>Assunto:</b> Conversão concluída · USD 1.000,00 &nbsp;·&nbsp; <b>Preheader:</b> Confira o comprovante e o novo saldo da sua conta em dólar.</p>
+<div class="frames">
+<div class="frame"><span class="flabel">Desktop · 600 px</span><iframe src="emails/01-transacional-conversao.html" width="700" height="1010" title="Transacional desktop"></iframe></div>
+<div class="frame"><span class="flabel">Mobile · 390 px</span><div class="phone"><iframe src="emails/01-transacional-conversao.html" width="390" height="1040" title="Transacional mobile"></iframe></div></div>
+</div>
+</section>
+
+<section class="email" data-screen-label="02">
+<div class="head"><span class="kicker">02 · Onboarding</span></div>
+<h2>Boas-vindas e ativação</h2>
+<p class="note">A marca no auge da personalidade: hero em bloco negativo #3A362C com a segunda linha em dourado, três passos numerados em quadrados dourados e um CTA de largura total. É o único e-mail que usa o hero escuro no topo.</p>
+<p class="meta"><b>Assunto:</b> Sua conta global está aberta &nbsp;·&nbsp; <b>Preheader:</b> Três passos para começar a operar em dólar hoje.</p>
+<div class="frames">
+<div class="frame"><span class="flabel">Desktop · 600 px</span><iframe src="emails/02-onboarding-boas-vindas.html" width="700" height="1060" title="Onboarding desktop"></iframe></div>
+<div class="frame"><span class="flabel">Mobile · 390 px</span><div class="phone"><iframe src="emails/02-onboarding-boas-vindas.html" width="390" height="1160" title="Onboarding mobile"></iframe></div></div>
+</div>
+</section>
+
+<section class="email" data-screen-label="03">
+<div class="head"><span class="kicker">03 · Ongoing</span></div>
+<h2>Relacionamento e novidades de mercado</h2>
+<p class="note">Estrutura editorial e modular: destaque em marfim com o número grande, depois três cards de borda fina com barra de acento de produto no topo (juros, bolsa, ouro) e CTAs secundários em link sublinhado dourado. Nenhum botão dourado compete com o destaque.</p>
+<p class="meta"><b>Assunto:</b> Panorama Zeom · o que moveu o mundo em julho &nbsp;·&nbsp; <b>Preheader:</b> Dólar, juros americanos e ouro — e o que isso significa para a sua carteira.</p>
+<div class="frames">
+<div class="frame"><span class="flabel">Desktop · 600 px</span><iframe src="emails/03-ongoing-panorama.html" width="700" height="1430" title="Ongoing desktop"></iframe></div>
+<div class="frame"><span class="flabel">Mobile · 390 px</span><div class="phone"><iframe src="emails/03-ongoing-panorama.html" width="390" height="1730" title="Ongoing mobile"></iframe></div></div>
+</div>
+</section>
+
+<section class="email" data-screen-label="04">
+<div class="head"><span class="kicker">04 · Prevenção de churn</span></div>
+<h2>Reativação</h2>
+<p class="note">Urgência elegante: o benefício vem como afirmação (“continua aberta”), o reforço é um único bloco escuro com o que segue ativo, e há um só CTA dominante. A saída digna — encerrar em um clique — sustenta a confiança em vez de retê-la à força.</p>
+<p class="meta"><b>Assunto:</b> Sua conta em dólar continua aberta &nbsp;·&nbsp; <b>Preheader:</b> Sem custo de manutenção. Retomar leva menos de um minuto.</p>
+<div class="frames">
+<div class="frame"><span class="flabel">Desktop · 600 px</span><iframe src="emails/04-churn-reativacao.html" width="700" height="945" title="Churn desktop"></iframe></div>
+<div class="frame"><span class="flabel">Mobile · 390 px</span><div class="phone"><iframe src="emails/04-churn-reativacao.html" width="390" height="1090" title="Churn mobile"></iframe></div></div>
+</div>
+</section>
+
+<footer style="padding:44px 48px 72px;font-size:13px;line-height:22px;color:#3A362C;max-width:760px">
+<b style="color:#282621">Nota técnica.</b> Instrument Sans é a única família — sem serifada. Os arquivos declaram <code>'Instrument Sans', Helvetica, Arial, sans-serif</code>; a hierarquia vem de tamanho, tracking negativo nos títulos e do peso 600 reservado a eyebrows e valores. Apple Mail renderiza a marca; Gmail e Outlook caem em Helvetica/Arial, com a mesma hierarquia. O único arquivo de imagem é o logotipo — o <code>src</code> é relativo e precisa ser trocado por uma URL https hospedada antes do envio; o <code>alt="zeom"</code> cobre imagens bloqueadas. Fora isso, todo o layout é tabela com estilos inline e sem JavaScript.
+</footer>
+<script>
+function fit(f){try{const d=f.contentDocument;if(!d||!d.body)return;f.style.height='0px';const n=Math.ceil(Math.max(d.documentElement.scrollHeight,d.body.scrollHeight));if(n)f.style.height=(n+1)+'px';}catch(e){}}
+function fitAll(){document.querySelectorAll('iframe').forEach(fit)}
+document.querySelectorAll('iframe').forEach(f=>{f.dataset.file=f.getAttribute('src').split('/').pop();f.style.height=f.getAttribute('height')+'px';f.setAttribute('scrolling','no');f.addEventListener('load',()=>{fit(f);setTimeout(()=>fit(f),400)})});
+var CONTENT='blocks',THEME='light';
+function paintTheme(){document.body.dataset.theme=THEME;document.querySelectorAll('iframe').forEach(f=>{try{const d=f.contentDocument;if(d&&d.documentElement)d.documentElement.dataset.theme=THEME}catch(e){}})}
+function setMode(){document.body.classList.toggle('blocks',CONTENT!=='copy');
+ mBlocks.setAttribute('aria-pressed',CONTENT==='blocks');mCopy.setAttribute('aria-pressed',CONTENT==='copy');
+ mLight.setAttribute('aria-pressed',THEME==='light');mDark.setAttribute('aria-pressed',THEME==='dark');
+ const dir=CONTENT==='copy'?'emails/':'emails/blocks/';
+ document.querySelectorAll('iframe').forEach(f=>{const want=dir+f.dataset.file;if(!f.getAttribute('src').endsWith(want))f.src=want});
+ paintTheme();setTimeout(paintTheme,120);setTimeout(fitAll,400)}
+document.querySelectorAll('iframe').forEach(f=>f.addEventListener('load',()=>{try{f.contentDocument.documentElement.dataset.theme=THEME}catch(e){}}));
+mBlocks.onclick=()=>{CONTENT='blocks';setMode()};mCopy.onclick=()=>{CONTENT='copy';setMode()};
+mLight.onclick=()=>{THEME='light';setMode()};mDark.onclick=()=>{THEME='dark';setMode()};
+setMode();
+window.addEventListener('load',()=>{fitAll();setTimeout(fitAll,600);setTimeout(fitAll,1500)});
+</script></body></html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8"><title>Zeom · Peça-piloto</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#F6F5EF;font-family:'Geist',Helvetica,Arial,sans-serif;color:#282621}
+header{padding:40px 40px 28px;border-bottom:1px solid rgba(40,38,33,.14)}
+header .kicker{font-size:11px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:#6C664E}
+header h1{margin:10px 0 0;font-weight:600;font-size:28px;letter-spacing:-.3px}
+header p{margin:10px 0 0;font-weight:300;font-size:14px;line-height:21px;color:#3A362C;max-width:600px}
+main{display:flex;justify-content:center;padding:48px 24px}
+.frame{width:600px;max-width:100%}
+.frame .lbl{font-size:11px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:#6C664E;margin-bottom:12px}
+iframe{width:100%;border:1px solid rgba(40,38,33,.14);border-radius:12px;background:#F6F5EF;display:block}
+</style></head><body>
+<header>
+<div class="kicker">Peça-piloto · variante clara</div>
+<h1>04 · Prevenção · Aquisição · D1</h1>
+<p>Trilha de etapas, ritmo de espaçamento e paleta clara aplicados de uma vez só. O que for aprovado aqui vira o padrão dos 13 e-mails restantes.</p>
+</header>
+<main><div class="frame"><div class="lbl">600px · largura de e-mail</div><iframe src="emails/reguas/04-prevencao-aquisicao-d1.html" height="1400" scrolling="no"></iframe></div></main>
+<script>
+function fit(){const f=document.querySelector('iframe');try{const d=f.contentDocument;const h=Math.max(d.documentElement.scrollHeight,d.body.scrollHeight);if(h)f.style.height=(h+2)+'px'}catch(e){}}
+document.querySelector('iframe').addEventListener('load',()=>{fit();setTimeout(fit,300);setTimeout(fit,900)});
+</script>
+</body></html>

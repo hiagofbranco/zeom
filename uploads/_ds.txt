@@ -1,0 +1,55 @@
+
+===== p1 =====
+z e o m D E S I G N SYST E M · R E S P O STA À P R O P O STA D E E - M AI L M AR K E T I N G O que já existe do nosso lado AGOSTO 2026 · TIME DE DESIGN · V1.0
+===== p2 =====
+C O NT E X TO O ponto de partida A PROPOSTA O time de CRM trouxe um sistema de e-mail completo: 127 blocos, 4 tipos de mensagem e uma fundação visual própria. ESTE DOCUMENTO Mostra, tema a tema, o que a Zeom já tem em produção: tokens, tipogra fi a, marca, ícones, componentes e telas. O CONVITE Nada aqui descarta a proposta. A ideia é discutir, ponto a ponto, onde mesclar o trabalho deles com o nosso sistema.
+===== p3 =====
+LE G E N DA Como ler este documento PROPOSTO Painéis claros resumem o que a proposta de e- mail apresentou — na paleta dela. JÁ EXISTENTE Painéis escuros mostram o equivalente que já roda no app e no design system. Ao fi nal de cada tema, uma leitura: convergente, divergente ou idêntico.
+===== p4 =====
+I NVE NTÁR I O O sistema em números 64 tokens de cor, tipo, espaço e movimento 20+ componentes compilados e reutilizáveis 47 cards documentados no design system 1 app em produção espelhado 1:1 pelo sistema Tudo extraído do código real do zeom-app-mobile — não de um mockup.
+===== p5 =====
+F U N DAÇÃO · C O R Paleta · proposto vs existente PROPOSTO · BASE CLARA #F6F5EF canvas #282621 quase-preto #3A362C marrom #CCC290 dourado #ECEADC mar fi m #DDD9C5 areia #BFBA99 bege #6C664E oliva EXISTENTE · BASE ESCURA #21211C fundo #34342D card #2C2C25 grupo #CCC290 champagne #9E9671 cta #B3B3A8 muted #3D3D34 borda #6C664E ícone muted
+===== p6 =====
+F U N DAÇÃO · C O R Paleta · convergências #CCC290 O "dourado" da proposta é, hex por hex, o nosso champagne — o acento da marca, do botão Investir e da esfera armilar. #6C664E O "oliva" da proposta também já é token nosso: a cor dos ícones inativos em todo o app. Dois hexes centrais da proposta já são tokens do sistema. A conversa sobre mesclar começa mais perto do que parece.
+===== p7 =====
+F U N DAÇÃO · C O R Paleta · o que só existe do nosso lado CORES DE STATUS #4ade80 ganho · compra em andamento #22c55e concluído · con fi rmado #eab308 processando · pendente #dc2626 perda · erro · falhou Regra: status aparece pequeno — ponto, palavra, seta. Nunca como preenchimento grande. PALETA DE ATIVOS #C9A84C ouro tokenizado #C17A2B bitcoin #7A8FAE bolsa americana #7A9E88 renda fi xa #9E9E8F stablecoin Mesmo papel dos "acentos de produto" da proposta — já resolvido para o multi-ativo.
+===== p8 =====
+F U N DAÇÃO · T I P O Tipografia · proposto vs existente PROPOSTO Instrument Sans pesos 400 e 600 itálico não usar 600 reservado a eyebrows e numerais fallback Helvetica, Arial EXISTENTE Geist pesos 200 · 300 · 400 · 600 itálico só em "processando" 600 reservado a numerais e títulos padrão de corpo Light 300 Leitura: convergente na regra — família única, sem itálico, 600 para numerais. Divergente na fonte.
+===== p9 =====
+F U N DAÇÃO · T I P O Hierarquia tipográfica existente patrimônio total Eyebrow · minúsculas · Regular · tracking +1px. Sempre acima de numerais. SEUS ATIVOS Seção · maiúsculas · SemiBold · tracking +0.8px. Divide regiões da tela. Ver conta CTA e corpo · caixa de frase · Regular ou Light. Sem gritar. Três níveis de caixa e dois valores de tracking dão o ritmo do sistema — o mesmo papel que a proposta atribui a eyebrow, título e corpo.
+===== p10 =====
+F U N DAÇÃO · T I P O A composição $ valor $ 69.81 · Cifrão champagne, peso ExtraLight, alinhado à base dos dígitos · Numeral SemiBold com tracking −1px · Moeda sempre explícita — a mesma regra de "precisão" da proposta · Oculto vira •••• — nunca *** A composição mais reconhecível do app. Qualquer e-mail com numeral deveria herdá-la.
+===== p11 =====
+M AR CA Marca · a esfera armilar A proposta parte do "globo em linha" como gramática. Do nosso lado, a marca já tem um centro de fi nido: a esfera armilar — meridiano, equador e eclíptica em champagne sobre warm-black. · Ícone do app e splash screen · Gatilho da IA — animada, três anéis em períodos primos · Centro do cartão físico e virtual · Nunca decorativa — sempre com papel funcional
+===== p12 =====
+F U N DAÇÃO · Í C O N E S Ícones · o set que já temos A proposta desenha 24 ícones a partir do globo em linha (traço 1,2px). Do nosso lado, o set autoral já existe no app — traço 1,5– 2px, pontas redondas, champagne sobre warm-black: seta transferir chevron fechar sino olho enviar per fi l globo cartão cadeado chat estrela escudo alerta sair investir resgatar depositar sacar Os 4 ícones de ação da home, desenhados como família única. Para o resto, Phosphor bold completa o set.
+===== p13 =====
+F U N DAÇÃO · E S PAÇ O Grid e espaçamento PROPOSTO · E-MAIL container 600px padding lateral 40px · 24px mobile respiro entre blocos 26 a 40px raio de canto 8px EXISTENTE · APP escala de espaço 4 · 8 · 16 · 24 · 32 · 48 · 64 padding de página 20px valores arbitrários nenhum sliders sangram até a borda Leitura: compatível — o respiro de 26–40px da proposta cabe na nossa escala (24 / 32 / 48).
+===== p14 =====
+F U N DAÇÃO · G E O M E T R I A Raios e bordas 4px sub-botões 8px inputs · botões 12px cards · padrão 24px toggle pill dashed só em "ver todos" Toda superfície elevada carrega borda 1px #3D3D34. A proposta usa um raio único de 8px — compatível com o nosso passo de inputs e botões.
+===== p15 =====
+C O M P O N E NT E S · AÇÃO Botões e CTAs PROPOSTO Ver no app Programar conversões Ler a análise → Um CTA dominante por peça. Dourado sólido é o primário. EXISTENTE Investir Ver conta Compartilhar convite → Primário khaki #9E9671, texto no tom do fundo — nunca branco. Desabilitado = opacidade 0.4. Leitura: convergente na regra do CTA único. Divergente no preenchimento — o nosso primário é mais escuro que o "dourado" deles.
+===== p16 =====
+C O M P O N E NT E S · AÇÃO Padrões de ação existentes Investir Resgatar Depositar Sacar · Toda ação primária é um verbo único — a ação recomendada ganha anel champagne pulsante · Links de próximo passo terminam em → , nunca em > · Valores ocultos viram •••• — um toque em "patrimônio total" alterna a tela inteira · "Processando" é o único itálico do sistema
+===== p17 =====
+C O M P O N E NT E S Componentes prontos · o que cada um faz z e o m Marca A esfera armilar animada e o wordmark, prontos para qualquer superfície. Investir Botão Primário, secundário, loading e desabilitado — com as regras de cor já embutidas. e-mail ana@zeom.global Campo de formulário Input com label, foco champagne e estado de erro. $ 1,234.56 Numeral de valor A composição $ valor, com formatação e oculto ••••. patrimônio total SEUS ATIVOS Textos do sistema Eyebrow, seção e corpo — os três níveis de caixa prontos para usar. ✓ Etapas de processo O indicador que acompanha depósito, saque, resgate e investimento. Depósito con fi rmado Cards de status Noti fi cações e transações em andamento, com as cores de status. Telas completas Home, login, cartão, menu e chat de IA — montadas com as peças acima. É o equivalente, do lado do produto, aos "127 blocos" da proposta: peças testadas que se empilham.
+===== p18 =====
+C O M P O N E NT E S · E M D E TA LH E Componente · processing steps ✓ Pedido recebido processando conversão O mesmo indicador acompanha depósito, saque, resgate e investimento. Pendente = anel a 25% · ativo = anel champagne com pulso · concluído = círculo preenchido com check. Papel análogo às "telas de simulação" da proposta: mostrar processo sem depender de imagem. Saldo atualizado
+===== p19 =====
+C O M P O N E NT E S · E M D E TA LH E Componente · notificações Depósito con fi rmado $ 500.00 disponíveis na sua conta. 18 de agosto de 2026 concluído Resgate em andamento $ 120.00 a caminho da sua conta. 18 de agosto de 2026 processando Cards de status em tempo real, via WebSocket, com a mesma linguagem do restante do app. É a mesma família de mensagem dos e-mails transacionais da proposta — status, valor, data — já resolvida dentro do produto.
+===== p20 =====
+C O M P O N E NT E S · E M D E TA LH E Componente · donut de alocação O balanceador de alocação preenche o anel conforme o cliente distribui o investimento entre ativos. Cada ativo usa a paleta própria; o centro narra o estado — "distribua", "restam N%", "completo". Um bloco de dados que a proposta ainda não tem equivalente. restam 22%
+===== p21 =====
+T E L AS E M P R O D U ÇÃO Telas · a home real · Patrimônio total como hero, com a composição $ valor · Seções SEUS SALDOS e AÇÕES RÁPIDAS com labels fora dos cards · Esfera armilar fl utuante como gatilho da IA · Os mockups de app dos e-mails deveriam partir destas telas, não de wireframes genéricos
+===== p22 =====
+T E L AS E M P R O D U ÇÃO Telas · o cartão e seus tints A arte do cartão é a única casa de gradientes do sistema — três tints o fi ciais, cada um com sua esfera: champagne steel bronze O "cartão em PNG transparente" que a proposta pede já existe como componente vivo.
+===== p23 =====
+F U N DAÇÃO · VO Z Tom de voz · proposto vs existente PROPOSTO Clareza no lugar de urgência fabricada: taxa visível, comprovante na hora, saída fácil. Tom institucional mesmo em peça promocional. "Gente, não sistema" — carta assinada, rosto de quem atende. EXISTENTE pt-BR com valores em USD — "$ 1,234.56", moeda sempre explícita. Direto com "você"; erros honestos e curtos, sem pedido de desculpa acolchoado. Sem emoji, sem exclamação de fi ntech. Wordmark sempre minúsculo: zeom. Leitura: convergente — sobriedade e clareza dos dois lados. O nosso adiciona regras duras de caixa, moeda e emoji.
+===== p24 =====
+S Í NT E S E Síntese comparativa FUNDAÇÃO PROPOSTO EXISTENTE LEITURA Acento dourado #CCC290 champagne #CCC290 idêntico Fundo off-white claro warm-black escuro divergente Família única, sem itálico Instrument Sans Geist convergente 600 reservado a numerais sim sim convergente Um CTA dominante sim sim convergente Ícones de traço, sem preenchimento 1,2px / 24 1,5–2px, pontas redondas convergente Marca globo em linha esfera armilar alinhar
+===== p25 =====
+D I S C U S SÃO AB E R TA Onde os dois trabalhos podem se mesclar 01 E-mail como superfície clara? A base off-white pode fazer sentido para e-mail — desde que derivada dos nossos tokens, não de uma segunda paleta. 02 Blocos deles, fundação nossa A biblioteca de 127 blocos é valiosa. Um piloto re-tematizado com Geist, esfera armilar e nossos tokens mostraria o encaixe. 03 Uma fonte da verdade De fi nir juntos quem é dono de paleta, tipo e ícones — para o e- mail estender o produto, como a própria proposta defende.
+===== p26 =====
+E N CAM I N H AM E NTO Próximos passos sugeridos 01 Sessão conjunta design × CRM para revisar este comparativo 02 Mapa de-para: paleta e tipogra fi a da proposta → tokens do sistema 03 Piloto: 1 e-mail transacional re-tematizado com a fundação Zeom 04 De fi nir governança: onde vive a fonte da verdade dos tokens
+===== p27 =====
+z e o m Já temos a fundação. Vamos conversar sobre a mescla. OBRIGADO · DÚVIDAS E AJUSTES · V1.0 · AGOSTO 2026

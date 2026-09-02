@@ -1,0 +1,10 @@
+# Duplicate nested copy of the whole project (kept locally, not pushed)
+/Design System/
+
+# macOS zip artifacts
+__MACOSX/
+.DS_Store
+**/.DS_Store
+
+# editor/OS junk
+Thumbs.db

@@ -1,0 +1,891 @@
+[
+ {
+  "cat": "Header",
+  "slug": "logo",
+  "name": "Logo simples",
+  "note": "Abertura mais neutra: só a marca, alinhada à esquerda.",
+  "dir": "header"
+ },
+ {
+  "cat": "Header",
+  "slug": "logo-eyebrow",
+  "name": "Logo + eyebrow",
+  "note": "Marca à esquerda, natureza do e-mail à direita (Comprovante, Panorama, Edição).",
+  "dir": "header"
+ },
+ {
+  "cat": "Header",
+  "slug": "logo-center",
+  "name": "Logo centralizado",
+  "note": "Para e-mails de peça única (convite, aviso institucional).",
+  "dir": "header"
+ },
+ {
+  "cat": "Header",
+  "slug": "logo-menu",
+  "name": "Logo + menu",
+  "note": "Marca à esquerda e até 3 destinos à direita. Empilha no mobile.",
+  "dir": "header"
+ },
+ {
+  "cat": "Header",
+  "slug": "dark",
+  "name": "Header negativo",
+  "note": "Barra escura com logo em marfim — usar quando o hero seguinte é claro.",
+  "dir": "header"
+ },
+ {
+  "cat": "Menu",
+  "slug": "inline",
+  "name": "Menu institucional",
+  "note": "Quatro destinos entre filetes. Centralizado, peso 300.",
+  "dir": "menu"
+ },
+ {
+  "cat": "Menu",
+  "slug": "products",
+  "name": "Menu de produtos",
+  "note": "Cada destino recebe o acento da cor de produto como marcador de 8px.",
+  "dir": "menu"
+ },
+ {
+  "cat": "Hero",
+  "slug": "light",
+  "name": "Hero claro",
+  "note": "Padrão institucional: filete de acento, título 36px/300, parágrafo de abertura.",
+  "dir": "hero"
+ },
+ {
+  "cat": "Hero",
+  "slug": "dark",
+  "name": "Hero negativo",
+  "note": "A marca no auge da personalidade. Segunda linha do título em dourado.",
+  "dir": "hero"
+ },
+ {
+  "cat": "Hero",
+  "slug": "benefit",
+  "name": "Hero de benefício",
+  "note": "Reativação: o benefício como afirmação em duas linhas, sem eyebrow.",
+  "dir": "hero"
+ },
+ {
+  "cat": "Hero",
+  "slug": "numeral",
+  "name": "Hero de numeral",
+  "note": "KPI como abertura: peso 200, tracking negativo, prefixo de moeda em dourado.",
+  "dir": "hero"
+ },
+ {
+  "cat": "Corpo",
+  "slug": "para",
+  "name": "Parágrafo",
+  "note": "Eyebrow de seção + até dois parágrafos de corpo.",
+  "dir": "corpo"
+ },
+ {
+  "cat": "Corpo",
+  "slug": "list",
+  "name": "Lista de itens",
+  "note": "Itens separados por filete, sem bullets — o filete é o marcador.",
+  "dir": "corpo"
+ },
+ {
+  "cat": "Corpo",
+  "slug": "steps",
+  "name": "Passos numerados",
+  "note": "Numeral em quadrado dourado (600). Até 3 passos.",
+  "dir": "corpo"
+ },
+ {
+  "cat": "Dados",
+  "slug": "highlight",
+  "name": "Bloco de dados com destaque",
+  "note": "Transacional: valor principal em 200, linhas label/valor em 600, moeda sempre explícita.",
+  "dir": "dados"
+ },
+ {
+  "cat": "Dados",
+  "slug": "rows",
+  "name": "Linhas label / valor",
+  "note": "Versão enxuta, sem painel: para 3–6 pares dentro de um corpo de texto.",
+  "dir": "dados"
+ },
+ {
+  "cat": "Dados",
+  "slug": "dark",
+  "name": "Bloco de reforço negativo",
+  "note": "Churn: o que segue ativo. Valor gratuito/positivo em dourado.",
+  "dir": "dados"
+ },
+ {
+  "cat": "Cards",
+  "slug": "accent",
+  "name": "Card com acento de produto",
+  "note": "Barra de 3px no topo com a cor do produto. Um card por assunto.",
+  "dir": "cards"
+ },
+ {
+  "cat": "Cards",
+  "slug": "two-col",
+  "name": "Dois cards lado a lado",
+  "note": "Empilha no mobile via classe .col. Usar só com conteúdos de peso igual.",
+  "dir": "cards"
+ },
+ {
+  "cat": "Cards",
+  "slug": "feature",
+  "name": "Destaque editorial",
+  "note": "Painel marfim com numeral, variação e CTA outline. Um por e-mail, no máximo.",
+  "dir": "cards"
+ },
+ {
+  "cat": "CTA",
+  "slug": "primary",
+  "name": "Botão primário (full)",
+  "note": "Dourado sólido, largura total. Um por e-mail — o CTA dominante.",
+  "dir": "cta"
+ },
+ {
+  "cat": "CTA",
+  "slug": "inline",
+  "name": "Botão primário (inline)",
+  "note": "Mesma cor, largura do texto. Para transacional, onde o CTA não domina.",
+  "dir": "cta"
+ },
+ {
+  "cat": "CTA",
+  "slug": "secondary",
+  "name": "Botão secundário",
+  "note": "Contorno bege, fundo transparente. Nunca compete com o dourado.",
+  "dir": "cta"
+ },
+ {
+  "cat": "CTA",
+  "slug": "link",
+  "name": "CTA em link",
+  "note": "Sublinhado dourado de 1px. Para CTAs dentro de cards e listas.",
+  "dir": "cta"
+ },
+ {
+  "cat": "Divisor",
+  "slug": "rule",
+  "name": "Filete de acento",
+  "note": "34×2px na cor do produto ou dourado. Abre seções e heros.",
+  "dir": "divisor"
+ },
+ {
+  "cat": "Divisor",
+  "slug": "hairline",
+  "name": "Hairline",
+  "note": "1px #DDD9C5 — separa blocos de mesma hierarquia.",
+  "dir": "divisor"
+ },
+ {
+  "cat": "Divisor",
+  "slug": "spacer",
+  "name": "Espaçador",
+  "note": "Célula vazia de 32px — respiro entre blocos sem filete.",
+  "dir": "divisor"
+ },
+ {
+  "cat": "Footer",
+  "slug": "compliance",
+  "name": "Bloco de compliance",
+  "note": "Texto regulatório acima do rodapé. 11px/300, nunca menor.",
+  "dir": "footer"
+ },
+ {
+  "cat": "Footer",
+  "slug": "full",
+  "name": "Rodapé institucional",
+  "note": "Compliance + razão social, endereço postal e links legais.",
+  "dir": "footer"
+ },
+ {
+  "cat": "Footer",
+  "slug": "min",
+  "name": "Rodapé mínimo",
+  "note": "Só o obrigatório: endereço e descadastro. Para transacionais curtos.",
+  "dir": "footer"
+ },
+ {
+  "cat": "Footer",
+  "slug": "dark",
+  "name": "Rodapé negativo",
+  "note": "Fecha o e-mail com a marca em marfim. Não usar junto do hero escuro.",
+  "dir": "footer"
+ },
+ {
+  "cat": "Header",
+  "dir": "header",
+  "slug": "logo-cta",
+  "name": "Logo + CTA de app",
+  "note": "Marca à esquerda e um único link de app à direita. Para e-mails de relacionamento."
+ },
+ {
+  "cat": "Header · imagem",
+  "dir": "header-imagem",
+  "slug": "faixa",
+  "name": "Faixa de imagem sob o header",
+  "note": "Header normal e uma faixa de 120px logo abaixo. A imagem não compete com o título."
+ },
+ {
+  "cat": "Header · imagem",
+  "dir": "header-imagem",
+  "slug": "overlay",
+  "name": "Logo sobre imagem",
+  "note": "Logo em marfim sobre imagem escura. Exige imagem com área calma no topo à esquerda."
+ },
+ {
+  "cat": "Header · imagem",
+  "dir": "header-imagem",
+  "slug": "split",
+  "name": "Header dividido",
+  "note": "Logo + eyebrow à esquerda, imagem quadrada à direita. Empilha no mobile."
+ },
+ {
+  "cat": "Header · imagem",
+  "dir": "header-imagem",
+  "slug": "produto",
+  "name": "Header de produto",
+  "note": "Header claro e a arte do cartão centralizada, sem sangramento."
+ },
+ {
+  "cat": "Header · imagem",
+  "dir": "header-imagem",
+  "slug": "avatar",
+  "name": "Header pessoal",
+  "note": "Foto do remetente à esquerda do nome — para e-mails assinados por uma pessoa."
+ },
+ {
+  "cat": "Header · imagem",
+  "dir": "header-imagem",
+  "slug": "padrao",
+  "name": "Header com textura",
+  "note": "Faixa de padrão/textura de marca acima do logo. Altura fixa de 8px a 24px."
+ },
+ {
+  "cat": "Banner",
+  "dir": "banner",
+  "slug": "fullbleed",
+  "name": "Banner full-bleed",
+  "note": "Imagem sangrando na largura total, título e CTA abaixo. O mais direto."
+ },
+ {
+  "cat": "Banner",
+  "dir": "banner",
+  "slug": "overlay",
+  "name": "Banner com overlay",
+  "note": "Título sobre imagem escura. Só com imagem tratada e área de proteção."
+ },
+ {
+  "cat": "Banner",
+  "dir": "banner",
+  "slug": "split",
+  "name": "Banner dividido",
+  "note": "Metade texto, metade imagem. A ordem inverte no mobile (texto primeiro)."
+ },
+ {
+  "cat": "Banner",
+  "dir": "banner",
+  "slug": "solid",
+  "name": "Banner de cor sólida",
+  "note": "Sem imagem: cor de marca, título e CTA. O mais seguro para entregabilidade."
+ },
+ {
+  "cat": "Banner",
+  "dir": "banner",
+  "slug": "numeral",
+  "name": "Banner de numeral",
+  "note": "O número é a imagem. Peso 200, tracking negativo, prefixo dourado."
+ },
+ {
+  "cat": "Banner",
+  "dir": "banner",
+  "slug": "faixa",
+  "name": "Faixa de anúncio",
+  "note": "Banner fino para avisos e lançamentos. Não substitui o hero."
+ },
+ {
+  "cat": "Mockup",
+  "dir": "mockup",
+  "slug": "centro",
+  "name": "Celular centralizado",
+  "note": "Área de largura total, a mais generosa — é onde a tela do aparelho fica legível."
+ },
+ {
+  "cat": "Mockup",
+  "dir": "mockup",
+  "slug": "lado",
+  "name": "Celular + texto",
+  "note": "Área de meia coluna à esquerda, argumento à direita. A tela sai menor: usar só quando o texto é o protagonista."
+ },
+ {
+  "cat": "Mockup",
+  "dir": "mockup",
+  "slug": "dois",
+  "name": "Dois aparelhos",
+  "note": "Duas áreas lado a lado, para dois momentos do fluxo. Manter uma só família de mão nas duas."
+ },
+ {
+  "cat": "Mockup",
+  "dir": "mockup",
+  "slug": "negativo",
+  "name": "Celular em bloco negativo",
+  "note": "O aparelho sobre marrom-escuro, sem texto acima. Para fechar o e-mail com o produto."
+ },
+ {
+  "cat": "Mockup",
+  "dir": "mockup",
+  "slug": "cartao",
+  "name": "Cartão + celular",
+  "note": "Arte do cartão sobreposta ao aparelho. Exige dois PNGs com transparência."
+ },
+ {
+  "cat": "Mockup",
+  "dir": "mockup",
+  "slug": "recorte",
+  "name": "Celular recortado no rodapé",
+  "note": "O aparelho entra pela base do e-mail. Encerra a peça com o produto na mão de alguém."
+ },
+ {
+  "cat": "Depoimento",
+  "dir": "depoimento",
+  "slug": "citacao",
+  "name": "Citação simples",
+  "note": "Só a fala, em 24px/300, com filete dourado à esquerda. O mais sóbrio."
+ },
+ {
+  "cat": "Depoimento",
+  "dir": "depoimento",
+  "slug": "foto",
+  "name": "Citação com foto",
+  "note": "Retrato circular acima da fala. Foto quadrada de 88px no mínimo."
+ },
+ {
+  "cat": "Depoimento",
+  "dir": "depoimento",
+  "slug": "rating",
+  "name": "Citação com avaliação",
+  "note": "Cinco estrelas em dourado acima da fala. Só com avaliação real e verificável."
+ },
+ {
+  "cat": "Depoimento",
+  "dir": "depoimento",
+  "slug": "negativo",
+  "name": "Depoimento negativo",
+  "note": "Fala em marfim sobre marrom-escuro. Um por e-mail, como prova de confiança."
+ },
+ {
+  "cat": "Depoimento",
+  "dir": "depoimento",
+  "slug": "duplo",
+  "name": "Dois depoimentos",
+  "note": "Duas falas curtas lado a lado. Empilha no mobile. Máximo de 2 frases cada."
+ },
+ {
+  "cat": "Depoimento",
+  "dir": "depoimento",
+  "slug": "numeros",
+  "name": "Prova em números",
+  "note": "Três indicadores no lugar da fala — para quando não há depoimento aprovado."
+ },
+ {
+  "cat": "Blog",
+  "dir": "blog",
+  "slug": "destaque",
+  "name": "Post em destaque",
+  "note": "Uma matéria com imagem larga. Abre a seção editorial."
+ },
+ {
+  "cat": "Blog",
+  "dir": "blog",
+  "slug": "lista",
+  "name": "Lista com thumbnail",
+  "note": "Três posts em linha, miniatura à esquerda. O formato mais eficiente."
+ },
+ {
+  "cat": "Blog",
+  "dir": "blog",
+  "slug": "grid",
+  "name": "Grade de dois",
+  "note": "Dois posts com imagem, lado a lado. Empilha no mobile."
+ },
+ {
+  "cat": "Blog",
+  "dir": "blog",
+  "slug": "texto",
+  "name": "Lista sem imagem",
+  "note": "Só títulos e categorias, separados por filete. Para newsletters densas."
+ },
+ {
+  "cat": "Blog",
+  "dir": "blog",
+  "slug": "misto",
+  "name": "Destaque + secundários",
+  "note": "Uma matéria principal e duas menores abaixo — hierarquia editorial clara."
+ },
+ {
+  "cat": "Blog",
+  "dir": "blog",
+  "slug": "autor",
+  "name": "Post com autor",
+  "note": "Assinatura do autor acima do título — para análises do time de research."
+ },
+ {
+  "cat": "FAQ",
+  "dir": "faq",
+  "slug": "simples",
+  "name": "FAQ simples",
+  "note": "Pergunta em 400, resposta em 300, separadas por filete. O padrão."
+ },
+ {
+  "cat": "FAQ",
+  "dir": "faq",
+  "slug": "numerado",
+  "name": "FAQ numerada",
+  "note": "Numeral dourado em 600 à esquerda de cada pergunta."
+ },
+ {
+  "cat": "FAQ",
+  "dir": "faq",
+  "slug": "cards",
+  "name": "FAQ em cards",
+  "note": "Cada dúvida em seu próprio painel marfim. Para 2 a 4 perguntas."
+ },
+ {
+  "cat": "FAQ",
+  "dir": "faq",
+  "slug": "duas-colunas",
+  "name": "FAQ em duas colunas",
+  "note": "Quatro dúvidas curtas em grade. Respostas de uma frase."
+ },
+ {
+  "cat": "FAQ",
+  "dir": "faq",
+  "slug": "link",
+  "name": "FAQ com central de ajuda",
+  "note": "Três dúvidas e uma saída para a central. Fecha e-mails transacionais."
+ },
+ {
+  "cat": "FAQ",
+  "dir": "faq",
+  "slug": "negativo",
+  "name": "FAQ negativa",
+  "note": "Bloco escuro para dúvidas sensíveis (segurança, tributos, compliance)."
+ },
+ {
+  "cat": "Selos",
+  "dir": "selos",
+  "slug": "regulatorio",
+  "name": "Selo regulatório",
+  "note": "Autorização e supervisão em uma linha. Igual à faixa do site."
+ },
+ {
+  "cat": "Selos",
+  "dir": "selos",
+  "slug": "tres",
+  "name": "Três garantias",
+  "note": "Marcador dourado + rótulo curto. Substituir os quadrados pelos ícones do site."
+ },
+ {
+  "cat": "Selos",
+  "dir": "selos",
+  "slug": "faixa",
+  "name": "Faixa de números",
+  "note": "Três indicadores institucionais entre filetes — clientes, volume, países."
+ },
+ {
+  "cat": "Selos",
+  "dir": "selos",
+  "slug": "seguranca",
+  "name": "Selo de segurança",
+  "note": "Bloco escuro com as garantias técnicas. Para e-mails de conta e senha."
+ },
+ {
+  "cat": "Selos",
+  "dir": "selos",
+  "slug": "parceiros",
+  "name": "Faixa de parceiros",
+  "note": "Logos de bandeiras, custodiantes ou imprensa. PNGs em escala de cinza."
+ },
+ {
+  "cat": "Selos",
+  "dir": "selos",
+  "slug": "avaliacao",
+  "name": "Avaliação nas lojas",
+  "note": "Nota, estrelas e volume de avaliações. Só com números reais das lojas."
+ },
+ {
+  "cat": "App",
+  "dir": "app",
+  "slug": "badges",
+  "name": "Badges das lojas",
+  "note": "Os dois badges oficiais, lado a lado. Nunca redesenhar — usar os PNGs das lojas."
+ },
+ {
+  "cat": "App",
+  "dir": "app",
+  "slug": "qr",
+  "name": "Download com QR",
+  "note": "QR code para quem lê no desktop. Mínimo de 120px impressos."
+ },
+ {
+  "cat": "App",
+  "dir": "app",
+  "slug": "negativo",
+  "name": "Banner de app negativo",
+  "note": "Bloco escuro com badges em marfim. Fecha e-mails de relacionamento."
+ },
+ {
+  "cat": "App",
+  "dir": "app",
+  "slug": "faixa",
+  "name": "Faixa fina de download",
+  "note": "Uma linha com CTA à direita. Para o pé de e-mails transacionais."
+ },
+ {
+  "cat": "App",
+  "dir": "app",
+  "slug": "beneficios",
+  "name": "Download com benefícios",
+  "note": "Três motivos e os badges abaixo. Para prevenção de churn."
+ },
+ {
+  "cat": "App",
+  "dir": "app",
+  "slug": "celular",
+  "name": "Download com aparelho",
+  "note": "Aparelho à direita, badges à esquerda. O bloco de app mais completo."
+ },
+ {
+  "cat": "Footer",
+  "dir": "footer",
+  "slug": "social",
+  "name": "Rodapé com redes",
+  "note": "Links de redes em texto (sem ícones de terceiros) acima do compliance."
+ },
+ {
+  "cat": "Footer",
+  "dir": "footer",
+  "slug": "app",
+  "name": "Rodapé com app",
+  "note": "Rodapé institucional com os badges das lojas antes do compliance."
+ },
+ {
+  "cat": "Simulação",
+  "dir": "simulacao",
+  "slug": "conversao",
+  "name": "Tela de conversão",
+  "note": "A tela de conversão desenhada em tabela, sobre painel escuro. Mostra o gesto que o e-mail está pedindo."
+ },
+ {
+  "cat": "Simulação",
+  "dir": "simulacao",
+  "slug": "notificacao",
+  "name": "Push de confirmação",
+  "note": "Notificação como ela aparece no aparelho. Para transacionais: a pessoa reconhece o evento na hora."
+ },
+ {
+  "cat": "Simulação",
+  "dir": "simulacao",
+  "slug": "saldo",
+  "name": "Tela de saldo",
+  "note": "Conta em dólar com extrato curto, sobre painel escuro. Para reativação: mostra que o dinheiro continua lá."
+ },
+ {
+  "cat": "Simulação",
+  "dir": "simulacao",
+  "slug": "cartao",
+  "name": "Tela do cartão",
+  "note": "Cartão internacional com o botão de ativação em destaque. Fecha o passo 3 do onboarding."
+ },
+ {
+  "cat": "Simulação",
+  "dir": "simulacao",
+  "slug": "fluxo",
+  "name": "Fluxo em três telas",
+  "note": "As três telas do caminho, na ordem. Substitui a lista de passos por algo que a pessoa reconhece."
+ },
+ {
+  "cat": "Simulação",
+  "dir": "simulacao",
+  "slug": "chat",
+  "name": "Conversa com o suporte",
+  "note": "Atendimento humano dentro do app. O bloco mais eficaz para reduzir medo em churn e compliance."
+ },
+ {
+  "cat": "Humano",
+  "dir": "humano",
+  "slug": "carta",
+  "name": "Abertura em carta",
+  "note": "O e-mail começa como uma mensagem de alguém. Saudação com nome, três parágrafos curtos, assinatura."
+ },
+ {
+  "cat": "Humano",
+  "dir": "humano",
+  "slug": "assinatura",
+  "name": "Assinatura de pessoa",
+  "note": "Fecha qualquer e-mail com um rosto e um nome. Foto quadrada de 88px, sem moldura."
+ },
+ {
+  "cat": "Humano",
+  "dir": "humano",
+  "slug": "ps",
+  "name": "Post scriptum",
+  "note": "Uma linha pessoal depois do CTA. É onde a marca fala mais baixo e mais perto."
+ },
+ {
+  "cat": "Humano",
+  "dir": "humano",
+  "slug": "time",
+  "name": "Quem te atende",
+  "note": "Três pessoas reais do time, com nome e função. Prova de que existe gente do outro lado."
+ },
+ {
+  "cat": "Humano",
+  "dir": "humano",
+  "slug": "historia",
+  "name": "História de cliente",
+  "note": "Um caso concreto: quem é, o que precisava, o que resolveu. Foto + citação + números."
+ },
+ {
+  "cat": "Humano",
+  "dir": "humano",
+  "slug": "resposta",
+  "name": "Convite para responder",
+  "note": "Trata o e-mail como conversa: uma pergunta e um convite real de resposta."
+ },
+ {
+  "cat": "Ícones",
+  "dir": "icones",
+  "slug": "lista",
+  "name": "Lista com ícone",
+  "note": "Ícone de 40px à esquerda, título e apoio à direita. O formato mais legível para 3–5 itens."
+ },
+ {
+  "cat": "Ícones",
+  "dir": "icones",
+  "slug": "duas-colunas",
+  "name": "Ícones em duas colunas",
+  "note": "Quatro itens em grade, ícone acima do texto. Empilha no mobile."
+ },
+ {
+  "cat": "Ícones",
+  "dir": "icones",
+  "slug": "tres",
+  "name": "Três ícones centralizados",
+  "note": "Ícone, rótulo e uma frase, centralizados. Para benefícios de produto."
+ },
+ {
+  "cat": "Ícones",
+  "dir": "icones",
+  "slug": "faixa",
+  "name": "Faixa de quatro ícones",
+  "note": "Só ícone e rótulo, sem texto de apoio. Para reforço rápido acima do rodapé."
+ },
+ {
+  "cat": "Ícones",
+  "dir": "icones",
+  "slug": "grande",
+  "name": "Ícone grande + texto",
+  "note": "Um ícone de 64px ao lado de um argumento longo. Para abrir uma seção."
+ },
+ {
+  "cat": "Ícones",
+  "dir": "icones",
+  "slug": "negativo",
+  "name": "Ícones em bloco negativo",
+  "note": "Ícones em marfim sobre marrom-escuro. Para segurança e compliance."
+ },
+ {
+  "cat": "Imagens",
+  "dir": "imagens",
+  "slug": "duas",
+  "name": "Duas colunas",
+  "note": "Duas imagens de peso igual com legenda. Empilha no mobile."
+ },
+ {
+  "cat": "Imagens",
+  "dir": "imagens",
+  "slug": "tres",
+  "name": "Três colunas",
+  "note": "Três imagens quadradas em linha. Sem legenda, só rótulo curto."
+ },
+ {
+  "cat": "Imagens",
+  "dir": "imagens",
+  "slug": "grade",
+  "name": "Grade 2×2",
+  "note": "Quatro imagens em grade fechada. Para galeria de produto ou lifestyle."
+ },
+ {
+  "cat": "Imagens",
+  "dir": "imagens",
+  "slug": "mosaico",
+  "name": "Mosaico 1 + 2",
+  "note": "Uma imagem alta à esquerda e duas empilhadas à direita."
+ },
+ {
+  "cat": "Imagens",
+  "dir": "imagens",
+  "slug": "sangramento",
+  "name": "Faixa dividida em três",
+  "note": "Três imagens sangrando, sem espaço entre elas. Fecha ou abre o e-mail."
+ },
+ {
+  "cat": "Imagens",
+  "dir": "imagens",
+  "slug": "texto",
+  "name": "Imagem + texto alternado",
+  "note": "Duas fileiras com a imagem alternando de lado. Para contar um processo."
+ },
+ {
+  "cat": "Comparação",
+  "dir": "comparacao",
+  "slug": "tabela",
+  "name": "Tabela comparativa",
+  "note": "Coluna Zeom destacada em marfim. Máximo de 5 linhas — comparação não é planilha."
+ },
+ {
+  "cat": "Comparação",
+  "dir": "comparacao",
+  "slug": "custo",
+  "name": "Comparação de custo",
+  "note": "Dois números frente a frente. O da Zeom em 200, o outro em cinza de apoio."
+ },
+ {
+  "cat": "Comparação",
+  "dir": "comparacao",
+  "slug": "antes-depois",
+  "name": "Antes e depois",
+  "note": "O cenário atual e o cenário com a Zeom, lado a lado."
+ },
+ {
+  "cat": "Comparação",
+  "dir": "comparacao",
+  "slug": "checklist",
+  "name": "Checklist comparativo",
+  "note": "Uma coluna só de checks. Para quando não há concorrente nomeado."
+ },
+ {
+  "cat": "Comparação",
+  "dir": "comparacao",
+  "slug": "planos",
+  "name": "Três opções",
+  "note": "Comparação de planos ou perfis. A do meio recebe o destaque."
+ },
+ {
+  "cat": "Comparação",
+  "dir": "comparacao",
+  "slug": "moeda",
+  "name": "Real x dólar",
+  "note": "Comparação de cenário cambial: dois painéis com o mesmo valor em duas moedas."
+ },
+ {
+  "cat": "Features",
+  "dir": "features",
+  "slug": "grade",
+  "name": "Grade de features",
+  "note": "Quatro recursos em grade, cada um com rótulo e uma frase. A seção de features padrão."
+ },
+ {
+  "cat": "Features",
+  "dir": "features",
+  "slug": "lista",
+  "name": "Features em lista",
+  "note": "Três recursos entre filetes, com valor à direita. Denso e escaneável."
+ },
+ {
+  "cat": "Features",
+  "dir": "features",
+  "slug": "destaque",
+  "name": "Feature em destaque",
+  "note": "Um recurso principal com imagem e dois secundários abaixo."
+ },
+ {
+  "cat": "Features",
+  "dir": "features",
+  "slug": "tres",
+  "name": "Três features centralizadas",
+  "note": "Ícone, rótulo e frase em três colunas centralizadas. Para topo de campanha."
+ },
+ {
+  "cat": "Features",
+  "dir": "features",
+  "slug": "negativo",
+  "name": "Features em bloco negativo",
+  "note": "Quatro recursos em marfim sobre marrom-escuro, separados por filete."
+ },
+ {
+  "cat": "Features",
+  "dir": "features",
+  "slug": "numeros",
+  "name": "Features com número",
+  "note": "Cada recurso ganha um indicador em 200. Para provar o benefício, não só descrevê-lo."
+ },
+ {
+  "cat": "Footer",
+  "dir": "footer",
+  "slug": "icones",
+  "name": "Rodapé com ícones de redes",
+  "note": "Quatro ícones circulares de 30px acima do compliance. Usar os PNGs oficiais de cada rede."
+ },
+ {
+  "cat": "Footer",
+  "dir": "footer",
+  "slug": "icones-negativo",
+  "name": "Rodapé negativo com redes",
+  "note": "Fecha o e-mail em marrom-escuro, com logo em marfim e ícones em círculo."
+ },
+ {
+  "cat": "Fundos",
+  "dir": "fundos",
+  "slug": "negativo",
+  "name": "Bloco negativo sólido",
+  "note": "Marrom-escuro #3A362C sem imagem. O fundo escuro mais seguro — funciona em qualquer cliente."
+ },
+ {
+  "cat": "Fundos",
+  "dir": "fundos",
+  "slug": "degrade-escuro",
+  "name": "Degradê escuro",
+  "note": "Do dourado escurecido #4A452F ao quase-preto #282621. O degradê é imagem: CSS gradient não renderiza no Outlook."
+ },
+ {
+  "cat": "Fundos",
+  "dir": "fundos",
+  "slug": "degrade-areia",
+  "name": "Degradê claro",
+  "note": "Off-white → marfim → areia. Dá profundidade sem sair da base institucional."
+ },
+ {
+  "cat": "Fundos",
+  "dir": "fundos",
+  "slug": "degrade-ouro",
+  "name": "Faixa dourada em degradê",
+  "note": "Areia → dourado → bege, na horizontal. CTA em quase-preto para contraste."
+ },
+ {
+  "cat": "Fundos",
+  "dir": "fundos",
+  "slug": "protecao",
+  "name": "Imagem com proteção",
+  "note": "Foto da biblioteca com degradê escuro queimado no arquivo — o título fica legível sem depender de CSS."
+ },
+ {
+  "cat": "Fundos",
+  "dir": "fundos",
+  "slug": "dividido",
+  "name": "Claro sobre escuro",
+  "note": "Transição no mesmo bloco: conteúdo claro em cima, fecho escuro embaixo. Fim de e-mail."
+ },
+ {
+  "cat": "Mockup",
+  "dir": "mockup",
+  "slug": "foto-negativo",
+  "name": "Aparelho em bloco negativo",
+  "note": "Área de largura total para e-mail de fundo escuro — a arte e a interface entram em tema escuro."
+ }
+]

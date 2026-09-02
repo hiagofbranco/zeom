@@ -1,0 +1,44 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8"><title>Zeom · Régua completa</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#F6F5EF;font-family:'Geist',Helvetica,Arial,sans-serif;color:#282621}
+header{padding:40px 40px 28px;border-bottom:1px solid rgba(40,38,33,.14)}
+header .kicker{font-size:11px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:#6C664E}
+header h1{margin:10px 0 0;font-weight:600;font-size:28px;letter-spacing:-.3px}
+header p{margin:10px 0 0;font-weight:300;font-size:14px;line-height:21px;color:#3A362C;max-width:640px}
+nav{display:flex;flex-wrap:wrap;gap:8px;padding:20px 40px;border-bottom:1px solid rgba(40,38,33,.14);position:sticky;top:0;background:#F6F5EF;z-index:2}
+nav a{font-size:12px;font-weight:600;color:#6C664E;text-decoration:none;border:1px solid rgba(40,38,33,.14);border-radius:6px;padding:6px 10px}
+nav a:hover{border-color:#CCC290;color:#282621}
+main{display:flex;flex-direction:column;align-items:center;gap:56px;padding:48px 24px 96px}
+.frame{width:600px;max-width:100%;scroll-margin-top:80px}
+.frame .lbl{display:flex;align-items:baseline;gap:10px;margin-bottom:12px}
+.frame .lbl b{font-size:11px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:#6C664E}
+.frame .lbl span{font-size:12px;color:#8A8371}
+iframe{width:100%;border:1px solid rgba(40,38,33,.14);border-radius:12px;background:#F6F5EF;display:block}
+</style></head><body>
+<header>
+<div class="kicker">Régua de comunicação · variante clara</div>
+<h1>Os onze e-mails da régua</h1>
+<p>Onboarding (01–03), prevenção de aquisição e KYC (04–08), exploração (09) e engajamento (10–11). Headers montados só com blocos oficiais do design system; rodapé dark em todos.</p>
+</header>
+<nav>
+<a href="#e01">01 Código</a><a href="#e02">02 Boas-vindas</a><a href="#e03">03 Zeom AI</a><a href="#e04">04 Aquisição D1</a><a href="#e05">05 Aquisição D7</a><a href="#e06">06 KYC D1</a><a href="#e07">07 KYC D6</a><a href="#e08">08 KYC D15</a><a href="#e09">09 Pix D1</a><a href="#e10">10 Engaj. imediato</a><a href="#e11">11 Engaj. D14</a>
+</nav>
+<main>
+<div class="frame" id="e01"><div class="lbl"><b>01 · Verificação</b><span>Código de confirmação · pré-KYC</span></div><iframe src="emails/reguas/01-onboarding-codigo.html" height="1200" scrolling="no"></iframe></div>
+<div class="frame" id="e02"><div class="lbl"><b>02 · Boas-vindas</b><span>Carta do CEO · pós-KYC aprovado</span></div><iframe src="emails/reguas/02-onboarding-boas-vindas-ceo.html" height="1200" scrolling="no"></iframe></div>
+<div class="frame" id="e03"><div class="lbl"><b>03 · Zeom AI</b><span>Apresentação da funcionalidade · D+1</span></div><iframe src="emails/reguas/03-onboarding-zeom-ai.html" height="1200" scrolling="no"></iframe></div>
+<div class="frame" id="e04"><div class="lbl"><b>04 · Prevenção · Aquisição D1</b><span>Cadastro incompleto</span></div><iframe src="emails/reguas/04-prevencao-aquisicao-d1.html" height="1200" scrolling="no"></iframe></div>
+<div class="frame" id="e05"><div class="lbl"><b>05 · Prevenção · Aquisição D7</b><span>Fechamento · sem pressão</span></div><iframe src="emails/reguas/05-prevencao-aquisicao-d7-fechamento.html" height="1200" scrolling="no"></iframe></div>
+<div class="frame" id="e06"><div class="lbl"><b>06 · Prevenção · KYC D1</b><span>Verificação de documentos</span></div><iframe src="emails/reguas/06-prevencao-kyc-d1.html" height="1200" scrolling="no"></iframe></div>
+<div class="frame" id="e07"><div class="lbl"><b>07 · Prevenção · KYC D6</b><span>Fechamento · progresso salvo</span></div><iframe src="emails/reguas/07-prevencao-kyc-d6-fechamento.html" height="1200" scrolling="no"></iframe></div>
+<div class="frame" id="e08"><div class="lbl"><b>08 · Prevenção · KYC D15</b><span>Pesquisa de abandono</span></div><iframe src="emails/reguas/08-prevencao-kyc-d15-pesquisa.html" height="1200" scrolling="no"></iframe></div>
+<div class="frame" id="e09"><div class="lbl"><b>09 · Exploração · Pix D1</b><span>Cross-feature adoption</span></div><iframe src="emails/reguas/09-exploracao-pix-d1.html" height="1200" scrolling="no"></iframe></div>
+<div class="frame" id="e10"><div class="lbl"><b>10 · Prevenção · Engajamento</b><span>Entrada imediata · nunca fez Pix</span></div><iframe src="emails/reguas/10-prevencao-engajamento-entrada-imediata.html" height="1200" scrolling="no"></iframe></div>
+<div class="frame" id="e11"><div class="lbl"><b>11 · Prevenção · Engajamento D14</b><span>Reengajamento leve</span></div><iframe src="emails/reguas/11-prevencao-engajamento-d14.html" height="1200" scrolling="no"></iframe></div>
+</main>
+<script>
+function fit(f){try{const d=f.contentDocument;const h=Math.max(d.documentElement.scrollHeight,d.body.scrollHeight);if(h)f.style.height=(h+2)+'px'}catch(e){}}
+document.querySelectorAll('iframe').forEach(f=>{f.addEventListener('load',()=>{fit(f);setTimeout(()=>fit(f),300);setTimeout(()=>fit(f),900)})});
+</script>
+</body></html>
