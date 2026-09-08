@@ -1,7 +1,8 @@
 <!-- 01 · ONBOARDING · Código de confirmação (Pré-KYC)
 Gatilho: envio do código de verificação no cadastro (V0, imediato)
 Objetivo CRM: execução do código em até 10 minutos, sem abandono no minuto zero
-Composição: header simples · tile de código em superfície escura (momento único, sem concorrência visual) · stepper horizontal de 3 etapas (variação da trilha vertical usada nos demais e-mails da régua) · suporte · rodapé institucional
+Texto principal conforme Template email automatico Zeom.pdf, seção 1 — não editar
+Composição: header simples · corpo oficial (saudação + 2 frases + aviso de segurança + disclaimer + assinatura Equipe Zeom) · tile de código em superfície escura · stepper horizontal de 3 etapas · suporte · rodapé institucional
 -->
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
@@ -10,7 +11,7 @@ Composição: header simples · tile de código em superfície escura (momento �
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light">
 <meta name="supported-color-schemes" content="light">
-<title>Zeom · Seu código de confirmação</title>
+<title>Zeom · Confirme seu e-mail para concluir o cadastro na Zeom</title>
 <!--[if mso]>
 <noscript><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml></noscript>
 <![endif]-->
@@ -28,7 +29,7 @@ table{border-collapse:collapse}
 </style>
 </head>
 <body style="margin:0;padding:0;background-color:#FFFFFF;-webkit-font-smoothing:antialiased">
-<div style="display:none;max-height:0;overflow:hidden;mso-hide:all;font-size:1px;line-height:1px;color:#FFFFFF;opacity:0">Use o código abaixo para confirmar seu acesso à Zeom.&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;</div>
+<div style="display:none;max-height:0;overflow:hidden;mso-hide:all;font-size:1px;line-height:1px;color:#FFFFFF;opacity:0">Falta pouco para você começar a usar sua conta Zeom, sua inteligência financeira global.&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;</div>
 <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="#FFFFFF" style="background-color:#FFFFFF">
 <tr><td align="center" style="padding:32px 20px">
 <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" class="container" style="width:600px;max-width:600px">
@@ -39,11 +40,13 @@ table{border-collapse:collapse}
 <tr><td style="height:48px;line-height:48px;font-size:0">&nbsp;</td></tr>
 <!-- seção 1 · contexto -->
 <tr><td class="px" style="padding:0 40px">
-<div style="font-family:'Geist',Helvetica,Arial,sans-serif;font-size:12px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:#6C664E;mso-line-height-rule:exactly;line-height:16px">Verificação</div>
+<div style="font-family:'Geist',Helvetica,Arial,sans-serif;font-size:12px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:#6C664E;mso-line-height-rule:exactly;line-height:16px">Cadastro</div>
 <div style="height:16px;line-height:16px;font-size:0">&nbsp;</div>
-<div style="font-family:'Geist',Helvetica,Arial,sans-serif;font-size:24px;font-weight:600;letter-spacing:-0.3px;color:#282621;mso-line-height-rule:exactly;line-height:31px">Confirmação de acesso</div>
+<p style="margin:0;font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:15px;line-height:23px;color:#3A362C;mso-line-height-rule:exactly">Olá,</p>
 <div style="height:16px;line-height:16px;font-size:0">&nbsp;</div>
-<p style="margin:0;font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:15px;line-height:23px;color:#3A362C;mso-line-height-rule:exactly">Insira o código abaixo no aplicativo para avançar no seu cadastro e liberar os recursos da sua conta.</p>
+<div style="font-family:'Geist',Helvetica,Arial,sans-serif;font-size:24px;font-weight:600;letter-spacing:-0.3px;color:#282621;mso-line-height-rule:exactly;line-height:31px">Falta pouco para você começar a usar sua conta Zeom, sua inteligência financeira global.</div>
+<div style="height:16px;line-height:16px;font-size:0">&nbsp;</div>
+<p style="margin:0;font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:15px;line-height:23px;color:#3A362C;mso-line-height-rule:exactly">Para concluir o seu cadastro, confirme seu endereço de e-mail utilizando o código abaixo.</p>
 </td></tr>
 <tr><td style="height:48px;line-height:48px;font-size:0">&nbsp;</td></tr>
 <!-- seção 2 · tile de código, superfície escura — único momento de contraste da peça -->
@@ -55,9 +58,16 @@ table{border-collapse:collapse}
 <div style="height:14px;line-height:14px;font-size:0">&nbsp;</div>
 <div class="code-val" style="font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:600;font-size:40px;letter-spacing:9px;color:#FFFFFF;line-height:44px">{{codigo}}</div>
 <div style="height:16px;line-height:16px;font-size:0">&nbsp;</div>
-<p style="margin:0;font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:13px;line-height:19px;color:rgba(246,245,239,.6);mso-line-height-rule:exactly">Este código é de uso pessoal e expira em 10 minutos.</p>
+<p style="margin:0;font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:13px;line-height:19px;color:rgba(246,245,239,.6);mso-line-height-rule:exactly">Para sua segurança, o código expira em {{minutos_expiracao}} minutos.</p>
 </td></tr>
 </table>
+</td></tr>
+<tr><td style="height:28px;line-height:28px;font-size:0">&nbsp;</td></tr>
+<!-- disclaimer + assinatura (texto oficial) -->
+<tr><td class="px" style="padding:0 40px">
+<p style="margin:0;font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:13px;line-height:20px;color:#6C664E;mso-line-height-rule:exactly">Caso não tenha iniciado este cadastro, é só desconsiderar esta mensagem.</p>
+<div style="height:20px;line-height:20px;font-size:0">&nbsp;</div>
+<p style="margin:0;font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:600;font-size:13px;line-height:19px;color:#282621;mso-line-height-rule:exactly">Equipe Zeom<br><span style="font-weight:300;color:#6C664E">atendimento@zeom.global</span></p>
 </td></tr>
 <tr><td style="height:48px;line-height:48px;font-size:0">&nbsp;</td></tr>
 <!-- seção 3 · stepper horizontal (variação da trilha vertical) -->
