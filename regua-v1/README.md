@@ -2,7 +2,7 @@
 
 Modernização da régua V0 para a V1, montada a partir da planilha
 "Revisão Régua CRM para Implementação V1" (aba "Proposta para Régua V1").
-São 41 comunicações (20 e-mails e 21 pushes) em 9 etapas: Prevenção · KYC,
+São 40 comunicações (20 e-mails e 20 pushes) em 9 etapas: Prevenção · KYC,
 Engajamento · 1º depósito, Repescagem · Cartão, Prevenção · Valor,
 Repescagem · Multiconta, Repescagem · Investimento, Ongoing,
 Engajamento · Inatividade e Churn.
