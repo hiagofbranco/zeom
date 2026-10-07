@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Régua V1 · Zeom</title>
+<style>
+  :root{
+    --ink:#0A1628; --paper:#F5F7FA; --line:#DDE3EC; --muted:#8A97A8; --accent:#00A896;
+    --onb:#2B6EF5; --onb-bg:#E7F0FF;
+    --pre:#F2A900; --pre-bg:#FFF4DB;
+    --exp:#7C4DFF; --exp-bg:#F0EAFF;
+    --ong:#00A896; --ong-bg:#E0F5F1;
+    --email:#1E52C0; --email-bg:#E7F0FF;
+    --push:#5B34D6; --push-bg:#F0EAFF;
+    --wa:#1B7A4B; --wa-bg:#E2F5EB;
+    --churn:#8A8371; --churn-bg:#EDEBE0;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+    background:var(--paper); color:var(--ink); line-height:1.5;
+  }
+  .wrap{max-width:980px; margin:0 auto; padding:40px 24px 80px;}
+
+  header{margin-bottom:8px;}
+  .eyebrow{font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--accent); margin-bottom:8px;}
+  h1{font-size:30px; font-weight:800; letter-spacing:-0.5px; margin-bottom:6px;}
+  h1 .z{color:var(--accent);}
+  .sub{font-size:14px; color:var(--muted); max-width:560px;}
+
+  /* ===== STAGE 1: flowchart ===== */
+  #stage-reguas{margin-top:12px;}
+  .flow-legend{display:flex; flex-wrap:wrap; gap:16px; margin:18px 0 20px; font-size:12px; color:var(--muted);}
+  .flow-legend span{display:inline-flex; align-items:center; gap:6px;}
+  .flow-legend .sw{width:10px; height:10px; border-radius:3px; display:inline-block;}
+  .flow-scroll{overflow-x:auto; -webkit-overflow-scrolling:touch; padding-bottom:4px;}
+  .flow-wrap{position:relative; width:100%; min-width:640px; padding-bottom:152%;}
+  .flow-wrap svg{position:absolute; inset:0; width:100%; height:100%;}
+
+  .fnode{
+    position:absolute; transform:translate(-50%,-50%); display:flex; flex-direction:column;
+    align-items:center; justify-content:center; text-align:center; border-radius:14px;
+    padding:6px 10px; line-height:1.25;
+  }
+  .fnode .flabel{font-weight:700; font-size:13px;}
+  .fnode .fcount{font-size:10px; font-weight:700; opacity:.85; margin-top:3px;}
+  .fnode .fcount.fseq{font-size:9.5px; font-weight:600; opacity:.9; line-height:1.5; padding:0 4px; white-space:normal;}
+
+  .fnode.clickable{cursor:pointer; border:1.5px solid transparent; transition:transform .15s, box-shadow .15s;}
+  .fnode.clickable:hover{transform:translate(-50%,-50%) translateY(-3px); box-shadow:0 10px 22px rgba(10,22,40,.14);}
+
+  .fnode.hex{background:#5B6B7A; color:#fff; clip-path:polygon(12% 0,88% 0,100% 50%,88% 100%,12% 100%,0 50%);}
+  .fnode.end-node{background:var(--ong-bg); color:#0A7A6C; border-radius:999px; border:1.5px solid #BFE9E1;}
+  .fnode.diamond{background:#F6C244; border:2px solid #D9A420; transform:translate(-50%,-50%) rotate(45deg); border-radius:12px;}
+  .fnode.diamond .dtext{transform:rotate(-45deg); font-size:10.5px; font-weight:700; color:#5C4708; max-width:80px;}
+
+  .fnode.n-onb{background:var(--onb-bg); color:var(--onb); border-color:var(--onb);}
+  .fnode.n-pre{background:var(--pre-bg); color:#9A6B00; border-color:#E0AE2E;}
+  .fnode.n-exp{background:var(--exp-bg); color:var(--exp); border-color:var(--exp);}
+  .fnode.n-ong{background:var(--ong-bg); color:#0A7A6C; border-color:var(--ong);}
+  .fnode.n-v1{background:#EDEBE0; color:#8A8371; border-color:#DDD9C5;}
+  .fnode.not-allowed{cursor:not-allowed;}
+  .fnode .v1-tag{position:absolute; top:-9px; right:10px; font-size:9px; font-weight:800; letter-spacing:.4px; background:#fff; border:1px solid #DDD9C5; color:#8A8371; padding:1px 6px; border-radius:10px;}
+
+  .flabel-not{
+    position:absolute; font-size:10px; font-weight:700; color:#9A6B00; background:#fff;
+    padding:2px 6px; border-radius:5px; transform:translate(-50%,-50%);
+  }
+
+  /* legacy card classes (kept for fase-tag reuse in stage 2 header) */
+  .fase-onb{background:var(--onb-bg); color:var(--onb);}
+  .fase-pre{background:var(--pre-bg); color:#9A6B00;}
+  .fase-exp{background:var(--exp-bg); color:var(--exp);}
+  .fase-ong{background:var(--ong-bg); color:#0A7A6C;}
+  .fase-churn{background:var(--churn-bg); color:#6B6656;}
+
+  /* ===== STAGE 2: comunicações (bubbles) ===== */
+  #stage-comms{display:none; margin-top:26px;}
+  .back-btn{
+    display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:600; color:var(--muted);
+    background:none; border:none; cursor:pointer; padding:6px 0; margin-bottom:18px;
+  }
+  .back-btn:hover{color:var(--ink);}
+  .comms-header{display:flex; align-items:center; gap:12px; margin-bottom:6px; flex-wrap:wrap;}
+  .comms-header .fase-tag{
+    display:inline-flex; align-items:center; font-size:10.5px; font-weight:700;
+    letter-spacing:.4px; text-transform:uppercase; padding:4px 10px; border-radius:20px;
+  }
+  .comms-header h2{font-size:22px; font-weight:800; letter-spacing:-.3px;}
+  .comms-sub{font-size:13px; color:var(--muted); margin-bottom:22px;}
+
+  .bubble-list{display:flex; flex-direction:column; gap:10px;}
+  .bubble{
+    background:#fff; border:1px solid var(--line); border-radius:16px; padding:14px 16px;
+    display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  }
+  .bubble .chan-icon{
+    width:34px; height:34px; border-radius:10px; flex:none; display:flex; align-items:center; justify-content:center;
+  }
+  .bubble .chan-icon svg{width:17px; height:17px;}
+  .chan-email .chan-icon{background:var(--email-bg); color:var(--email);}
+  .chan-push .chan-icon{background:var(--push-bg); color:var(--push);}
+  .chan-whatsapp .chan-icon{background:var(--wa-bg); color:var(--wa);}
+
+  .bubble .info{flex:1; min-width:180px;}
+  .bubble .headline{font-size:14.5px; font-weight:700; margin-bottom:3px;}
+  .bubble .trigger{font-size:12px; color:var(--muted);}
+  .bubble .day-chip{
+    font-size:11px; font-weight:700; color:var(--ink); background:var(--paper);
+    border:1px solid var(--line); padding:3px 9px; border-radius:20px; white-space:nowrap;
+  }
+  .bubble.is-v1{background:#F4F3EE; border-color:#E4E1D5;}
+  .bubble.is-v1 .chan-icon{background:#E9E7DC !important; color:#8A8371 !important;}
+  .bubble.is-v1 .headline{color:#6B6656;}
+  .bubble.is-v1 .trigger{color:#9A947F;}
+  .bubble.is-v1 .day-chip{color:#8A8371; background:#EDEBE0; border-color:#E4E1D5;}
+  .bubble.not-allowed{cursor:not-allowed;}
+  .bubble.not-allowed .ver-mais{
+    cursor:not-allowed; background:#DDD9C5; color:#8A8371;
+  }
+  .bubble.not-allowed .ver-mais:hover{background:#DDD9C5;}
+  .v1-pill{
+    font-size:10px; font-weight:800; letter-spacing:.4px; color:#8A8371; background:#EDEBE0;
+    border:1px solid #DDD9C5; padding:2px 8px; border-radius:20px; white-space:nowrap;
+  }
+  .ver-mais{
+    font-size:12.5px; font-weight:700; color:#fff; background:var(--ink);
+    border:none; padding:8px 16px; border-radius:20px; cursor:pointer; white-space:nowrap;
+    transition:background .15s;
+  }
+  .ver-mais:hover{background:#1C2E45;}
+
+  /* ===== MODAL ===== */
+  .modal-overlay{
+    display:none; position:fixed; inset:0; background:rgba(10,22,40,.55); z-index:100;
+    align-items:center; justify-content:center; padding:20px; backdrop-filter:blur(2px);
+  }
+  .modal-overlay.show{display:flex;}
+  .modal{
+    background:#fff; border-radius:20px; max-width:480px; width:100%; max-height:88vh; overflow-y:auto;
+    padding:28px 28px 24px; position:relative; animation:pop .18s ease;
+  }
+  @keyframes pop{ from{opacity:0; transform:scale(.96) translateY(6px);} to{opacity:1; transform:scale(1) translateY(0);} }
+  .modal-close{
+    position:absolute; top:16px; right:16px; width:30px; height:30px; border-radius:50%;
+    border:none; background:var(--paper); color:var(--muted); cursor:pointer; font-size:16px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .modal-close:hover{background:var(--line); color:var(--ink);}
+  .modal .m-fase{font-size:10.5px; font-weight:700; letter-spacing:.4px; text-transform:uppercase; margin-bottom:8px;}
+  .modal .m-chan-row{display:flex; align-items:center; gap:8px; margin-bottom:14px;}
+  .modal .m-chan{
+    display:inline-flex; align-items:center; gap:6px; font-size:11.5px; font-weight:700;
+    padding:5px 11px; border-radius:20px; white-space:nowrap;
+  }
+  .modal .m-trigger{font-size:12.5px; color:var(--muted); margin-bottom:18px; line-height:1.5;}
+  .modal .m-trigger b{color:var(--ink); font-weight:600;}
+
+  .m-field-label{font-size:10px; font-weight:700; letter-spacing:.5px; text-transform:uppercase; color:var(--muted); margin-bottom:5px; margin-top:16px;
+    display:flex; align-items:center; justify-content:space-between; gap:8px;}
+  .m-field-label:first-of-type{margin-top:0;}
+  .m-field-value{font-size:15px; color:var(--ink); font-weight:600; line-height:1.4;}
+  .field-copy-btn{
+    display:inline-flex; align-items:center; gap:4px; font-size:10px; font-weight:700;
+    letter-spacing:.3px; text-transform:none; color:var(--muted); background:var(--paper);
+    border:1px solid var(--line); padding:4px 9px; border-radius:20px; cursor:pointer;
+    transition:background .15s, color .15s, border-color .15s;
+  }
+  .field-copy-btn svg{width:11px; height:11px; flex:none;}
+  .field-copy-btn:hover{background:var(--line); color:var(--ink);}
+  .field-copy-btn.copied{background:var(--ong-bg); color:#0A7A6C; border-color:#BFE9E1;}
+  .m-body-box{
+    background:var(--paper); border-radius:12px; padding:14px 16px; margin-top:6px;
+    font-size:14px; color:#33475B; line-height:1.65; white-space:pre-line;
+  }
+
+  .copy-btn{
+    margin-top:20px; width:100%; display:flex; align-items:center; justify-content:center; gap:8px;
+    background:var(--ink); color:#fff; border:none; padding:12px 16px; border-radius:12px;
+    font-size:13.5px; font-weight:700; cursor:pointer; transition:background .15s;
+  }
+  .copy-btn:hover{background:#1C2E45;}
+  .copy-btn.copied{background:var(--accent);}
+  .copy-btn svg{width:15px; height:15px;}
+
+  footer{margin-top:50px; padding-top:18px; border-top:1px solid var(--line); font-size:11.5px; color:var(--muted);}
+
+  @media(max-width:520px){
+    .wrap{padding:28px 16px 60px;}
+    h1{font-size:24px;}
+    .bubble{padding:12px;}
+    .ver-mais{width:100%;}
+  }
+  @media(max-width:680px){
+    .flow-hint{display:block !important;}
+  }
+
+  /* ===== EMAIL PREVIEW (added) ===== */
+  .modal.modal--email{max-width:700px;}
+  .email-preview{margin-top:18px; border:1px solid var(--line); border-radius:12px; overflow:hidden;}
+  .email-preview .ep-head{background:#fff; padding:14px 16px; border-bottom:1px solid var(--line);}
+  .email-preview .ep-row{font-size:12px; color:var(--muted); margin-bottom:2px;}
+  .email-preview .ep-row b{color:var(--ink); font-weight:600;}
+  .email-preview .ep-subject{font-size:14.5px; font-weight:700; color:var(--ink); margin-top:6px;}
+  .email-preview .ep-body{background:#F6F5EF; max-height:60vh; overflow-y:auto;}
+  .email-preview iframe{width:100%; border:none; display:block; background:#fff;}
+  .ep-variant + .ep-variant{border-top:6px solid #E8E6D9;}
+  .ep-variant-tag{
+    display:flex; align-items:center; gap:8px; padding:10px 16px; background:#EFEDE0;
+    position:sticky; top:0; z-index:1;
+  }
+  .ep-variant-tag .ep-badge{
+    display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px;
+    border-radius:50%; background:var(--ink); color:#fff; font-size:11px; font-weight:700;
+  }
+  .ep-variant-tag .ep-variant-label{font-size:12px; font-weight:700; color:var(--ink); text-transform:uppercase; letter-spacing:.3px;}
+  .m-toggle-row{display:flex; gap:8px; margin-top:16px;}
+  .m-toggle-btn{
+    flex:1; font-size:12.5px; font-weight:700; padding:9px 12px; border-radius:10px;
+    border:1px solid var(--line); background:#fff; color:var(--muted); cursor:pointer; transition:.15s;
+  }
+  .m-toggle-btn.active{background:var(--ink); color:#fff; border-color:var(--ink);}
+
+  /* ===== PUSH PREVIEW — iOS style (added) ===== */
+  .push-preview{
+    margin-top:18px; border-radius:16px; overflow:hidden; padding:32px 18px;
+    background:linear-gradient(160deg,#1B2C4F 0%,#2E4372 55%,#5A6FA8 100%);
+  }
+  .push-preview .ios-time{
+    text-align:center; color:#fff; font-weight:300; font-size:15px; letter-spacing:.5px;
+    margin-bottom:18px; opacity:.92; text-shadow:0 1px 3px rgba(0,0,0,.25);
+  }
+  .ios-notif{
+    background:rgba(255,255,255,.82); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+    border-radius:16px; padding:12px 14px; display:flex; gap:10px; align-items:flex-start;
+    box-shadow:0 8px 24px rgba(0,0,0,.18);
+  }
+  .ios-notif .ios-icon{
+    width:34px; height:34px; border-radius:9px; flex:none; overflow:hidden;
+    box-shadow:0 1px 2px rgba(0,0,0,.15);
+  }
+  .ios-notif .ios-icon img{width:100%; height:100%; display:block; object-fit:cover;}
+  .ios-notif .ios-body{flex:1; min-width:0;}
+  .ios-notif .ios-appline{
+    display:flex; align-items:center; gap:5px; font-size:12.5px; font-weight:600;
+    color:#3C3C43; opacity:.85; letter-spacing:.2px; margin-bottom:2px; text-transform:uppercase;
+  }
+  .ios-notif .ios-appline .ios-time-ago{
+    font-weight:400; opacity:.75; text-transform:none; margin-left:auto; font-size:12.5px;
+  }
+  .ios-notif .ios-title{font-size:14.5px; font-weight:700; color:#0A0A0A; line-height:1.3; margin-bottom:1px;}
+  .ios-notif .ios-msg{font-size:14px; color:#1C1C1E; line-height:1.32; opacity:.92;}
+
+  /* ===== WHATSAPP PREVIEW — phone style (refined) ===== */
+  .wa-preview{margin-top:18px; display:flex; justify-content:center;}
+  .wa-phone{
+    width:100%; max-width:300px; border-radius:32px; background:#111B21; padding:8px;
+    box-shadow:0 14px 34px rgba(0,0,0,.28);
+  }
+  .wa-screen{border-radius:25px; overflow:hidden; background:#ECE5DD;}
+  .wa-topbar{
+    background:#008069; color:#fff; padding:12px 14px; display:flex; align-items:center; gap:11px;
+  }
+  .wa-topbar .wa-back{font-size:20px; font-weight:400; opacity:.95; line-height:1; margin-right:-2px;}
+  .wa-topbar .wa-avatar{
+    width:36px; height:36px; border-radius:50%; overflow:hidden; flex:none; background:#0B2E28;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .wa-topbar .wa-avatar img{width:100%; height:100%; object-fit:cover;}
+  .wa-topbar .wa-who{flex:1; min-width:0;}
+  .wa-topbar .wa-name{font-size:15.5px; font-weight:600; line-height:1.3;}
+  .wa-topbar .wa-status{font-size:12px; opacity:.85; margin-top:1px; line-height:1.3;}
+  .wa-chat{
+    padding:16px 14px; min-height:200px; display:flex; flex-direction:column; justify-content:flex-end;
+  }
+  .wa-bubble-row{display:flex;}
+  .wa-bubble{
+    background:#fff; border-radius:9px; padding:7px 9px 6px 10px; max-width:84%;
+    box-shadow:0 1px 1px rgba(0,0,0,.10); position:relative;
+  }
+  .wa-bubble .wa-msg-text{font-size:14.3px; color:#111B21; line-height:1.42; white-space:pre-line;}
+  .wa-bubble .wa-meta{
+    display:flex; justify-content:flex-end; align-items:center; gap:4px; margin-top:2px;
+    font-size:11px; color:#667781;
+  }
+
+  .flow-wrap{padding-bottom:82.22%;}
+  .fnode.n-churn{background:var(--churn-bg); color:#6B6656; border-color:#BFBA99;}
+  .status-pill{font-size:10px; font-weight:800; letter-spacing:.4px; color:#8A5A00; background:#FFF4DB; border:1px solid #F2D58A; padding:2px 8px; border-radius:20px; white-space:nowrap;}
+  .back-link{display:inline-block; margin-bottom:18px; font-size:12.5px; font-weight:600; color:var(--muted); text-decoration:none;}
+  .back-link:hover{color:var(--ink);}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <a class="back-link" href="index-projeto.html">← Índice do projeto</a>
+    <div class="eyebrow">CRM &amp; Lifecycle Marketing · Momento Zero</div>
+    <h1>Régua <span class="z">V1</span></h1>
+    <p class="sub">Comunicações da V1, separadas da régua atual: valor &amp; repescagem, engajamento de clientes já ativados, oportunidades de mercado e win back. Clique numa etapa e em "Ver mais" para ver o texto e o e-mail montado.</p>
+  </header>
+
+  <!-- STAGE 1 -->
+  <div id="stage-reguas">
+    <div class="flow-legend">
+      <span><span class="sw" style="background:#5B6B7A;"></span>Início</span>
+      <span><span class="sw" style="background:var(--pre);"></span>Prevenção</span>
+      <span><span class="sw" style="background:var(--ong);"></span>Ongoing</span>
+      <span><span class="sw" style="background:var(--churn);"></span>Churn</span>
+      <span><span class="sw" style="background:#F6C244; border:1px solid #D9A420;"></span>Decisão</span>
+    </div>
+    <p class="flow-hint" style="display:none; font-size:12px; color:var(--muted); margin-bottom:10px;">↔ Arraste pro lado pra ver o fluxograma completo</p>
+    <div class="flow-scroll"><div class="flow-wrap" id="flow-wrap"></div></div>
+  </div>
+
+  <!-- STAGE 2 -->
+  <div id="stage-comms">
+    <button class="back-btn" onclick="showStage1()">← Voltar para réguas</button>
+    <div class="comms-header">
+      <span class="fase-tag" id="comms-fase-tag"></span>
+    </div>
+    <h2 id="comms-title" style="margin-bottom:4px;"></h2>
+    <p class="comms-sub" id="comms-sub"></p>
+    <div class="bubble-list" id="bubble-list"></div>
+  </div>
+
+  <footer>Zeom · Régua V1 · Momento Zero</footer>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="if(event.target===this) closeModal()">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="m-fase" id="m-fase"></div>
+    <div class="m-chan-row" id="m-chan-row"></div>
+    <div class="m-trigger" id="m-trigger"></div>
+    <div id="m-fields"></div>
+    <div class="m-toggle-row" id="m-toggle-row" style="display:none;">
+      <button class="m-toggle-btn active" id="tab-campos" onclick="switchTab('campos')">Campos &amp; copy</button>
+      <button class="m-toggle-btn" id="tab-preview" onclick="switchTab('preview')">Visualizar</button>
+    </div>
+    <div class="email-preview" id="email-preview" style="display:none;">
+      <div class="ep-head">
+        <div class="ep-row"><b>De:</b> Zeom &lt;nao-responda@zeom.com&gt;</div>
+        <div class="ep-row"><b>Para:</b> voce@email.com</div>
+        <div class="ep-subject" id="ep-subject"></div>
+        <div class="ep-row" id="ep-preheader" style="margin-top:6px;"></div>
+      </div>
+      <div class="ep-body" id="ep-body"></div>
+    </div>
+    <div class="push-preview" id="push-preview" style="display:none;">
+      <div class="ios-time" id="push-time"></div>
+      <div class="ios-notif">
+        <div class="ios-icon"><img id="push-icon" alt="Zeom"></div>
+        <div class="ios-body">
+          <div class="ios-appline"><span>Zeom</span><span class="ios-time-ago">agora</span></div>
+          <div class="ios-title" id="push-title"></div>
+          <div class="ios-msg" id="push-msg"></div>
+        </div>
+      </div>
+    </div>
+    <div class="wa-preview" id="wa-preview" style="display:none;">
+      <div class="wa-phone">
+        <div class="wa-screen">
+          <div class="wa-topbar">
+            <span class="wa-back">‹</span>
+            <div class="wa-avatar"><img id="wa-icon" alt="Zeom"></div>
+            <div class="wa-who">
+              <div class="wa-name">Zeom</div>
+              <div class="wa-status">visto por último hoje às 09:14</div>
+            </div>
+          </div>
+          <div class="wa-chat">
+            <div class="wa-bubble-row">
+              <div class="wa-bubble">
+                <div class="wa-msg-text" id="wa-msg"></div>
+                <div class="wa-meta"><span id="wa-time"></span> <span style="color:#53BDEB;">✓✓</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="copy-btn" id="copy-btn" onclick="copyText()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg>
+      <span id="copy-btn-label">Copiar tudo</span>
+    </button>
+  </div>
+</div>
+
+<script type="application/json" id="email-templates-data">{"v1-01-repescagem-cartao-d7": "<!-- V1 · 01 · PREVENÇÃO · VALOR & REPESCAGEM · E-mail D7 — Repescagem · Cartão\nGatilho: 1 semana sem ativar o cartão\nObjetivo CRM: ativação do cartão internacional, sem prazo nem urgência\nBlocos: header logo simples · card de intuito · CTA sólido · passos numerados · suporte (CTA secundário) -->\n<!DOCTYPE html>\n<html lang=\"pt-BR\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n<meta name=\"color-scheme\" content=\"light\">\n<meta name=\"supported-color-schemes\" content=\"light\">\n<title>Zeom · Seu cartão internacional está esperando<\/title>\n<!--[if mso]>\n<noscript><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96<\/o:PixelsPerInch><\/o:OfficeDocumentSettings><\/xml><\/noscript>\n<![endif]-->\n<style>\nbody,table,td{margin:0;padding:0}\nimg{border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic}\ntable{border-collapse:collapse}\n@media (max-width:600px){\n  .container{width:100% !important;max-width:100% !important}\n  .px{padding-left:24px !important;padding-right:24px !important}\n  .card-pad{padding:24px !important}\n}\n<\/style>\n<\/head>\n<body style=\"margin:0;padding:0;background-color:#FFFFFF;-webkit-font-smoothing:antialiased\">\n<div style=\"display:none;max-height:0;overflow:hidden;mso-hide:all;font-size:1px;line-height:1px;color:#FFFFFF;opacity:0\">Ative quando quiser — sem prazo para isso mudar.&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;<\/div>\n<table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\" bgcolor=\"#FFFFFF\" style=\"background-color:#FFFFFF\">\n<tr><td align=\"center\" style=\"padding:32px 20px\">\n<table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"600\" class=\"container\" style=\"width:600px;max-width:600px\">\n<!-- header · logo simples (blocks/header/logo.html) -->\n<tr><td class=\"px\" bgcolor=\"#FFFFFF\" style=\"background-color:#FFFFFF;padding:26px 40px 22px;border-bottom:1px solid rgba(40,38,33,.14)\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td valign=\"middle\" style=\"line-height:0;font-size:0\"><img src=\"https://hiagofbranco.github.io/zeom/assets/zeom-icone-96.png\" width=\"29\" height=\"29\" alt=\"\" style=\"display:block;width:29px;height:29px\"><\/td><td width=\"12\" style=\"width:12px\">&nbsp;<\/td><td valign=\"middle\" style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:28px;letter-spacing:.5px;color:#282621;line-height:29px;mso-line-height-rule:exactly\">zeom<\/td><\/tr><\/table><\/td><\/tr>\n<tr><td style=\"height:48px;line-height:48px;font-size:0\">&nbsp;<\/td><\/tr>\n<!-- seção 1 · contexto + intuito + CTA -->\n<tr><td class=\"px\" style=\"padding:0 40px\">\n<div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-size:12px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:#6C664E;mso-line-height-rule:exactly;line-height:16px\">Cartão internacional<\/div><div style=\"height:16px;line-height:16px;font-size:0\">&nbsp;<\/div><div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-size:24px;font-weight:600;letter-spacing:-0.3px;color:#282621;mso-line-height-rule:exactly;line-height:31px\">Seu cartão em dólar está pronto para ativar<\/div><div style=\"height:16px;line-height:16px;font-size:0\">&nbsp;<\/div><p style=\"margin:0;font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:15px;line-height:23px;color:#3A362C;mso-line-height-rule:exactly\">O cartão internacional da sua conta Zeom já está disponível. A ativação é feita pelo aplicativo, em poucos passos, e pode acontecer quando fizer sentido para você.<\/p><div style=\"height:24px;line-height:24px;font-size:0\">&nbsp;<\/div><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\" bgcolor=\"#ECEADC\" style=\"background-color:#ECEADC;border-radius:12px\"><tr><td style=\"padding:24px\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\"><tr>\n<td width=\"48\" valign=\"top\" style=\"width:48px\"><img src=\"https://hiagofbranco.github.io/zeom/assets/icons/png/cartao-gold.png\" width=\"40\" height=\"40\" alt=\"\" style=\"display:block;width:40px;height:40px\"><\/td>\n<td width=\"16\" style=\"width:16px\">&nbsp;<\/td>\n<td valign=\"top\"><div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:600;font-size:15px;color:#282621;line-height:20px\">Usa o saldo que você já tem<\/div><div style=\"height:4px;line-height:4px;font-size:0\">&nbsp;<\/div><div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:13px;color:#3A362C;line-height:19px\">As compras no exterior são debitadas do seu saldo em dólar, com a cotação visível antes de cada recarga.<\/div><\/td>\n<\/tr><\/table><\/td><\/tr><\/table><div style=\"height:24px;line-height:24px;font-size:0\">&nbsp;<\/div><!--[if mso]>\n<v:roundrect xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:w=\"urn:schemas-microsoft-com:office:word\" href=\"{{LINK_app_cartao}}\" style=\"height:48px;v-text-anchor:middle;width:280px;\" arcsize=\"17%\" strokecolor=\"#BFBA99\" strokeweight=\"0\" fillcolor=\"#BFBA99\">\n<w:anchorlock/>\n<center style=\"color:#282621;font-family:Helvetica,Arial,sans-serif;font-size:14px;font-weight:600;\">Ativar meu cartão<\/center>\n<\/v:roundrect>\n<![endif]-->\n<!--[if !mso]><!-->\n<table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"mso-hide:all\"><tr><td align=\"center\" bgcolor=\"#BFBA99\" style=\"background-color:#BFBA99;border-radius:8px\">\n<a href=\"{{LINK_app_cartao}}\" target=\"_blank\" style=\"display:inline-block;padding:14px 28px;font-family:'Geist',Helvetica,Arial,sans-serif;font-size:14px;font-weight:600;letter-spacing:0.1px;color:#282621;text-decoration:none;border-radius:8px;mso-hide:all\">Ativar meu cartão &#8594;<\/a>\n<\/td><\/tr><\/table>\n<!--<![endif]-->\n<\/td><\/tr>\n<tr><td style=\"height:48px;line-height:48px;font-size:0\">&nbsp;<\/td><\/tr>\n<!-- seção 2 · passos numerados -->\n<tr><td class=\"px\" style=\"padding:0 40px\">\n<div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-size:12px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:#6C664E;mso-line-height-rule:exactly;line-height:16px\">Como ativar<\/div><div style=\"height:16px;line-height:16px;font-size:0\">&nbsp;<\/div><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n<tr><td style=\"padding:0 0 18px\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\"><tr><td width=\"32\" valign=\"top\" style=\"width:32px\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td bgcolor=\"#ECEADC\" align=\"center\" valign=\"middle\" width=\"32\" height=\"32\" style=\"width:32px;height:32px;background-color:#ECEADC;border-radius:8px;font-family:'Geist',Helvetica,Arial,sans-serif;font-size:14px;font-weight:600;color:#282621;line-height:32px\">1<\/td><\/tr><\/table><\/td><td width=\"14\" style=\"width:14px\">&nbsp;<\/td><td valign=\"top\"><div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:600;font-size:14px;color:#282621;line-height:20px;padding-top:6px\">Abra o aplicativo e acesse Cartão<\/div><div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:13px;color:#3A362C;line-height:19px;padding-top:3px\">O cartão aparece na tela inicial da sua conta.<\/div><\/td><\/tr><\/table><\/td><\/tr>\n<tr><td style=\"padding:0 0 18px\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\"><tr><td width=\"32\" valign=\"top\" style=\"width:32px\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td bgcolor=\"#ECEADC\" align=\"center\" valign=\"middle\" width=\"32\" height=\"32\" style=\"width:32px;height:32px;background-color:#ECEADC;border-radius:8px;font-family:'Geist',Helvetica,Arial,sans-serif;font-size:14px;font-weight:600;color:#282621;line-height:32px\">2<\/td><\/tr><\/table><\/td><td width=\"14\" style=\"width:14px\">&nbsp;<\/td><td valign=\"top\"><div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:600;font-size:14px;color:#282621;line-height:20px;padding-top:6px\">Confirme seus dados e crie a senha<\/div><div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:13px;color:#3A362C;line-height:19px;padding-top:3px\">A senha é pessoal e fica só com você.<\/div><\/td><\/tr><\/table><\/td><\/tr>\n<tr><td style=\"padding:0 0 0px\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\"><tr><td width=\"32\" valign=\"top\" style=\"width:32px\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td bgcolor=\"#ECEADC\" align=\"center\" valign=\"middle\" width=\"32\" height=\"32\" style=\"width:32px;height:32px;background-color:#ECEADC;border-radius:8px;font-family:'Geist',Helvetica,Arial,sans-serif;font-size:14px;font-weight:600;color:#282621;line-height:32px\">3<\/td><\/tr><\/table><\/td><td width=\"14\" style=\"width:14px\">&nbsp;<\/td><td valign=\"top\"><div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:600;font-size:14px;color:#282621;line-height:20px;padding-top:6px\">Use em compras internacionais<\/div><div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:13px;color:#3A362C;line-height:19px;padding-top:3px\">Em lojas físicas e online, onde a bandeira for aceita.<\/div><\/td><\/tr><\/table><\/td><\/tr>\n<\/table>\n<\/td><\/tr>\n<tr><td style=\"height:48px;line-height:48px;font-size:0\">&nbsp;<\/td><\/tr>\n<!-- seção 3 · suporte (cta secundário) -->\n<tr><td class=\"px\" style=\"padding:0 40px\">\n<div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-size:12px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:#6C664E;mso-line-height-rule:exactly;line-height:16px\">Dúvidas e suporte<\/div><div style=\"height:16px;line-height:16px;font-size:0\">&nbsp;<\/div><p style=\"margin:0;font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:13px;line-height:19px;color:#3A362C;mso-line-height-rule:exactly\">Se precisar de ajuda na ativação, nossa equipe de atendimento está disponível.<\/p><div style=\"height:20px;line-height:20px;font-size:0\">&nbsp;<\/div><!--[if mso]>\n<v:roundrect xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:w=\"urn:schemas-microsoft-com:office:word\" href=\"{{LINK_whatsapp_suporte}}\" style=\"height:46px;v-text-anchor:middle;width:260px;\" arcsize=\"17%\" strokecolor=\"#DDD9C5\" strokeweight=\"1px\" fillcolor=\"#FFFFFF\">\n<w:anchorlock/>\n<center style=\"color:#282621;font-family:Helvetica,Arial,sans-serif;font-size:13px;font-weight:600;\">Falar com o suporte no WhatsApp<\/center>\n<\/v:roundrect>\n<![endif]-->\n<!--[if !mso]><!-->\n<table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"mso-hide:all\"><tr><td align=\"center\" bgcolor=\"#FFFFFF\" style=\"background-color:#FFFFFF;border:1px solid rgba(40,38,33,.14);border-radius:8px\">\n<a href=\"{{LINK_whatsapp_suporte}}\" target=\"_blank\" style=\"display:inline-block;padding:12px 24px;font-family:'Geist',Helvetica,Arial,sans-serif;font-size:13px;font-weight:600;color:#282621;text-decoration:none;border-radius:8px;mso-hide:all\">Falar com o suporte no WhatsApp &#8594;<\/a>\n<\/td><\/tr><\/table>\n<!--<![endif]-->\n<\/td><\/tr>\n<tr><td style=\"height:48px;line-height:48px;font-size:0\">&nbsp;<\/td><\/tr>\n<!-- rodapé institucional · dark, full-bleed (blocks/footer/icones-negativo.html) -->\n<tr><td bgcolor=\"#21211C\" style=\"background-color:#21211C\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\"><tr><td align=\"center\" class=\"px\" style=\"padding:56px 40px 48px\">\n<table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\" class=\"container\" style=\"width:100%;max-width:600px\">\n<tr><td align=\"center\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td valign=\"middle\" style=\"line-height:0;font-size:0\"><img src=\"https://hiagofbranco.github.io/zeom/assets/zeom-esfera-96.png\" width=\"26\" height=\"26\" alt=\"\" style=\"display:block;width:26px;height:26px\"><\/td><td width=\"10\" style=\"width:10px\">&nbsp;<\/td><td valign=\"middle\" style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:21px;letter-spacing:.3px;color:#FAFAF9;line-height:26px;mso-line-height-rule:exactly\">zeom<\/td><\/tr><\/table><\/td><\/tr>\n<tr><td align=\"center\" style=\"padding-top:20px\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" align=\"center\"><tr>\n<td align=\"center\" width=\"28\" style=\"width:28px;line-height:0;font-size:0\"><a href=\"{{LINK_instagram}}\" target=\"_blank\" style=\"text-decoration:none\"><img src=\"https://hiagofbranco.github.io/zeom/assets/icons/png/instagram-soc-dark.png\" width=\"28\" height=\"28\" alt=\"Instagram\" style=\"display:block;width:28px;height:28px\"><\/a><\/td>\n<td width=\"10\" style=\"width:10px\">&nbsp;<\/td>\n<td align=\"center\" width=\"28\" style=\"width:28px;line-height:0;font-size:0\"><a href=\"{{LINK_linkedin}}\" target=\"_blank\" style=\"text-decoration:none\"><img src=\"https://hiagofbranco.github.io/zeom/assets/icons/png/linkedin-soc-dark.png\" width=\"28\" height=\"28\" alt=\"LinkedIn\" style=\"display:block;width:28px;height:28px\"><\/a><\/td>\n<td width=\"10\" style=\"width:10px\">&nbsp;<\/td>\n<td align=\"center\" width=\"28\" style=\"width:28px;line-height:0;font-size:0\"><a href=\"{{LINK_x}}\" target=\"_blank\" style=\"text-decoration:none\"><img src=\"https://hiagofbranco.github.io/zeom/assets/icons/png/x-soc-dark.png\" width=\"28\" height=\"28\" alt=\"X\" style=\"display:block;width:28px;height:28px\"><\/a><\/td>\n<\/tr><\/table><\/td><\/tr>\n<tr><td align=\"center\" style=\"padding-top:20px;font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:11px;line-height:17px;color:#B3B3A8;text-align:center\">Você recebeu este e-mail porque o cartão internacional da sua conta Zeom ainda não foi ativado.<br>{{RAZAO_SOCIAL}} · {{ENDERECO_POSTAL}}<br><br><a href=\"{{LINK_privacidade}}\" style=\"color:#B3B3A8;text-decoration:underline\">Privacidade<\/a> · <a href=\"{{LINK_termos}}\" style=\"color:#B3B3A8;text-decoration:underline\">Termos<\/a> · <a href=\"{{LINK_preferencias}}\" style=\"color:#B3B3A8;text-decoration:underline\">Preferências<\/a> · <a href=\"{{LINK_cancelar_inscricao}}\" style=\"color:#B3B3A8;text-decoration:underline\">Cancelar inscrição<\/a><\/td><\/tr>\n<\/table>\n<\/td><\/tr><\/table><\/td><\/tr>\n<\/table>\n<\/td><\/tr><\/table>\n<\/body>\n<\/html>\n", "v1-02-repescagem-investimento": "<!-- V1 · 02 · PREVENÇÃO · VALOR & REPESCAGEM · E-mail D+X — Repescagem · Investimento\nGatilho: fez Pix mas nunca investiu, X dias depois\nObjetivo CRM: apresentar a área de investimentos, sem recomendação nem urgência\nBlocos: header logo simples · card de intuito · CTA sólido · lista linha-divisória · disclaimer de investimentos -->\n<!DOCTYPE html>\n<html lang=\"pt-BR\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n<meta name=\"color-scheme\" content=\"light\">\n<meta name=\"supported-color-schemes\" content=\"light\">\n<title>Zeom · Seus investimentos internacionais estão disponíveis<\/title>\n<!--[if mso]>\n<noscript><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96<\/o:PixelsPerInch><\/o:OfficeDocumentSettings><\/xml><\/noscript>\n<![endif]-->\n<style>\nbody,table,td{margin:0;padding:0}\nimg{border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic}\ntable{border-collapse:collapse}\n@media (max-width:600px){\n  .container{width:100% !important;max-width:100% !important}\n  .px{padding-left:24px !important;padding-right:24px !important}\n  .card-pad{padding:24px !important}\n}\n<\/style>\n<\/head>\n<body style=\"margin:0;padding:0;background-color:#FFFFFF;-webkit-font-smoothing:antialiased\">\n<div style=\"display:none;max-height:0;overflow:hidden;mso-hide:all;font-size:1px;line-height:1px;color:#FFFFFF;opacity:0\">Sem valor mínimo para começar, no seu tempo.&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;<\/div>\n<table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\" bgcolor=\"#FFFFFF\" style=\"background-color:#FFFFFF\">\n<tr><td align=\"center\" style=\"padding:32px 20px\">\n<table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"600\" class=\"container\" style=\"width:600px;max-width:600px\">\n<!-- header · logo simples (blocks/header/logo.html) -->\n<tr><td class=\"px\" bgcolor=\"#FFFFFF\" style=\"background-color:#FFFFFF;padding:26px 40px 22px;border-bottom:1px solid rgba(40,38,33,.14)\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td valign=\"middle\" style=\"line-height:0;font-size:0\"><img src=\"https://hiagofbranco.github.io/zeom/assets/zeom-icone-96.png\" width=\"29\" height=\"29\" alt=\"\" style=\"display:block;width:29px;height:29px\"><\/td><td width=\"12\" style=\"width:12px\">&nbsp;<\/td><td valign=\"middle\" style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:28px;letter-spacing:.5px;color:#282621;line-height:29px;mso-line-height-rule:exactly\">zeom<\/td><\/tr><\/table><\/td><\/tr>\n<tr><td style=\"height:48px;line-height:48px;font-size:0\">&nbsp;<\/td><\/tr>\n<!-- seção 1 · contexto + intuito + CTA -->\n<tr><td class=\"px\" style=\"padding:0 40px\">\n<div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-size:12px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:#6C664E;mso-line-height-rule:exactly;line-height:16px\">Investimentos<\/div><div style=\"height:16px;line-height:16px;font-size:0\">&nbsp;<\/div><div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-size:24px;font-weight:600;letter-spacing:-0.3px;color:#282621;mso-line-height-rule:exactly;line-height:31px\">Seu saldo em dólar também pode ser investido<\/div><div style=\"height:16px;line-height:16px;font-size:0\">&nbsp;<\/div><p style=\"margin:0;font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:15px;line-height:23px;color:#3A362C;mso-line-height-rule:exactly\">Com sua conta ativa e o primeiro Pix concluído, a área de investimentos internacionais já está liberada no aplicativo. Você escolhe quando e quanto alocar.<\/p><div style=\"height:24px;line-height:24px;font-size:0\">&nbsp;<\/div><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\" bgcolor=\"#ECEADC\" style=\"background-color:#ECEADC;border-radius:12px\"><tr><td style=\"padding:24px\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\"><tr>\n<td width=\"48\" valign=\"top\" style=\"width:48px\"><img src=\"https://hiagofbranco.github.io/zeom/assets/icons/png/investir-gold.png\" width=\"40\" height=\"40\" alt=\"\" style=\"display:block;width:40px;height:40px\"><\/td>\n<td width=\"16\" style=\"width:16px\">&nbsp;<\/td>\n<td valign=\"top\"><div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:600;font-size:15px;color:#282621;line-height:20px\">Sem valor mínimo para começar<\/div><div style=\"height:4px;line-height:4px;font-size:0\">&nbsp;<\/div><div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:13px;color:#3A362C;line-height:19px\">Comece com o valor que fizer sentido para você e acompanhe a evolução dos ativos direto no painel do app.<\/div><\/td>\n<\/tr><\/table><\/td><\/tr><\/table><div style=\"height:24px;line-height:24px;font-size:0\">&nbsp;<\/div><!--[if mso]>\n<v:roundrect xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:w=\"urn:schemas-microsoft-com:office:word\" href=\"{{LINK_app_investimentos}}\" style=\"height:48px;v-text-anchor:middle;width:280px;\" arcsize=\"17%\" strokecolor=\"#BFBA99\" strokeweight=\"0\" fillcolor=\"#BFBA99\">\n<w:anchorlock/>\n<center style=\"color:#282621;font-family:Helvetica,Arial,sans-serif;font-size:14px;font-weight:600;\">Conhecer os investimentos<\/center>\n<\/v:roundrect>\n<![endif]-->\n<!--[if !mso]><!-->\n<table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"mso-hide:all\"><tr><td align=\"center\" bgcolor=\"#BFBA99\" style=\"background-color:#BFBA99;border-radius:8px\">\n<a href=\"{{LINK_app_investimentos}}\" target=\"_blank\" style=\"display:inline-block;padding:14px 28px;font-family:'Geist',Helvetica,Arial,sans-serif;font-size:14px;font-weight:600;letter-spacing:0.1px;color:#282621;text-decoration:none;border-radius:8px;mso-hide:all\">Conhecer os investimentos &#8594;<\/a>\n<\/td><\/tr><\/table>\n<!--<![endif]-->\n<\/td><\/tr>\n<tr><td style=\"height:48px;line-height:48px;font-size:0\">&nbsp;<\/td><\/tr>\n<!-- seção 2 · lista linha-divisória + disclaimer -->\n<tr><td class=\"px\" style=\"padding:0 40px\">\n<div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-size:12px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:#6C664E;mso-line-height-rule:exactly;line-height:16px\">O que você encontra no app<\/div><div style=\"height:16px;line-height:16px;font-size:0\">&nbsp;<\/div><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n<tr><td style=\"padding:0 0 16px\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\"><tr><td width=\"24\" valign=\"top\" style=\"width:24px;padding-top:1px\"><img src=\"https://hiagofbranco.github.io/zeom/assets/icons/png/globo-gold.png\" width=\"22\" height=\"22\" alt=\"\" style=\"display:block;width:22px;height:22px\"><\/td><td width=\"14\" style=\"width:14px\">&nbsp;<\/td><td valign=\"top\"><div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:600;font-size:14px;color:#282621;line-height:20px\">Ativos no exterior<\/div><div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:13px;color:#3A362C;line-height:19px;padding-top:3px\">Opções de investimento internacional reunidas em um só lugar.<\/div><\/td><\/tr><\/table><\/td><\/tr>\n<tr><td style=\"border-top:1px solid rgba(40,38,33,.14);padding:16px 0 16px\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\"><tr><td width=\"24\" valign=\"top\" style=\"width:24px;padding-top:1px\"><img src=\"https://hiagofbranco.github.io/zeom/assets/icons/png/olho-gold.png\" width=\"22\" height=\"22\" alt=\"\" style=\"display:block;width:22px;height:22px\"><\/td><td width=\"14\" style=\"width:14px\">&nbsp;<\/td><td valign=\"top\"><div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:600;font-size:14px;color:#282621;line-height:20px\">Acompanhamento no painel<\/div><div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:13px;color:#3A362C;line-height:19px;padding-top:3px\">Evolução, saldo investido e movimentações em tempo real.<\/div><\/td><\/tr><\/table><\/td><\/tr>\n<tr><td style=\"border-top:1px solid rgba(40,38,33,.14);padding:16px 0 14px\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\"><tr><td width=\"24\" valign=\"top\" style=\"width:24px;padding-top:1px\"><img src=\"https://hiagofbranco.github.io/zeom/assets/icons/png/chat-gold.png\" width=\"22\" height=\"22\" alt=\"\" style=\"display:block;width:22px;height:22px\"><\/td><td width=\"14\" style=\"width:14px\">&nbsp;<\/td><td valign=\"top\"><div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:600;font-size:14px;color:#282621;line-height:20px\">Consultas com o Zeom AI<\/div><div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:13px;color:#3A362C;line-height:19px;padding-top:3px\">Tire dúvidas sobre alocação e métricas, 24 horas por dia.<\/div><\/td><\/tr><\/table><\/td><\/tr>\n<\/table><div style=\"height:24px;line-height:24px;font-size:0\">&nbsp;<\/div><p style=\"margin:0;font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:11px;line-height:17px;color:#6C664E;mso-line-height-rule:exactly\">Conteúdo informativo. Não constitui oferta, recomendação ou análise individualizada de investimentos. Rentabilidade passada não é garantia de resultado futuro. Investimentos em ativos internacionais estão sujeitos a riscos e à variação cambial.<\/p>\n<\/td><\/tr>\n<tr><td style=\"height:48px;line-height:48px;font-size:0\">&nbsp;<\/td><\/tr>\n<!-- rodapé institucional · dark, full-bleed (blocks/footer/icones-negativo.html) -->\n<tr><td bgcolor=\"#21211C\" style=\"background-color:#21211C\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\"><tr><td align=\"center\" class=\"px\" style=\"padding:56px 40px 48px\">\n<table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\" class=\"container\" style=\"width:100%;max-width:600px\">\n<tr><td align=\"center\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td valign=\"middle\" style=\"line-height:0;font-size:0\"><img src=\"https://hiagofbranco.github.io/zeom/assets/zeom-esfera-96.png\" width=\"26\" height=\"26\" alt=\"\" style=\"display:block;width:26px;height:26px\"><\/td><td width=\"10\" style=\"width:10px\">&nbsp;<\/td><td valign=\"middle\" style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:21px;letter-spacing:.3px;color:#FAFAF9;line-height:26px;mso-line-height-rule:exactly\">zeom<\/td><\/tr><\/table><\/td><\/tr>\n<tr><td align=\"center\" style=\"padding-top:20px\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" align=\"center\"><tr>\n<td align=\"center\" width=\"28\" style=\"width:28px;line-height:0;font-size:0\"><a href=\"{{LINK_instagram}}\" target=\"_blank\" style=\"text-decoration:none\"><img src=\"https://hiagofbranco.github.io/zeom/assets/icons/png/instagram-soc-dark.png\" width=\"28\" height=\"28\" alt=\"Instagram\" style=\"display:block;width:28px;height:28px\"><\/a><\/td>\n<td width=\"10\" style=\"width:10px\">&nbsp;<\/td>\n<td align=\"center\" width=\"28\" style=\"width:28px;line-height:0;font-size:0\"><a href=\"{{LINK_linkedin}}\" target=\"_blank\" style=\"text-decoration:none\"><img src=\"https://hiagofbranco.github.io/zeom/assets/icons/png/linkedin-soc-dark.png\" width=\"28\" height=\"28\" alt=\"LinkedIn\" style=\"display:block;width:28px;height:28px\"><\/a><\/td>\n<td width=\"10\" style=\"width:10px\">&nbsp;<\/td>\n<td align=\"center\" width=\"28\" style=\"width:28px;line-height:0;font-size:0\"><a href=\"{{LINK_x}}\" target=\"_blank\" style=\"text-decoration:none\"><img src=\"https://hiagofbranco.github.io/zeom/assets/icons/png/x-soc-dark.png\" width=\"28\" height=\"28\" alt=\"X\" style=\"display:block;width:28px;height:28px\"><\/a><\/td>\n<\/tr><\/table><\/td><\/tr>\n<tr><td align=\"center\" style=\"padding-top:20px;font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:11px;line-height:17px;color:#B3B3A8;text-align:center\">Você recebeu este e-mail porque sua conta Zeom tem acesso à área de investimentos internacionais.<br>{{RAZAO_SOCIAL}} · {{ENDERECO_POSTAL}}<br><br><a href=\"{{LINK_privacidade}}\" style=\"color:#B3B3A8;text-decoration:underline\">Privacidade<\/a> · <a href=\"{{LINK_termos}}\" style=\"color:#B3B3A8;text-decoration:underline\">Termos<\/a> · <a href=\"{{LINK_preferencias}}\" style=\"color:#B3B3A8;text-decoration:underline\">Preferências<\/a> · <a href=\"{{LINK_cancelar_inscricao}}\" style=\"color:#B3B3A8;text-decoration:underline\">Cancelar inscrição<\/a><\/td><\/tr>\n<\/table>\n<\/td><\/tr><\/table><\/td><\/tr>\n<\/table>\n<\/td><\/tr><\/table>\n<\/body>\n<\/html>\n", "v1-03-prevencao-valor-d7": "<!-- V1 · 03 · PREVENÇÃO · VALOR & REPESCAGEM · E-mail D7 — Prevenção · Valor\nGatilho: 1 semana sem ativar cartão ou multiconta\nObjetivo CRM: lembrar o valor dos recursos internacionais já liberados\nBlocos: header logo simples · lista linha-divisória · CTA sólido · Zeom AI (CTA secundário) -->\n<!DOCTYPE html>\n<html lang=\"pt-BR\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n<meta name=\"color-scheme\" content=\"light\">\n<meta name=\"supported-color-schemes\" content=\"light\">\n<title>Zeom · Seus recursos internacionais continuam por aqui<\/title>\n<!--[if mso]>\n<noscript><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96<\/o:PixelsPerInch><\/o:OfficeDocumentSettings><\/xml><\/noscript>\n<![endif]-->\n<style>\nbody,table,td{margin:0;padding:0}\nimg{border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic}\ntable{border-collapse:collapse}\n@media (max-width:600px){\n  .container{width:100% !important;max-width:100% !important}\n  .px{padding-left:24px !important;padding-right:24px !important}\n  .card-pad{padding:24px !important}\n}\n<\/style>\n<\/head>\n<body style=\"margin:0;padding:0;background-color:#FFFFFF;-webkit-font-smoothing:antialiased\">\n<div style=\"display:none;max-height:0;overflow:hidden;mso-hide:all;font-size:1px;line-height:1px;color:#FFFFFF;opacity:0\">Cartão e multiconta, prontos para quando você quiser usar.&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;<\/div>\n<table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\" bgcolor=\"#FFFFFF\" style=\"background-color:#FFFFFF\">\n<tr><td align=\"center\" style=\"padding:32px 20px\">\n<table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"600\" class=\"container\" style=\"width:600px;max-width:600px\">\n<!-- header · logo simples (blocks/header/logo.html) -->\n<tr><td class=\"px\" bgcolor=\"#FFFFFF\" style=\"background-color:#FFFFFF;padding:26px 40px 22px;border-bottom:1px solid rgba(40,38,33,.14)\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td valign=\"middle\" style=\"line-height:0;font-size:0\"><img src=\"https://hiagofbranco.github.io/zeom/assets/zeom-icone-96.png\" width=\"29\" height=\"29\" alt=\"\" style=\"display:block;width:29px;height:29px\"><\/td><td width=\"12\" style=\"width:12px\">&nbsp;<\/td><td valign=\"middle\" style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:28px;letter-spacing:.5px;color:#282621;line-height:29px;mso-line-height-rule:exactly\">zeom<\/td><\/tr><\/table><\/td><\/tr>\n<tr><td style=\"height:48px;line-height:48px;font-size:0\">&nbsp;<\/td><\/tr>\n<!-- seção 1 · contexto + lista + CTA -->\n<tr><td class=\"px\" style=\"padding:0 40px\">\n<div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-size:12px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:#6C664E;mso-line-height-rule:exactly;line-height:16px\">Sua conta<\/div><div style=\"height:16px;line-height:16px;font-size:0\">&nbsp;<\/div><div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-size:24px;font-weight:600;letter-spacing:-0.3px;color:#282621;mso-line-height-rule:exactly;line-height:31px\">Cartão e multiconta, prontos para usar<\/div><div style=\"height:16px;line-height:16px;font-size:0\">&nbsp;<\/div><p style=\"margin:0;font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:15px;line-height:23px;color:#3A362C;mso-line-height-rule:exactly\">Os recursos internacionais da sua conta Zeom seguem disponíveis no aplicativo, para quando fizer sentido para você.<\/p><div style=\"height:24px;line-height:24px;font-size:0\">&nbsp;<\/div><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n<tr><td style=\"padding:0 0 16px\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\"><tr><td width=\"24\" valign=\"top\" style=\"width:24px;padding-top:1px\"><img src=\"https://hiagofbranco.github.io/zeom/assets/icons/png/cartao-gold.png\" width=\"22\" height=\"22\" alt=\"\" style=\"display:block;width:22px;height:22px\"><\/td><td width=\"14\" style=\"width:14px\">&nbsp;<\/td><td valign=\"top\"><div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:600;font-size:14px;color:#282621;line-height:20px\">Cartão internacional<\/div><div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:13px;color:#3A362C;line-height:19px;padding-top:3px\">Compras no exterior debitadas do seu saldo em dólar.<\/div><\/td><\/tr><\/table><\/td><\/tr>\n<tr><td style=\"border-top:1px solid rgba(40,38,33,.14);padding:16px 0 16px\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\"><tr><td width=\"24\" valign=\"top\" style=\"width:24px;padding-top:1px\"><img src=\"https://hiagofbranco.github.io/zeom/assets/icons/png/globo-gold.png\" width=\"22\" height=\"22\" alt=\"\" style=\"display:block;width:22px;height:22px\"><\/td><td width=\"14\" style=\"width:14px\">&nbsp;<\/td><td valign=\"top\"><div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:600;font-size:14px;color:#282621;line-height:20px\">Multiconta<\/div><div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:13px;color:#3A362C;line-height:19px;padding-top:3px\">Saldos em diferentes moedas, organizados em um só lugar.<\/div><\/td><\/tr><\/table><\/td><\/tr>\n<tr><td style=\"border-top:1px solid rgba(40,38,33,.14);padding:16px 0 14px\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\"><tr><td width=\"24\" valign=\"top\" style=\"width:24px;padding-top:1px\"><img src=\"https://hiagofbranco.github.io/zeom/assets/icons/png/transferir-gold.png\" width=\"22\" height=\"22\" alt=\"\" style=\"display:block;width:22px;height:22px\"><\/td><td width=\"14\" style=\"width:14px\">&nbsp;<\/td><td valign=\"top\"><div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:600;font-size:14px;color:#282621;line-height:20px\">Conversão entre moedas<\/div><div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:13px;color:#3A362C;line-height:19px;padding-top:3px\">Cotação visível antes de cada operação.<\/div><\/td><\/tr><\/table><\/td><\/tr>\n<\/table><div style=\"height:24px;line-height:24px;font-size:0\">&nbsp;<\/div><!--[if mso]>\n<v:roundrect xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:w=\"urn:schemas-microsoft-com:office:word\" href=\"{{LINK_acessar_conta}}\" style=\"height:48px;v-text-anchor:middle;width:280px;\" arcsize=\"17%\" strokecolor=\"#BFBA99\" strokeweight=\"0\" fillcolor=\"#BFBA99\">\n<w:anchorlock/>\n<center style=\"color:#282621;font-family:Helvetica,Arial,sans-serif;font-size:14px;font-weight:600;\">Acessar minha conta<\/center>\n<\/v:roundrect>\n<![endif]-->\n<!--[if !mso]><!-->\n<table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"mso-hide:all\"><tr><td align=\"center\" bgcolor=\"#BFBA99\" style=\"background-color:#BFBA99;border-radius:8px\">\n<a href=\"{{LINK_acessar_conta}}\" target=\"_blank\" style=\"display:inline-block;padding:14px 28px;font-family:'Geist',Helvetica,Arial,sans-serif;font-size:14px;font-weight:600;letter-spacing:0.1px;color:#282621;text-decoration:none;border-radius:8px;mso-hide:all\">Acessar minha conta &#8594;<\/a>\n<\/td><\/tr><\/table>\n<!--<![endif]-->\n<\/td><\/tr>\n<tr><td style=\"height:48px;line-height:48px;font-size:0\">&nbsp;<\/td><\/tr>\n<!-- seção 2 · zeom ai (cta secundário) -->\n<tr><td class=\"px\" style=\"padding:0 40px\">\n<table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\" bgcolor=\"#ECEADC\" style=\"background-color:#ECEADC;border-radius:12px\"><tr><td style=\"padding:24px\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\"><tr>\n<td width=\"48\" valign=\"top\" style=\"width:48px\"><img src=\"https://hiagofbranco.github.io/zeom/assets/icons/png/chat-gold.png\" width=\"40\" height=\"40\" alt=\"\" style=\"display:block;width:40px;height:40px\"><\/td>\n<td width=\"16\" style=\"width:16px\">&nbsp;<\/td>\n<td valign=\"top\"><div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:600;font-size:15px;color:#282621;line-height:20px\">Ficou alguma dúvida?<\/div><div style=\"height:4px;line-height:4px;font-size:0\">&nbsp;<\/div><div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:13px;color:#3A362C;line-height:19px\">O Zeom AI responde sobre cartão, saldos e limites a qualquer hora, direto no aplicativo.<\/div><\/td>\n<\/tr><\/table><\/td><\/tr><\/table><div style=\"height:20px;line-height:20px;font-size:0\">&nbsp;<\/div><!--[if mso]>\n<v:roundrect xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:w=\"urn:schemas-microsoft-com:office:word\" href=\"{{LINK_zeom_ai_chat}}\" style=\"height:46px;v-text-anchor:middle;width:260px;\" arcsize=\"17%\" strokecolor=\"#DDD9C5\" strokeweight=\"1px\" fillcolor=\"#FFFFFF\">\n<w:anchorlock/>\n<center style=\"color:#282621;font-family:Helvetica,Arial,sans-serif;font-size:13px;font-weight:600;\">Conversar com o Zeom AI<\/center>\n<\/v:roundrect>\n<![endif]-->\n<!--[if !mso]><!-->\n<table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"mso-hide:all\"><tr><td align=\"center\" bgcolor=\"#FFFFFF\" style=\"background-color:#FFFFFF;border:1px solid rgba(40,38,33,.14);border-radius:8px\">\n<a href=\"{{LINK_zeom_ai_chat}}\" target=\"_blank\" style=\"display:inline-block;padding:12px 24px;font-family:'Geist',Helvetica,Arial,sans-serif;font-size:13px;font-weight:600;color:#282621;text-decoration:none;border-radius:8px;mso-hide:all\">Conversar com o Zeom AI &#8594;<\/a>\n<\/td><\/tr><\/table>\n<!--<![endif]-->\n<\/td><\/tr>\n<tr><td style=\"height:48px;line-height:48px;font-size:0\">&nbsp;<\/td><\/tr>\n<!-- rodapé institucional · dark, full-bleed (blocks/footer/icones-negativo.html) -->\n<tr><td bgcolor=\"#21211C\" style=\"background-color:#21211C\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\"><tr><td align=\"center\" class=\"px\" style=\"padding:56px 40px 48px\">\n<table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\" class=\"container\" style=\"width:100%;max-width:600px\">\n<tr><td align=\"center\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td valign=\"middle\" style=\"line-height:0;font-size:0\"><img src=\"https://hiagofbranco.github.io/zeom/assets/zeom-esfera-96.png\" width=\"26\" height=\"26\" alt=\"\" style=\"display:block;width:26px;height:26px\"><\/td><td width=\"10\" style=\"width:10px\">&nbsp;<\/td><td valign=\"middle\" style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:21px;letter-spacing:.3px;color:#FAFAF9;line-height:26px;mso-line-height-rule:exactly\">zeom<\/td><\/tr><\/table><\/td><\/tr>\n<tr><td align=\"center\" style=\"padding-top:20px\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" align=\"center\"><tr>\n<td align=\"center\" width=\"28\" style=\"width:28px;line-height:0;font-size:0\"><a href=\"{{LINK_instagram}}\" target=\"_blank\" style=\"text-decoration:none\"><img src=\"https://hiagofbranco.github.io/zeom/assets/icons/png/instagram-soc-dark.png\" width=\"28\" height=\"28\" alt=\"Instagram\" style=\"display:block;width:28px;height:28px\"><\/a><\/td>\n<td width=\"10\" style=\"width:10px\">&nbsp;<\/td>\n<td align=\"center\" width=\"28\" style=\"width:28px;line-height:0;font-size:0\"><a href=\"{{LINK_linkedin}}\" target=\"_blank\" style=\"text-decoration:none\"><img src=\"https://hiagofbranco.github.io/zeom/assets/icons/png/linkedin-soc-dark.png\" width=\"28\" height=\"28\" alt=\"LinkedIn\" style=\"display:block;width:28px;height:28px\"><\/a><\/td>\n<td width=\"10\" style=\"width:10px\">&nbsp;<\/td>\n<td align=\"center\" width=\"28\" style=\"width:28px;line-height:0;font-size:0\"><a href=\"{{LINK_x}}\" target=\"_blank\" style=\"text-decoration:none\"><img src=\"https://hiagofbranco.github.io/zeom/assets/icons/png/x-soc-dark.png\" width=\"28\" height=\"28\" alt=\"X\" style=\"display:block;width:28px;height:28px\"><\/a><\/td>\n<\/tr><\/table><\/td><\/tr>\n<tr><td align=\"center\" style=\"padding-top:20px;font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:11px;line-height:17px;color:#B3B3A8;text-align:center\">Você recebeu este e-mail porque os recursos internacionais da sua conta Zeom ainda não foram utilizados.<br>{{RAZAO_SOCIAL}} · {{ENDERECO_POSTAL}}<br><br><a href=\"{{LINK_privacidade}}\" style=\"color:#B3B3A8;text-decoration:underline\">Privacidade<\/a> · <a href=\"{{LINK_termos}}\" style=\"color:#B3B3A8;text-decoration:underline\">Termos<\/a> · <a href=\"{{LINK_preferencias}}\" style=\"color:#B3B3A8;text-decoration:underline\">Preferências<\/a> · <a href=\"{{LINK_cancelar_inscricao}}\" style=\"color:#B3B3A8;text-decoration:underline\">Cancelar inscrição<\/a><\/td><\/tr>\n<\/table>\n<\/td><\/tr><\/table><\/td><\/tr>\n<\/table>\n<\/td><\/tr><\/table>\n<\/body>\n<\/html>\n", "v1-06-churn-win-back": "<!-- V1 · 06 · CHURN · WIN BACK · E-mail — PROPOSTA DE COPY (aguardando aprovação)\nGatilho: inativo por longo período / esgotou qualquer régua de prevenção\nObjetivo CRM: reabrir a porta sem pressão + entender o motivo da inatividade\nAssinatura: Equipe Zeom (CEO não participa)\nBlocos: header logo simples · lista linha-divisória · CTA sólido · pesquisa (CTA secundário) · assinatura -->\n<!DOCTYPE html>\n<html lang=\"pt-BR\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n<meta name=\"color-scheme\" content=\"light\">\n<meta name=\"supported-color-schemes\" content=\"light\">\n<title>Zeom · Sua conta Zeom continua ativa<\/title>\n<!--[if mso]>\n<noscript><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96<\/o:PixelsPerInch><\/o:OfficeDocumentSettings><\/xml><\/noscript>\n<![endif]-->\n<style>\nbody,table,td{margin:0;padding:0}\nimg{border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic}\ntable{border-collapse:collapse}\n@media (max-width:600px){\n  .container{width:100% !important;max-width:100% !important}\n  .px{padding-left:24px !important;padding-right:24px !important}\n  .card-pad{padding:24px !important}\n}\n<\/style>\n<\/head>\n<body style=\"margin:0;padding:0;background-color:#FFFFFF;-webkit-font-smoothing:antialiased\">\n<div style=\"display:none;max-height:0;overflow:hidden;mso-hide:all;font-size:1px;line-height:1px;color:#FFFFFF;opacity:0\">Seus recursos seguem disponíveis, para quando fizer sentido retomar.&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;<\/div>\n<table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\" bgcolor=\"#FFFFFF\" style=\"background-color:#FFFFFF\">\n<tr><td align=\"center\" style=\"padding:32px 20px\">\n<table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"600\" class=\"container\" style=\"width:600px;max-width:600px\">\n<!-- header · logo simples (blocks/header/logo.html) -->\n<tr><td class=\"px\" bgcolor=\"#FFFFFF\" style=\"background-color:#FFFFFF;padding:26px 40px 22px;border-bottom:1px solid rgba(40,38,33,.14)\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td valign=\"middle\" style=\"line-height:0;font-size:0\"><img src=\"https://hiagofbranco.github.io/zeom/assets/zeom-icone-96.png\" width=\"29\" height=\"29\" alt=\"\" style=\"display:block;width:29px;height:29px\"><\/td><td width=\"12\" style=\"width:12px\">&nbsp;<\/td><td valign=\"middle\" style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:28px;letter-spacing:.5px;color:#282621;line-height:29px;mso-line-height-rule:exactly\">zeom<\/td><\/tr><\/table><\/td><\/tr>\n<tr><td style=\"height:48px;line-height:48px;font-size:0\">&nbsp;<\/td><\/tr>\n<!-- seção 1 · contexto + lista + CTA -->\n<tr><td class=\"px\" style=\"padding:0 40px\">\n<div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-size:12px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:#6C664E;mso-line-height-rule:exactly;line-height:16px\">Sua conta Zeom<\/div><div style=\"height:16px;line-height:16px;font-size:0\">&nbsp;<\/div><div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-size:24px;font-weight:600;letter-spacing:-0.3px;color:#282621;mso-line-height-rule:exactly;line-height:31px\">Sua conta continua aqui, do jeito que você deixou<\/div><div style=\"height:16px;line-height:16px;font-size:0\">&nbsp;<\/div><p style=\"margin:0;font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:15px;line-height:23px;color:#3A362C;mso-line-height-rule:exactly\">Faz um tempo que você não movimenta sua conta Zeom. Ela segue ativa, com seus dados e saldos preservados, para quando você quiser retomar.<\/p><div style=\"height:24px;line-height:24px;font-size:0\">&nbsp;<\/div><div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-size:12px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:#6C664E;mso-line-height-rule:exactly;line-height:16px\">O que segue disponível<\/div><div style=\"height:16px;line-height:16px;font-size:0\">&nbsp;<\/div><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n<tr><td style=\"padding:0 0 16px\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\"><tr><td width=\"24\" valign=\"top\" style=\"width:24px;padding-top:1px\"><img src=\"https://hiagofbranco.github.io/zeom/assets/icons/png/enviar-gold.png\" width=\"22\" height=\"22\" alt=\"\" style=\"display:block;width:22px;height:22px\"><\/td><td width=\"14\" style=\"width:14px\">&nbsp;<\/td><td valign=\"top\"><div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:600;font-size:14px;color:#282621;line-height:20px\">Transferências Globais<\/div><div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:13px;color:#3A362C;line-height:19px;padding-top:3px\">Envio e conversão de moedas de forma direta.<\/div><\/td><\/tr><\/table><\/td><\/tr>\n<tr><td style=\"border-top:1px solid rgba(40,38,33,.14);padding:16px 0 16px\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\"><tr><td width=\"24\" valign=\"top\" style=\"width:24px;padding-top:1px\"><img src=\"https://hiagofbranco.github.io/zeom/assets/icons/png/cartao-gold.png\" width=\"22\" height=\"22\" alt=\"\" style=\"display:block;width:22px;height:22px\"><\/td><td width=\"14\" style=\"width:14px\">&nbsp;<\/td><td valign=\"top\"><div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:600;font-size:14px;color:#282621;line-height:20px\">Cartão em Dólar<\/div><div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:13px;color:#3A362C;line-height:19px;padding-top:3px\">Disponível para uso em compras internacionais.<\/div><\/td><\/tr><\/table><\/td><\/tr>\n<tr><td style=\"border-top:1px solid rgba(40,38,33,.14);padding:16px 0 16px\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\"><tr><td width=\"24\" valign=\"top\" style=\"width:24px;padding-top:1px\"><img src=\"https://hiagofbranco.github.io/zeom/assets/icons/png/investir-gold.png\" width=\"22\" height=\"22\" alt=\"\" style=\"display:block;width:22px;height:22px\"><\/td><td width=\"14\" style=\"width:14px\">&nbsp;<\/td><td valign=\"top\"><div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:600;font-size:14px;color:#282621;line-height:20px\">Investimentos<\/div><div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:13px;color:#3A362C;line-height:19px;padding-top:3px\">Painel para acompanhamento de ativos no exterior.<\/div><\/td><\/tr><\/table><\/td><\/tr>\n<tr><td style=\"border-top:1px solid rgba(40,38,33,.14);padding:16px 0 14px\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\"><tr><td width=\"24\" valign=\"top\" style=\"width:24px;padding-top:1px\"><img src=\"https://hiagofbranco.github.io/zeom/assets/icons/png/chat-gold.png\" width=\"22\" height=\"22\" alt=\"\" style=\"display:block;width:22px;height:22px\"><\/td><td width=\"14\" style=\"width:14px\">&nbsp;<\/td><td valign=\"top\"><div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:600;font-size:14px;color:#282621;line-height:20px\">Zeom AI<\/div><div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:13px;color:#3A362C;line-height:19px;padding-top:3px\">Consultas e suporte 24 horas por dia, no aplicativo.<\/div><\/td><\/tr><\/table><\/td><\/tr>\n<\/table><div style=\"height:24px;line-height:24px;font-size:0\">&nbsp;<\/div><!--[if mso]>\n<v:roundrect xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:w=\"urn:schemas-microsoft-com:office:word\" href=\"{{LINK_acessar_conta}}\" style=\"height:48px;v-text-anchor:middle;width:280px;\" arcsize=\"17%\" strokecolor=\"#BFBA99\" strokeweight=\"0\" fillcolor=\"#BFBA99\">\n<w:anchorlock/>\n<center style=\"color:#282621;font-family:Helvetica,Arial,sans-serif;font-size:14px;font-weight:600;\">Acessar minha conta<\/center>\n<\/v:roundrect>\n<![endif]-->\n<!--[if !mso]><!-->\n<table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"mso-hide:all\"><tr><td align=\"center\" bgcolor=\"#BFBA99\" style=\"background-color:#BFBA99;border-radius:8px\">\n<a href=\"{{LINK_acessar_conta}}\" target=\"_blank\" style=\"display:inline-block;padding:14px 28px;font-family:'Geist',Helvetica,Arial,sans-serif;font-size:14px;font-weight:600;letter-spacing:0.1px;color:#282621;text-decoration:none;border-radius:8px;mso-hide:all\">Acessar minha conta &#8594;<\/a>\n<\/td><\/tr><\/table>\n<!--<![endif]-->\n<\/td><\/tr>\n<tr><td style=\"height:48px;line-height:48px;font-size:0\">&nbsp;<\/td><\/tr>\n<!-- seção 2 · pesquisa (cta secundário) + assinatura -->\n<tr><td class=\"px\" style=\"padding:0 40px\">\n<div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-size:12px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:#6C664E;mso-line-height-rule:exactly;line-height:16px\">Conte para a gente<\/div><div style=\"height:16px;line-height:16px;font-size:0\">&nbsp;<\/div><p style=\"margin:0;font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:13px;line-height:19px;color:#3A362C;mso-line-height-rule:exactly\">Se algo não funcionou como você esperava, queremos saber. A pesquisa leva menos de 2 minutos e ajuda a melhorar a Zeom.<\/p><div style=\"height:20px;line-height:20px;font-size:0\">&nbsp;<\/div><!--[if mso]>\n<v:roundrect xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:w=\"urn:schemas-microsoft-com:office:word\" href=\"{{LINK_pesquisa_win_back}}\" style=\"height:46px;v-text-anchor:middle;width:260px;\" arcsize=\"17%\" strokecolor=\"#DDD9C5\" strokeweight=\"1px\" fillcolor=\"#FFFFFF\">\n<w:anchorlock/>\n<center style=\"color:#282621;font-family:Helvetica,Arial,sans-serif;font-size:13px;font-weight:600;\">Responder a pesquisa<\/center>\n<\/v:roundrect>\n<![endif]-->\n<!--[if !mso]><!-->\n<table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"mso-hide:all\"><tr><td align=\"center\" bgcolor=\"#FFFFFF\" style=\"background-color:#FFFFFF;border:1px solid rgba(40,38,33,.14);border-radius:8px\">\n<a href=\"{{LINK_pesquisa_win_back}}\" target=\"_blank\" style=\"display:inline-block;padding:12px 24px;font-family:'Geist',Helvetica,Arial,sans-serif;font-size:13px;font-weight:600;color:#282621;text-decoration:none;border-radius:8px;mso-hide:all\">Responder a pesquisa &#8594;<\/a>\n<\/td><\/tr><\/table>\n<!--<![endif]--><div style=\"height:32px;line-height:32px;font-size:0\">&nbsp;<\/div><p style=\"margin:0;font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:14px;line-height:21px;color:#3A362C;mso-line-height-rule:exactly\">Até breve,<br><span style=\"font-weight:600;color:#282621\">Equipe Zeom<\/span><\/p>\n<\/td><\/tr>\n<tr><td style=\"height:48px;line-height:48px;font-size:0\">&nbsp;<\/td><\/tr>\n<!-- rodapé institucional · dark, full-bleed (blocks/footer/icones-negativo.html) -->\n<tr><td bgcolor=\"#21211C\" style=\"background-color:#21211C\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\"><tr><td align=\"center\" class=\"px\" style=\"padding:56px 40px 48px\">\n<table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\" class=\"container\" style=\"width:100%;max-width:600px\">\n<tr><td align=\"center\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td valign=\"middle\" style=\"line-height:0;font-size:0\"><img src=\"https://hiagofbranco.github.io/zeom/assets/zeom-esfera-96.png\" width=\"26\" height=\"26\" alt=\"\" style=\"display:block;width:26px;height:26px\"><\/td><td width=\"10\" style=\"width:10px\">&nbsp;<\/td><td valign=\"middle\" style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:21px;letter-spacing:.3px;color:#FAFAF9;line-height:26px;mso-line-height-rule:exactly\">zeom<\/td><\/tr><\/table><\/td><\/tr>\n<tr><td align=\"center\" style=\"padding-top:20px\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" align=\"center\"><tr>\n<td align=\"center\" width=\"28\" style=\"width:28px;line-height:0;font-size:0\"><a href=\"{{LINK_instagram}}\" target=\"_blank\" style=\"text-decoration:none\"><img src=\"https://hiagofbranco.github.io/zeom/assets/icons/png/instagram-soc-dark.png\" width=\"28\" height=\"28\" alt=\"Instagram\" style=\"display:block;width:28px;height:28px\"><\/a><\/td>\n<td width=\"10\" style=\"width:10px\">&nbsp;<\/td>\n<td align=\"center\" width=\"28\" style=\"width:28px;line-height:0;font-size:0\"><a href=\"{{LINK_linkedin}}\" target=\"_blank\" style=\"text-decoration:none\"><img src=\"https://hiagofbranco.github.io/zeom/assets/icons/png/linkedin-soc-dark.png\" width=\"28\" height=\"28\" alt=\"LinkedIn\" style=\"display:block;width:28px;height:28px\"><\/a><\/td>\n<td width=\"10\" style=\"width:10px\">&nbsp;<\/td>\n<td align=\"center\" width=\"28\" style=\"width:28px;line-height:0;font-size:0\"><a href=\"{{LINK_x}}\" target=\"_blank\" style=\"text-decoration:none\"><img src=\"https://hiagofbranco.github.io/zeom/assets/icons/png/x-soc-dark.png\" width=\"28\" height=\"28\" alt=\"X\" style=\"display:block;width:28px;height:28px\"><\/a><\/td>\n<\/tr><\/table><\/td><\/tr>\n<tr><td align=\"center\" style=\"padding-top:20px;font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:11px;line-height:17px;color:#B3B3A8;text-align:center\">Você recebeu este e-mail porque sua conta Zeom está sem movimentações há um longo período.<br>{{RAZAO_SOCIAL}} · {{ENDERECO_POSTAL}}<br><br><a href=\"{{LINK_privacidade}}\" style=\"color:#B3B3A8;text-decoration:underline\">Privacidade<\/a> · <a href=\"{{LINK_termos}}\" style=\"color:#B3B3A8;text-decoration:underline\">Termos<\/a> · <a href=\"{{LINK_preferencias}}\" style=\"color:#B3B3A8;text-decoration:underline\">Preferências<\/a> · <a href=\"{{LINK_cancelar_inscricao}}\" style=\"color:#B3B3A8;text-decoration:underline\">Cancelar inscrição<\/a><\/td><\/tr>\n<\/table>\n<\/td><\/tr><\/table><\/td><\/tr>\n<\/table>\n<\/td><\/tr><\/table>\n<\/body>\n<\/html>\n", "v1-04-engajamento-d14": "<!-- Régua V1 · cópia de emails/reguas/11-prevencao-engajamento-d14.html -->\n<!-- 11 · PREVENÇÃO · ENGAJAMENTO · E-mail D14 (Entrada Padrão, Pós-KYC)\nGatilho: conta aprovada inativa há 14 dias\nObjetivo CRM: reengajamento leve + segundo ponto de retenção via Instagram (fora do e-mail)\nBlocos: header HA (logo simples) · lista linha-divisória (3 recursos) · CTA sólido · complementar Instagram com mockup de celular\n-->\n<!DOCTYPE html>\n<html lang=\"pt-BR\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n<meta name=\"color-scheme\" content=\"light\">\n<meta name=\"supported-color-schemes\" content=\"light\">\n<title>Zeom · Seus recursos continuam disponíveis<\/title>\n<!--[if mso]>\n<noscript><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96<\/o:PixelsPerInch><\/o:OfficeDocumentSettings><\/xml><\/noscript>\n<![endif]-->\n<style>\nbody,table,td{margin:0;padding:0}\nimg{border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic}\ntable{border-collapse:collapse}\n@media (max-width:600px){\n  .container{width:100% !important;max-width:100% !important}\n  .px{padding-left:24px !important;padding-right:24px !important}\n  .code-val{font-size:30px !important;letter-spacing:5px !important}\n  .card-pad{padding:24px !important}\n}\n<\/style>\n<\/head>\n<body style=\"margin:0;padding:0;background-color:#FFFFFF;-webkit-font-smoothing:antialiased\">\n<div style=\"display:none;max-height:0;overflow:hidden;mso-hide:all;font-size:1px;line-height:1px;color:#FFFFFF;opacity:0\">Acesse sua conta e acompanhe as opções para a gestão dos seus recursos.&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;<\/div>\n<table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\" bgcolor=\"#FFFFFF\" style=\"background-color:#FFFFFF\">\n<tr><td align=\"center\" style=\"padding:32px 20px\">\n<table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"600\" class=\"container\" style=\"width:600px;max-width:600px\">\n<!-- header · logo simples (blocks/header/logo.html) -->\n<tr><td class=\"px\" bgcolor=\"#FFFFFF\" style=\"background-color:#FFFFFF;padding:26px 40px 22px;border-bottom:1px solid rgba(40,38,33,.14)\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td valign=\"middle\" style=\"line-height:0;font-size:0\"><img src=\"https://hiagofbranco.github.io/zeom/assets/zeom-icone-96.png\" width=\"29\" height=\"29\" alt=\"\" style=\"display:block;width:29px;height:29px\"><\/td><td width=\"12\" style=\"width:12px\">&nbsp;<\/td><td valign=\"middle\" style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:28px;letter-spacing:.5px;color:#282621;line-height:29px;mso-line-height-rule:exactly\">zeom<\/td><\/tr><\/table><\/td><\/tr>\n<tr><td style=\"height:48px;line-height:48px;font-size:0\">&nbsp;<\/td><\/tr>\n<!-- seção 1 · contexto -->\n<tr><td class=\"px\" style=\"padding:0 40px\">\n<div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-size:12px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:#6C664E;mso-line-height-rule:exactly;line-height:16px\">Sua conta<\/div>\n<div style=\"height:16px;line-height:16px;font-size:0\">&nbsp;<\/div>\n<div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-size:24px;font-weight:600;letter-spacing:-0.3px;color:#282621;mso-line-height-rule:exactly;line-height:31px\">Sua estrutura internacional segue pronta<\/div>\n<div style=\"height:16px;line-height:16px;font-size:0\">&nbsp;<\/div>\n<p style=\"margin:0;font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:15px;line-height:23px;color:#3A362C;mso-line-height-rule:exactly\">A sua conta Zeom permanece ativa para quando você precisar realizar operações cambiais, consultar cotações ou movimentar seu saldo.<\/p>\n<div style=\"height:24px;line-height:24px;font-size:0\">&nbsp;<\/div>\n<!-- bloco de intuito · ícone grande + texto, recurso em destaque: Transferências Globais -->\n<table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\" bgcolor=\"#ECEADC\" style=\"background-color:#ECEADC;border-radius:12px\"><tr><td style=\"padding:24px\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\"><tr>\n<td width=\"48\" valign=\"top\" style=\"width:48px\"><img src=\"https://hiagofbranco.github.io/zeom/assets/icons/png/enviar-gold.png\" width=\"40\" height=\"40\" alt=\"\" style=\"display:block;width:40px;height:40px\"><\/td>\n<td width=\"16\" style=\"width:16px\">&nbsp;<\/td>\n<td valign=\"top\"><div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:600;font-size:15px;color:#282621;line-height:20px\">Comece pelo mais simples<\/div><div style=\"height:4px;line-height:4px;font-size:0\">&nbsp;<\/div><div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:13px;color:#3A362C;line-height:19px\">Transferências internacionais são o jeito mais rápido de colocar sua conta para funcionar — envie e converta moedas direto do aplicativo, com cotação transparente.<\/div><\/td>\n<\/tr><\/table><\/td><\/tr><\/table>\n<div style=\"height:24px;line-height:24px;font-size:0\">&nbsp;<\/div>\n<!--[if mso]>\n<v:roundrect xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:w=\"urn:schemas-microsoft-com:office:word\" href=\"{{LINK_acessar_conta}}\" style=\"height:48px;v-text-anchor:middle;width:280px;\" arcsize=\"17%\" strokecolor=\"#BFBA99\" strokeweight=\"0\" fillcolor=\"#BFBA99\">\n<w:anchorlock/>\n<center style=\"color:#282621;font-family:Helvetica,Arial,sans-serif;font-size:14px;font-weight:600;\">Acessar minha conta<\/center>\n<\/v:roundrect>\n<![endif]-->\n<!--[if !mso]><!-->\n<table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"mso-hide:all\"><tr><td align=\"center\" bgcolor=\"#BFBA99\" style=\"background-color:#BFBA99;border-radius:8px\">\n<a href=\"{{LINK_acessar_conta}}\" target=\"_blank\" style=\"display:inline-block;padding:14px 28px;font-family:'Geist',Helvetica,Arial,sans-serif;font-size:14px;font-weight:600;letter-spacing:0.1px;color:#282621;text-decoration:none;border-radius:8px;mso-hide:all\">Acessar minha conta &#8594;<\/a>\n<\/td><\/tr><\/table>\n<!--<![endif]-->\n<\/td><\/tr>\n<tr><td style=\"height:48px;line-height:48px;font-size:0\">&nbsp;<\/td><\/tr>\n<!-- seção 2 · lista linha-divisória -->\n<tr><td class=\"px\" style=\"padding:0 40px\">\n<div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-size:12px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:#6C664E;mso-line-height-rule:exactly;line-height:16px\">Recursos ativos no seu aplicativo<\/div>\n<div style=\"height:16px;line-height:16px;font-size:0\">&nbsp;<\/div>\n<table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n<tr><td style=\"padding:0 0 16px\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\"><tr><td width=\"24\" valign=\"top\" style=\"width:24px;padding-top:1px\"><img src=\"https://hiagofbranco.github.io/zeom/assets/icons/png/enviar-gold.png\" width=\"22\" height=\"22\" alt=\"\" style=\"display:block;width:22px;height:22px\"><\/td><td width=\"14\" style=\"width:14px\">&nbsp;<\/td><td valign=\"top\"><div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:600;font-size:14px;color:#282621;line-height:20px\">Transferências Globais<\/div><div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:13px;color:#3A362C;line-height:19px;padding-top:3px\">Envio e conversão de moedas de forma direta.<\/div><\/td><\/tr><\/table><\/td><\/tr>\n<tr><td style=\"border-top:1px solid rgba(40,38,33,.14);padding:16px 0 16px\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\"><tr><td width=\"24\" valign=\"top\" style=\"width:24px;padding-top:1px\"><img src=\"https://hiagofbranco.github.io/zeom/assets/icons/png/cartao-gold.png\" width=\"22\" height=\"22\" alt=\"\" style=\"display:block;width:22px;height:22px\"><\/td><td width=\"14\" style=\"width:14px\">&nbsp;<\/td><td valign=\"top\"><div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:600;font-size:14px;color:#282621;line-height:20px\">Cartão em Dólar<\/div><div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:13px;color:#3A362C;line-height:19px;padding-top:3px\">Disponível para uso em compras internacionais.<\/div><\/td><\/tr><\/table><\/td><\/tr>\n<tr><td style=\"border-top:1px solid rgba(40,38,33,.14);padding:16px 0 14px\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\"><tr><td width=\"24\" valign=\"top\" style=\"width:24px;padding-top:1px\"><img src=\"https://hiagofbranco.github.io/zeom/assets/icons/png/investir-gold.png\" width=\"22\" height=\"22\" alt=\"\" style=\"display:block;width:22px;height:22px\"><\/td><td width=\"14\" style=\"width:14px\">&nbsp;<\/td><td valign=\"top\"><div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:600;font-size:14px;color:#282621;line-height:20px\">Investimentos<\/div><div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:13px;color:#3A362C;line-height:19px;padding-top:3px\">Painel para acompanhamento de ativos no exterior.<\/div><\/td><\/tr><\/table><\/td><\/tr>\n<\/table>\n<\/td><\/tr>\n<tr><td style=\"height:48px;line-height:48px;font-size:0\">&nbsp;<\/td><\/tr>\n<!-- seção 3 · instagram (mesmo ritmo, cta secundário) -->\n<tr><td class=\"px\" style=\"padding:0 40px\">\n<div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-size:12px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:#6C664E;mso-line-height-rule:exactly;line-height:16px\">Acompanhe a Zeom no Instagram<\/div>\n<div style=\"height:16px;line-height:16px;font-size:0\">&nbsp;<\/div>\n<table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" align=\"center\"><tr><td align=\"center\" style=\"padding-bottom:20px\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td bgcolor=\"#ECEADC\" align=\"center\" valign=\"middle\" width=\"72\" height=\"72\" style=\"width:72px;height:72px;background-color:#ECEADC;border-radius:36px;line-height:72px;font-size:0\"><img src=\"https://hiagofbranco.github.io/zeom/assets/icons/png/instagram-gold.png\" width=\"30\" height=\"30\" alt=\"Instagram\" style=\"display:inline-block;width:30px;height:30px;vertical-align:middle\"><\/td><\/tr><\/table><\/td><\/tr><\/table>\n<p style=\"margin:0;font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:13px;line-height:19px;color:#3A362C;mso-line-height-rule:exactly\">Acompanhe atualizações sobre a plataforma, conteúdos sobre câmbio e novidades da comunidade no nosso perfil oficial.<\/p>\n<div style=\"height:24px;line-height:24px;font-size:0\">&nbsp;<\/div>\n<!--[if mso]>\n<v:roundrect xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:w=\"urn:schemas-microsoft-com:office:word\" href=\"https://instagram.com/zeom.global\" style=\"height:46px;v-text-anchor:middle;width:260px;\" arcsize=\"17%\" strokecolor=\"rgba(40,38,33,.14)\" strokeweight=\"1px\" fillcolor=\"#FFFFFF\">\n<w:anchorlock/>\n<center style=\"color:#282621;font-family:Helvetica,Arial,sans-serif;font-size:13px;font-weight:600;\">Siga @zeom.global no Instagram<\/center>\n<\/v:roundrect>\n<![endif]-->\n<!--[if !mso]><!-->\n<table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"mso-hide:all\"><tr><td align=\"center\" bgcolor=\"#FFFFFF\" style=\"background-color:#FFFFFF;border:1px solid rgba(40,38,33,.14);border-radius:8px\">\n<a href=\"https://instagram.com/zeom.global\" target=\"_blank\" style=\"display:inline-block;padding:12px 24px;font-family:'Geist',Helvetica,Arial,sans-serif;font-size:13px;font-weight:600;color:#282621;text-decoration:none;border-radius:8px;mso-hide:all\">Siga @zeom.global no Instagram &#8594;<\/a>\n<\/td><\/tr><\/table>\n<!--<![endif]-->\n<\/td><\/tr>\n<tr><td style=\"height:0;line-height:0;font-size:0\">&nbsp;<\/td><\/tr>\n<\/table>\n<\/td><\/tr>\n<!-- rodapé institucional · dark, full-bleed (blocks/footer/icones-negativo.html) -->\n<tr><td bgcolor=\"#21211C\" style=\"background-color:#21211C\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\"><tr><td align=\"center\" class=\"px\" style=\"padding:56px 40px 48px\">\n<table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\" class=\"container\" style=\"width:100%;max-width:600px\">\n<tr><td align=\"center\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td valign=\"middle\" style=\"line-height:0;font-size:0\"><img src=\"https://hiagofbranco.github.io/zeom/assets/zeom-esfera-96.png\" width=\"26\" height=\"26\" alt=\"\" style=\"display:block;width:26px;height:26px\"><\/td><td width=\"10\" style=\"width:10px\">&nbsp;<\/td><td valign=\"middle\" style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:21px;letter-spacing:.3px;color:#FAFAF9;line-height:26px;mso-line-height-rule:exactly\">zeom<\/td><\/tr><\/table><\/td><\/tr>\n<tr><td align=\"center\" style=\"padding-top:20px\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" align=\"center\"><tr>\n<td align=\"center\" width=\"28\" style=\"width:28px;line-height:0;font-size:0\"><a href=\"{{LINK_instagram}}\" target=\"_blank\" style=\"text-decoration:none\"><img src=\"https://hiagofbranco.github.io/zeom/assets/icons/png/instagram-soc-dark.png\" width=\"28\" height=\"28\" alt=\"Instagram\" style=\"display:block;width:28px;height:28px\"><\/a><\/td>\n<td width=\"10\" style=\"width:10px\">&nbsp;<\/td>\n<td align=\"center\" width=\"28\" style=\"width:28px;line-height:0;font-size:0\"><a href=\"{{LINK_linkedin}}\" target=\"_blank\" style=\"text-decoration:none\"><img src=\"https://hiagofbranco.github.io/zeom/assets/icons/png/linkedin-soc-dark.png\" width=\"28\" height=\"28\" alt=\"LinkedIn\" style=\"display:block;width:28px;height:28px\"><\/a><\/td>\n<td width=\"10\" style=\"width:10px\">&nbsp;<\/td>\n<td align=\"center\" width=\"28\" style=\"width:28px;line-height:0;font-size:0\"><a href=\"{{LINK_x}}\" target=\"_blank\" style=\"text-decoration:none\"><img src=\"https://hiagofbranco.github.io/zeom/assets/icons/png/x-soc-dark.png\" width=\"28\" height=\"28\" alt=\"X\" style=\"display:block;width:28px;height:28px\"><\/a><\/td>\n<\/tr><\/table><\/td><\/tr>\n<tr><td align=\"center\" style=\"padding-top:20px;font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:11px;line-height:17px;color:#B3B3A8;text-align:center\">Você recebeu este e-mail porque sua conta Zeom está inativa há 14 dias.<br>{{RAZAO_SOCIAL}} · {{ENDERECO_POSTAL}}<br><br><a href=\"{{LINK_privacidade}}\" style=\"color:#B3B3A8;text-decoration:underline\">Privacidade<\/a> · <a href=\"{{LINK_termos}}\" style=\"color:#B3B3A8;text-decoration:underline\">Termos<\/a> · <a href=\"{{LINK_preferencias}}\" style=\"color:#B3B3A8;text-decoration:underline\">Preferências<\/a> · <a href=\"{{LINK_cancelar_inscricao}}\" style=\"color:#B3B3A8;text-decoration:underline\">Cancelar inscrição<\/a><\/td><\/tr>\n<\/table>\n<\/td><\/tr><\/table><\/td><\/tr>\n<\/table>\n<\/body>\n<\/html>\n", "v1-05-oportunidades-cambio": "<!-- Régua V1 · cópia de emails/reguas/15-ongoing-oportunidades-cambio.html -->\n<!-- 15 · ONGOING · OPORTUNIDADES · Câmbio, de forma simples (evento de variação cambial, versão neutra)\nGatilho: variação cambial — hoje manual, versão sem gatilho de urgência\nObjetivo CRM: manter presença institucional, sem alertar, sem vender\nTom de voz: paz em movimento — nota editorial, quase silenciosa\nBlocos: header/logo (simples, só a marca) · hero/benefit (duas linhas, sem eyebrow) · corpo/para (parágrafo único) · cta/link (texto) · footer/min\n-->\n<!DOCTYPE html>\n<html lang=\"pt-BR\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n<meta name=\"color-scheme\" content=\"light\">\n<meta name=\"supported-color-schemes\" content=\"light\">\n<title>Zeom · Câmbio, de forma simples<\/title>\n<!--[if mso]>\n<noscript><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96<\/o:PixelsPerInch><\/o:OfficeDocumentSettings><\/xml><\/noscript>\n<![endif]-->\n<style>\nbody,table,td{margin:0;padding:0}\nimg{border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic}\ntable{border-collapse:collapse}\n@media (max-width:600px){\n  .container{width:100% !important;max-width:100% !important}\n  .px{padding-left:24px !important;padding-right:24px !important}\n}\n<\/style>\n<\/head>\n<body style=\"margin:0;padding:0;background-color:#FFFFFF;-webkit-font-smoothing:antialiased\">\n<div style=\"display:none;max-height:0;overflow:hidden;mso-hide:all;font-size:1px;line-height:1px;color:#FFFFFF;opacity:0\">Consulte cotações de diferentes moedas e acompanhe o mercado pela sua conta.&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;<\/div>\n<table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\" bgcolor=\"#FFFFFF\" style=\"background-color:#FFFFFF\">\n<tr><td align=\"center\" style=\"padding:40px 20px\">\n<table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"600\" class=\"container\" style=\"width:600px;max-width:600px\">\n<!-- header · logo simples, à esquerda (blocks/header/logo.html) -->\n<tr><td class=\"px\" style=\"padding:0 40px\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td valign=\"middle\" style=\"line-height:0;font-size:0\"><img src=\"https://hiagofbranco.github.io/zeom/assets/zeom-icone-96.png\" width=\"24\" height=\"24\" alt=\"\" style=\"display:block;width:24px;height:24px\"><\/td><td width=\"9\" style=\"width:9px\">&nbsp;<\/td><td valign=\"middle\" style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:18px;letter-spacing:.3px;color:#282621;line-height:24px;mso-line-height-rule:exactly\">zeom<\/td><\/tr><\/table><\/td><\/tr>\n<tr><td style=\"height:64px;line-height:64px;font-size:0\">&nbsp;<\/td><\/tr>\n<!-- hero · benefit, duas linhas, sem eyebrow -->\n<tr><td class=\"px\" style=\"padding:0 40px\">\n<div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-size:26px;font-weight:400;letter-spacing:-0.3px;color:#282621;mso-line-height-rule:exactly;line-height:33px\">Acompanhar o câmbio.<\/div>\n<div style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-size:26px;font-weight:300;letter-spacing:-0.3px;color:#8A8371;mso-line-height-rule:exactly;line-height:33px\">Sem complicar.<\/div>\n<\/td><\/tr>\n<tr><td style=\"height:26px;line-height:26px;font-size:0\">&nbsp;<\/td><\/tr>\n<!-- corpo · parágrafo único (blocks/corpo/para.html) -->\n<tr><td class=\"px\" style=\"padding:0 40px\">\n<p style=\"margin:0;font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:15px;line-height:24px;color:#3A362C;mso-line-height-rule:exactly\">As principais moedas ficam sempre visíveis no seu aplicativo. Consulte quando quiser — sem alertas, sem pressa.<\/p>\n<\/td><\/tr>\n<tr><td style=\"height:36px;line-height:36px;font-size:0\">&nbsp;<\/td><\/tr>\n<!-- cta · link simples, sem caixa (blocks/cta/link.html) -->\n<tr><td class=\"px\" style=\"padding:0 40px\">\n<a href=\"{{LINK_cotacoes_app}}\" target=\"_blank\" style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-size:14px;font-weight:600;color:#282621;text-decoration:underline;text-underline-offset:3px\">Ver cotações no app &#8594;<\/a>\n<\/td><\/tr>\n<tr><td style=\"height:52px;line-height:52px;font-size:0\">&nbsp;<\/td><\/tr>\n<\/table>\n<\/td><\/tr>\n<!-- rodapé institucional · dark, full-bleed (blocks/footer/icones-negativo.html) -->\n<tr><td bgcolor=\"#21211C\" style=\"background-color:#21211C\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\"><tr><td align=\"center\" class=\"px\" style=\"padding:56px 40px 48px\">\n<table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\" class=\"container\" style=\"width:100%;max-width:600px\">\n<tr><td align=\"center\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td valign=\"middle\" style=\"line-height:0;font-size:0\"><img src=\"https://hiagofbranco.github.io/zeom/assets/zeom-esfera-96.png\" width=\"26\" height=\"26\" alt=\"\" style=\"display:block;width:26px;height:26px\"><\/td><td width=\"10\" style=\"width:10px\">&nbsp;<\/td><td valign=\"middle\" style=\"font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:21px;letter-spacing:.3px;color:#FAFAF9;line-height:26px;mso-line-height-rule:exactly\">zeom<\/td><\/tr><\/table><\/td><\/tr>\n<tr><td align=\"center\" style=\"padding-top:20px\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" align=\"center\"><tr>\n<td align=\"center\" width=\"28\" style=\"width:28px;line-height:0;font-size:0\"><a href=\"{{LINK_instagram}}\" target=\"_blank\" style=\"text-decoration:none\"><img src=\"https://hiagofbranco.github.io/zeom/assets/icons/png/instagram-soc-dark.png\" width=\"28\" height=\"28\" alt=\"Instagram\" style=\"display:block;width:28px;height:28px\"><\/a><\/td>\n<td width=\"10\" style=\"width:10px\">&nbsp;<\/td>\n<td align=\"center\" width=\"28\" style=\"width:28px;line-height:0;font-size:0\"><a href=\"{{LINK_linkedin}}\" target=\"_blank\" style=\"text-decoration:none\"><img src=\"https://hiagofbranco.github.io/zeom/assets/icons/png/linkedin-soc-dark.png\" width=\"28\" height=\"28\" alt=\"LinkedIn\" style=\"display:block;width:28px;height:28px\"><\/a><\/td>\n<td width=\"10\" style=\"width:10px\">&nbsp;<\/td>\n<td align=\"center\" width=\"28\" style=\"width:28px;line-height:0;font-size:0\"><a href=\"{{LINK_x}}\" target=\"_blank\" style=\"text-decoration:none\"><img src=\"https://hiagofbranco.github.io/zeom/assets/icons/png/x-soc-dark.png\" width=\"28\" height=\"28\" alt=\"X\" style=\"display:block;width:28px;height:28px\"><\/a><\/td>\n<\/tr><\/table><\/td><\/tr>\n<tr><td align=\"center\" style=\"padding-top:20px;font-family:'Geist',Helvetica,Arial,sans-serif;font-weight:300;font-size:11px;line-height:17px;color:#B3B3A8;text-align:center\">Você recebeu este e-mail porque sua conta Zeom está ativa.<br>{{RAZAO_SOCIAL}} · {{ENDERECO_POSTAL}}<br><br><a href=\"{{LINK_privacidade}}\" style=\"color:#B3B3A8;text-decoration:underline\">Privacidade<\/a> · <a href=\"{{LINK_termos}}\" style=\"color:#B3B3A8;text-decoration:underline\">Termos<\/a> · <a href=\"{{LINK_preferencias}}\" style=\"color:#B3B3A8;text-decoration:underline\">Preferências<\/a> · <a href=\"{{LINK_cancelar_inscricao}}\" style=\"color:#B3B3A8;text-decoration:underline\">Cancelar inscrição<\/a><\/td><\/tr>\n<\/table>\n<\/td><\/tr><\/table><\/td><\/tr>\n<\/table>\n<\/body>\n<\/html>\n"}</script>
+<script type="application/json" id="email-subjects-data">{"Seu cartão internacional está esperando": "v1-01-repescagem-cartao-d7", "Seus investimentos internacionais estão disponíveis": "v1-02-repescagem-investimento", "Seus recursos internacionais continuam por aqui": "v1-03-prevencao-valor-d7", "Seus recursos continuam disponíveis": "v1-04-engajamento-d14", "Câmbio, de forma simples": "v1-05-oportunidades-cambio", "Sua conta Zeom continua ativa": "v1-06-churn-win-back"}</script>
+<script type="application/json" id="zeom-icon-data">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</script>
+<script>
+const ICONS = {
+  email: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 6l10 7 10-7"/></svg>',
+  push: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg>',
+  whatsapp: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.6 15L2 22l5.2-1.4A10 10 0 1012 2zm5.4 14.2c-.2.6-1.3 1.2-1.9 1.3-.5.1-1.1.1-1.8-.1-.4-.1-1-.3-1.6-.6-2.9-1.2-4.7-4.1-4.9-4.3-.1-.2-1.2-1.6-1.2-3s.7-2.1 1-2.4c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5.2.5.7 1.8.8 1.9.1.2.1.3 0 .5-.1.2-.1.3-.3.5-.1.2-.3.4-.4.5-.2.2-.3.4-.1.7.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.5 1.5.3.1.5.1.6-.1.2-.2.7-.8.9-1.1.2-.3.4-.2.6-.1.2.1 1.5.7 1.8.8.3.1.5.2.6.3.1.2.1.7-.1 1.3z"/></svg>'
+};
+const CHAN_LABEL = { email:'E-mail', push:'Push', whatsapp:'WhatsApp' };
+
+const FASES = {
+  "ativacao": {
+    "nome": "Prevenção · Valor & Repescagem",
+    "classe": "pre",
+    "desc": "Cartão, investimento e multiconta parados. Espaço reservado para uma trilha de conteúdo educacional futura, no tom do Zeom AI."
+  },
+  "engajamento": {
+    "nome": "Prevenção · Engajamento",
+    "classe": "pre",
+    "desc": "Cliente já ativado e sem transação · 21 dias · fecha no push D21"
+  },
+  "oportunidades": {
+    "nome": "Ongoing · Oportunidades",
+    "classe": "ong",
+    "desc": "Gatilho de mercado (variação cambial) · versão neutra, sem urgência"
+  },
+  "churn": {
+    "nome": "Churn · Win Back",
+    "classe": "churn",
+    "desc": "Inativo por longo período · assinado pela Equipe Zeom · copy em proposta, aguardando aprovação"
+  }
+
+};
+
+// Cada comunicação: { fase, canal, dia, trigger, campos:[{label,value}], corpo }
+const DATA = [
+ {
+  "fase": "ativacao",
+  "canal": "email",
+  "dia": "D7",
+  "trigger": "1 semana sem ativar o cartão — Repescagem · Cartão",
+  "campos": [
+   {
+    "label": "Assunto",
+    "value": "Seu cartão internacional está esperando"
+   }
+  ],
+  "corpo": "Ative quando quiser — sem prazo para isso mudar.",
+  "emailId": "v1-01-repescagem-cartao-d7"
+ },
+ {
+  "fase": "ativacao",
+  "canal": "email",
+  "dia": "D+X",
+  "trigger": "Fez Pix mas nunca investiu, X dias depois — Repescagem · Investimento",
+  "campos": [
+   {
+    "label": "Assunto",
+    "value": "Seus investimentos internacionais estão disponíveis"
+   }
+  ],
+  "corpo": "Sem valor mínimo para começar, no seu tempo.",
+  "emailId": "v1-02-repescagem-investimento"
+ },
+ {
+  "fase": "ativacao",
+  "canal": "email",
+  "dia": "D7",
+  "trigger": "1 semana sem ativar cartão ou multiconta — Prevenção · Valor",
+  "campos": [
+   {
+    "label": "Assunto",
+    "value": "Seus recursos internacionais continuam por aqui"
+   }
+  ],
+  "corpo": "Cartão e multiconta, prontos para quando você quiser usar.",
+  "emailId": "v1-03-prevencao-valor-d7"
+ },
+ {
+  "fase": "engajamento",
+  "canal": "push",
+  "dia": "D7",
+  "trigger": "7 dias sem transação (cliente já ativado)",
+  "campos": [
+   {
+    "label": "Título",
+    "value": "Sua conta segue disponível"
+   }
+  ],
+  "corpo": "Seus recursos continuam ali, no app."
+ },
+ {
+  "fase": "engajamento",
+  "canal": "email",
+  "dia": "D14",
+  "trigger": "14 dias sem transação",
+  "campos": [
+   {
+    "label": "Assunto",
+    "value": "Seus recursos continuam disponíveis"
+   }
+  ],
+  "corpo": "Sua conta permanece pronta para acompanhar suas movimentações.",
+  "emailId": "v1-04-engajamento-d14"
+ },
+ {
+  "fase": "engajamento",
+  "canal": "push",
+  "dia": "D21",
+  "trigger": "21 dias sem transação — fechamento da régua",
+  "campos": [
+   {
+    "label": "Título",
+    "value": "No seu ritmo"
+   }
+  ],
+  "corpo": "Um Pix é suficiente para voltar a movimentar sua conta."
+ },
+ {
+  "fase": "oportunidades",
+  "canal": "push",
+  "dia": "Evento",
+  "trigger": "Variação cambial — hoje manual, futuramente automatizado",
+  "campos": [
+   {
+    "label": "Título",
+    "value": "Acompanhe as moedas que você usa"
+   }
+  ],
+  "corpo": "Consulte cotações atualizadas e acompanhe o mercado pela sua conta."
+ },
+ {
+  "fase": "oportunidades",
+  "canal": "email",
+  "dia": "Evento",
+  "trigger": "Variação cambial — versão neutra, sem gatilho de urgência",
+  "campos": [
+   {
+    "label": "Assunto",
+    "value": "Câmbio, de forma simples"
+   }
+  ],
+  "corpo": "Consulte cotações de diferentes moedas e acompanhe o mercado pela sua conta.",
+  "emailId": "v1-05-oportunidades-cambio"
+ },
+ {
+  "fase": "churn",
+  "canal": "push",
+  "dia": "A detalhar",
+  "trigger": "Inativo por longo período / esgotou qualquer régua de prevenção",
+  "campos": [
+   {
+    "label": "Título",
+    "value": "Sua conta Zeom continua ativa"
+   }
+  ],
+  "corpo": "Seus recursos seguem disponíveis no app, quando fizer sentido retomar.",
+  "status": "Proposta de copy"
+ },
+ {
+  "fase": "churn",
+  "canal": "email",
+  "dia": "A detalhar",
+  "trigger": "Inativo por longo período / esgotou qualquer régua de prevenção · assinado Equipe Zeom",
+  "campos": [
+   {
+    "label": "Assunto",
+    "value": "Sua conta Zeom continua ativa"
+   }
+  ],
+  "corpo": "Seus recursos seguem disponíveis, para quando fizer sentido retomar.",
+  "emailId": "v1-06-churn-win-back",
+  "status": "Proposta de copy"
+ }
+];
+
+// ---------- email preview (added) ----------
+const EMAIL_TEMPLATES = JSON.parse(document.getElementById('email-templates-data').textContent);
+const EMAIL_SUBJECT_TO_ID = JSON.parse(document.getElementById('email-subjects-data').textContent);
+const ZEOM_ICON_URI = 'data:image/png;base64,' + document.getElementById('zeom-icon-data').textContent.trim();
+
+function getEmailVariants(subject){
+  const id = EMAIL_SUBJECT_TO_ID[subject];
+  return id ? [{ tag: null, id }] : [];
+}
+
+function escapeHtml(s){
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+function formatWhatsappText(s){
+  return escapeHtml(s)
+    .replace(/\*(.+?)\*/g, '<b>$1</b>')
+    .replace(/_(.+?)_/g, '<i>$1</i>');
+}
+function formatPushTime(){
+  const now = new Date();
+  let h = now.getHours(), m = now.getMinutes();
+  return String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0');
+}
+
+function fitEmailIframe(f){
+  try{
+    const h = f.contentDocument.body.scrollHeight;
+    if(h && h > 10) f.style.height = (h + 4) + 'px';
+  }catch(e){}
+}
+function armEmailIframe(f){
+  let tries = 0;
+  const iv = setInterval(() => { fitEmailIframe(f); tries++; if(tries > 40) clearInterval(iv); }, 150);
+  f.addEventListener('load', () => {
+    fitEmailIframe(f);
+    setTimeout(() => fitEmailIframe(f), 200);
+    setTimeout(() => fitEmailIframe(f), 600);
+    setTimeout(() => fitEmailIframe(f), 1200);
+    clearInterval(iv);
+  });
+}
+
+let currentPreviewKind = null; // 'email' | 'push' | null
+
+function switchTab(which){
+  const isPreview = which === 'preview';
+  document.getElementById('tab-campos').classList.toggle('active', !isPreview);
+  document.getElementById('tab-preview').classList.toggle('active', isPreview);
+  document.getElementById('m-fields').style.display = isPreview ? 'none' : 'block';
+  document.getElementById('email-preview').style.display = (isPreview && currentPreviewKind === 'email') ? 'block' : 'none';
+  document.getElementById('push-preview').style.display = (isPreview && currentPreviewKind === 'push') ? 'block' : 'none';
+  document.getElementById('wa-preview').style.display = (isPreview && currentPreviewKind === 'whatsapp') ? 'flex' : 'none';
+}
+
+const H = 740;
+// ---------- render stage 1 (flowchart) ----------
+// canvas: viewBox 0 0 900 H — main spine x=260, side (prevenção) x=650
+const flowWrap = document.getElementById('flow-wrap');
+
+function countOf(key){ return DATA.filter(d => d.fase === key).length; }
+
+const svgNS = 'http://www.w3.org/2000/svg';
+let svgLines = `
+  <defs>
+    <marker id="arGray" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#8A97A8"/></marker>
+    <marker id="arAmber" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#C98A00"/></marker>
+  </defs>
+  <line x1="260" y1="63"  x2="260" y2="100" stroke="#8A97A8" stroke-width="1.6" marker-end="url(#arGray)"/>
+  <line x1="260" y1="195" x2="260" y2="240" stroke="#8A97A8" stroke-width="1.6" marker-end="url(#arGray)"/>
+  <line x1="260" y1="335" x2="260" y2="383" stroke="#8A97A8" stroke-width="1.6" marker-end="url(#arGray)"/>
+  <line x1="260" y1="452" x2="260" y2="500" stroke="#8A97A8" stroke-width="1.6" marker-end="url(#arGray)"/>
+  <line x1="260" y1="595" x2="260" y2="650" stroke="#8A97A8" stroke-width="1.6" marker-end="url(#arGray)"/>
+  <line x1="305" y1="150" x2="505" y2="150" stroke="#D9A420" stroke-width="1.6" stroke-dasharray="4 4" marker-end="url(#arAmber)"/>
+  <line x1="305" y1="290" x2="515" y2="290" stroke="#D9A420" stroke-width="1.6" stroke-dasharray="4 4" marker-end="url(#arAmber)"/>
+  <line x1="305" y1="550" x2="515" y2="550" stroke="#B3AD98" stroke-width="1.6" stroke-dasharray="4 4" marker-end="url(#arGray)"/>
+`;
+flowWrap.innerHTML = `<svg viewBox="0 0 900 ${H}" preserveAspectRatio="none">${svgLines}</svg>`;
+
+const CHAN_SHORT = { email:'E-mail', push:'Push', whatsapp:'WhatsApp' };
+function sequenceSummary(key){
+  return DATA.filter(d => d.fase === key).map(it => `${CHAN_SHORT[it.canal]} ${it.dia}`).join(' → ');
+}
+
+function addNode({x, y, w, h, cls, label, faseKey, extraLabel, sequence}){
+  const el = document.createElement('div');
+  const isV1Node = cls === 'n-v1';
+  el.className = 'fnode ' + cls + (faseKey && !isV1Node ? ' clickable' : '') + (isV1Node ? ' not-allowed' : '');
+  el.style.left = (x/900*100) + '%';
+  el.style.top = (y/H*100) + '%';
+  el.style.width = (w/900*100) + '%';
+  el.style.height = (h/H*100) + '%';
+  if(cls === 'diamond'){
+    el.innerHTML = `<span class="dtext">${label}</span>`;
+  } else {
+    const count = faseKey ? countOf(faseKey) : null;
+    const countHtml = isV1Node
+      ? `<span class="fcount">To be done</span>`
+      : (sequence && faseKey ? `<span class="fcount fseq">${sequenceSummary(faseKey)}</span>`
+      : (count!==null ? `<span class="fcount">${count} comunicaç${count===1?'ão':'ões'}</span>` : (extraLabel ? `<span class="fcount" style="opacity:.65;">${extraLabel}</span>` : '')));
+    el.innerHTML = `<span class="flabel">${label}</span>${countHtml}`;
+  }
+  if(faseKey && !isV1Node){ el.onclick = () => showStage2(faseKey); }
+  flowWrap.appendChild(el);
+}
+
+
+addNode({x:260, y:40,  w:240, h:46, cls:'hex', label:'Início · cliente com conta ativa'});
+addNode({x:260, y:150, w:90,  h:90, cls:'diamond', label:'Usou cartão, multiconta e investimentos?'});
+addNode({x:260, y:290, w:90,  h:90, cls:'diamond', label:'Transacionou nos últimos 7 dias?'});
+addNode({x:260, y:420, w:360, h:64, cls:'n-ong', label:FASES.oportunidades.nome, faseKey:'oportunidades', extraLabel:'Gatilho de mercado'});
+addNode({x:260, y:550, w:90,  h:90, cls:'diamond', label:'Continua engajado?'});
+addNode({x:260, y:680, w:220, h:50, cls:'end-node', label:'✓ Cliente ativo'});
+addNode({x:650, y:150, w:290, h:100, cls:'n-pre', label:FASES.ativacao.nome, faseKey:'ativacao', sequence:true});
+addNode({x:650, y:290, w:270, h:92,  cls:'n-pre', label:FASES.engajamento.nome, faseKey:'engajamento', sequence:true});
+addNode({x:650, y:550, w:270, h:64,  cls:'n-churn', label:FASES.churn.nome, faseKey:'churn'});
+[[405,138],[405,278],[405,538]].forEach(([lx,ly]) => {
+  const lbl = document.createElement('div');
+  lbl.className = 'flabel-not';
+  lbl.style.left = (lx/900*100)+'%';
+  lbl.style.top = (ly/H*100)+'%';
+  lbl.textContent = 'não';
+  flowWrap.appendChild(lbl);
+});
+
+// ---------- stage navigation ----------
+function showStage1(){
+  document.getElementById('stage-reguas').style.display = 'block';
+  document.getElementById('stage-comms').style.display = 'none';
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function showStage2(faseKey){
+  const f = FASES[faseKey];
+  document.getElementById('stage-reguas').style.display = 'none';
+  document.getElementById('stage-comms').style.display = 'block';
+  document.getElementById('comms-fase-tag').className = 'fase-tag fase-' + f.classe;
+  document.getElementById('comms-fase-tag').textContent = f.nome.split('·')[0].trim();
+  document.getElementById('comms-title').textContent = f.nome;
+  document.getElementById('comms-sub').textContent = f.desc;
+
+  const list = document.getElementById('bubble-list');
+  list.innerHTML = '';
+  const items = DATA.filter(d => d.fase === faseKey);
+  items.forEach((item, idx) => {
+    const headline = item.campos[0] ? item.campos[0].value : item.corpo.split('\n')[0];
+    const isV1 = false;
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble chan-' + item.canal + (isV1 ? ' is-v1' : '');
+    bubble.innerHTML = `
+      <div class="chan-icon">${ICONS[item.canal]}</div>
+      <div class="info">
+        <div class="headline">${headline}</div>
+        <div class="trigger">${item.trigger}</div>
+      </div>
+      ${item.status ? '<span class="status-pill">' + item.status + '</span>' : ''}
+      <span class="day-chip">${item.dia}</span>
+      <button class="ver-mais"${isV1 ? ' disabled' : ''}>Ver mais</button>
+    `;
+    if(isV1){
+      bubble.classList.add('not-allowed');
+    } else {
+      bubble.querySelector('.ver-mais').onclick = () => openModal(faseKey, idx);
+    }
+    list.appendChild(bubble);
+  });
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// ---------- modal ----------
+let currentCopyText = '';
+let currentEmailHtml = null;
+
+function openModal(faseKey, idx){
+  const f = FASES[faseKey];
+  const items = DATA.filter(d => d.fase === faseKey);
+  const item = items[idx];
+
+  document.getElementById('m-fase').className = 'm-fase';
+  document.getElementById('m-fase').style.color = ({onb:'#2B6EF5',pre:'#9A6B00',exp:'#7C4DFF',ong:'#0A7A6C',churn:'#6B6656'})[f.classe];
+  document.getElementById('m-fase').textContent = f.nome;
+
+  document.getElementById('m-chan-row').innerHTML = `
+    <span class="m-chan chan-${item.canal}" style="background:${item.canal==='email'?'var(--email-bg)':item.canal==='push'?'var(--push-bg)':'var(--wa-bg)'}; color:${item.canal==='email'?'var(--email)':item.canal==='push'?'var(--push)':'var(--wa)'};">
+      ${ICONS[item.canal]} ${CHAN_LABEL[item.canal]}
+    </span>
+    <span class="day-chip">${item.dia}</span>
+  `;
+  document.getElementById('m-trigger').innerHTML = '<b>Trigger:</b> ' + item.trigger;
+
+  let fieldsHtml = '';
+  let copyParts = [];
+  let fieldTexts = [];
+  const COPY_ICON_SM = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg>';
+  const CHECK_ICON_SM = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M20 6L9 17l-5-5"/></svg>';
+
+  item.campos.forEach(c => {
+    const fi = fieldTexts.length;
+    fieldTexts.push(c.value);
+    fieldsHtml += `<div class="m-field-label"><span>${c.label}</span><button class="field-copy-btn" data-fi="${fi}">${COPY_ICON_SM} Copiar</button></div><div class="m-field-value">${c.value}</div>`;
+    copyParts.push(c.value);
+  });
+  const bodyLabel = item.campos.length ? 'Preheader / Texto' : 'Mensagem';
+  const bodyIdx = fieldTexts.length;
+  fieldTexts.push(item.corpo);
+  fieldsHtml += `<div class="m-field-label"><span>${bodyLabel}</span><button class="field-copy-btn" data-fi="${bodyIdx}">${COPY_ICON_SM} Copiar</button></div><div class="m-body-box">${item.corpo}</div>`;
+  copyParts.push(item.corpo);
+
+  document.getElementById('m-fields').innerHTML = fieldsHtml;
+  document.querySelectorAll('#m-fields .field-copy-btn').forEach(btn => {
+    btn.addEventListener('click', () => copyField(fieldTexts[+btn.dataset.fi], btn, COPY_ICON_SM, CHECK_ICON_SM));
+  });
+  currentCopyText = copyParts.join('\n\n');
+
+  const btn = document.getElementById('copy-btn');
+  btn.classList.remove('copied');
+  document.getElementById('copy-btn-label').textContent = 'Copiar tudo';
+  currentEmailHtml = null;
+
+  const subjectField = item.campos.find(c => c.label === 'Assunto');
+  const emailVariants = item.canal === 'email'
+    ? (item.emailId ? [{ tag: null, id: item.emailId }] : (subjectField ? getEmailVariants(subjectField.value) : []))
+    : [];
+  const titleField = item.campos.find(c => c.label === 'Título');
+  const isPush = item.canal === 'push' && titleField;
+  const isWhatsapp = item.canal === 'whatsapp';
+
+  const modalEl = document.querySelector('.modal');
+  const toggleRow = document.getElementById('m-toggle-row');
+  const emailPreviewEl = document.getElementById('email-preview');
+  const pushPreviewEl = document.getElementById('push-preview');
+  const waPreviewEl = document.getElementById('wa-preview');
+  const epBody = document.getElementById('ep-body');
+
+  modalEl.classList.remove('modal--email');
+  emailPreviewEl.style.display = 'none';
+  pushPreviewEl.style.display = 'none';
+  waPreviewEl.style.display = 'none';
+  epBody.innerHTML = '';
+  currentPreviewKind = null;
+
+  if(emailVariants.length){
+    currentPreviewKind = 'email';
+    modalEl.classList.add('modal--email');
+    toggleRow.style.display = 'flex';
+    document.getElementById('ep-subject').textContent = subjectField.value;
+    document.getElementById('ep-preheader').innerHTML = '<b>Preheader:</b> ' + item.corpo;
+
+    emailVariants.forEach(v => {
+      const wrap = document.createElement('div');
+      wrap.className = 'ep-variant';
+      if(v.tag){
+        const tagRow = document.createElement('div');
+        tagRow.className = 'ep-variant-tag';
+        tagRow.innerHTML = '<span class="ep-badge">' + v.tag + '</span><span class="ep-variant-label">Versão ' + v.tag + '</span>';
+        wrap.appendChild(tagRow);
+      }
+      const f = document.createElement('iframe');
+      f.scrolling = 'no';
+      wrap.appendChild(f);
+      epBody.appendChild(wrap);
+      f.srcdoc = EMAIL_TEMPLATES[v.id];
+      armEmailIframe(f);
+    });
+
+    switchTab('preview');
+    currentEmailHtml = EMAIL_TEMPLATES[emailVariants[0].id];
+    document.getElementById('copy-btn-label').textContent = 'Copiar e-mail (HTML)';
+  } else if(isPush){
+    currentPreviewKind = 'push';
+    toggleRow.style.display = 'flex';
+    document.getElementById('push-time').textContent = formatPushTime();
+    document.getElementById('push-icon').src = ZEOM_ICON_URI;
+    document.getElementById('push-title').textContent = titleField.value;
+    document.getElementById('push-msg').textContent = item.corpo;
+    switchTab('preview');
+  } else if(isWhatsapp){
+    currentPreviewKind = 'whatsapp';
+    toggleRow.style.display = 'flex';
+    document.getElementById('wa-icon').src = ZEOM_ICON_URI;
+    document.getElementById('wa-msg').innerHTML = formatWhatsappText(item.corpo);
+    document.getElementById('wa-time').textContent = formatPushTime();
+    switchTab('preview');
+  } else {
+    toggleRow.style.display = 'none';
+    document.getElementById('m-fields').style.display = 'block';
+  }
+
+  document.getElementById('modal-overlay').classList.add('show');
+}
+
+function copyField(text, btn, iconSvg, checkSvg){
+  navigator.clipboard.writeText(text).then(() => {
+    btn.classList.add('copied');
+    btn.innerHTML = checkSvg + ' Copiado';
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.innerHTML = iconSvg + ' Copiar';
+    }, 1500);
+  });
+}
+
+function closeModal(){
+  document.getElementById('modal-overlay').classList.remove('show');
+}
+
+function copyText(){
+  const btn = document.getElementById('copy-btn');
+  const restoreLabel = currentPreviewKind === 'email' ? 'Copiar e-mail (HTML)' : 'Copiar tudo';
+
+  const onDone = () => {
+    btn.classList.add('copied');
+    document.getElementById('copy-btn-label').textContent = 'Copiado!';
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      document.getElementById('copy-btn-label').textContent = restoreLabel;
+    }, 1800);
+  };
+
+  if(currentPreviewKind === 'email' && currentEmailHtml){
+    let plainText = currentCopyText;
+    try{
+      const iframe = document.querySelector('#ep-body .ep-variant iframe, #ep-body > iframe');
+      const bodyText = iframe && iframe.contentDocument && iframe.contentDocument.body && iframe.contentDocument.body.innerText;
+      if(bodyText) plainText = bodyText;
+    }catch(e){}
+
+    const item = new ClipboardItem({
+      'text/html': new Blob([currentEmailHtml], {type:'text/html'}),
+      'text/plain': new Blob([plainText], {type:'text/plain'}),
+    });
+    navigator.clipboard.write([item]).then(onDone).catch(() => {
+      navigator.clipboard.writeText(plainText).then(onDone);
+    });
+  } else {
+    navigator.clipboard.writeText(currentCopyText).then(onDone);
+  }
+}
+
+document.addEventListener('keydown', (e) => {
+  if(e.key === 'Escape') closeModal();
+});
+</script>
+</body>
+</html>
