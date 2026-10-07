@@ -153,15 +153,15 @@ EMAILS = [
     dict(
         file='v1-01-repescagem-cartao-d7.html',
         meta='V1 · 01 · PREVENÇÃO · VALOR & REPESCAGEM · E-mail D7 — Repescagem · Cartão\nGatilho: 1 semana sem ativar o cartão\nObjetivo CRM: ativação do cartão internacional, sem prazo nem urgência\nBlocos: header logo simples · card de intuito · CTA sólido · passos numerados · suporte (CTA secundário)',
-        subject='Seu cartão internacional está esperando',
+        subject='Seu cartão em dólar está pronto',
         preheader='Ative quando quiser — sem prazo para isso mudar.',
         reason='Você recebeu este e-mail porque o cartão internacional da sua conta Zeom ainda não foi ativado.',
         rows=[
             section('seção 1 · contexto + intuito + CTA',
-                    eyebrow('Cartão internacional') + sp(16) + h1('Seu cartão em dólar está pronto para ativar') + sp(16)
-                    + p('O cartão internacional da sua conta Zeom já está disponível. A ativação é feita pelo aplicativo, em poucos passos, e pode acontecer quando fizer sentido para você.')
-                    + sp(24) + intent('cartao', 'Usa o saldo que você já tem', 'As compras no exterior são debitadas do seu saldo em dólar, com a cotação visível antes de cada recarga.')
-                    + sp(24) + solid_btn('Ativar meu cartão', '{{LINK_app_cartao}}')),
+                    eyebrow('Cartão internacional') + sp(16) + h1('Compras no exterior com o saldo que você já tem') + sp(16)
+                    + p('{{first_name}}, o cartão internacional da sua conta Zeom já está disponível. As compras no exterior são debitadas do seu saldo em dólar, com a cotação visível antes de cada recarga.')
+                    + sp(24) + intent('cartao', 'Ativação em poucos passos', 'Tudo é feito pelo aplicativo, quando fizer sentido para você. Não há prazo para ativar.')
+                    + sp(24) + solid_btn('Ativar cartão', '{{LINK_app_cartao}}')),
             section('seção 2 · passos numerados',
                     eyebrow('Como ativar') + sp(16) + steps([
                         ('Abra o aplicativo e acesse Cartão', 'O cartão aparece na tela inicial da sua conta.'),
@@ -181,9 +181,9 @@ EMAILS = [
         reason='Você recebeu este e-mail porque sua conta Zeom tem acesso à área de investimentos internacionais.',
         rows=[
             section('seção 1 · contexto + intuito + CTA',
-                    eyebrow('Investimentos') + sp(16) + h1('Seu saldo em dólar também pode ser investido') + sp(16)
-                    + p('Com sua conta ativa e o primeiro Pix concluído, a área de investimentos internacionais já está liberada no aplicativo. Você escolhe quando e quanto alocar.')
-                    + sp(24) + intent('investir', 'Sem valor mínimo para começar', 'Comece com o valor que fizer sentido para você e acompanhe a evolução dos ativos direto no painel do app.')
+                    eyebrow('Investimentos') + sp(16) + h1('Seu saldo em dólar também pode render') + sp(16)
+                    + p('{{first_name}}, com sua conta ativa e o primeiro Pix concluído, a área de investimentos internacionais já está liberada no aplicativo.')
+                    + sp(24) + intent('investir', 'Você define quanto e quando', 'Comece com o valor que fizer sentido para você e acompanhe a evolução dos ativos direto no painel do app.')
                     + sp(24) + solid_btn('Conhecer os investimentos', '{{LINK_app_investimentos}}')),
             section('seção 2 · lista linha-divisória + disclaimer',
                     eyebrow('O que você encontra no app') + sp(16) + item_list([
@@ -196,13 +196,13 @@ EMAILS = [
     dict(
         file='v1-03-prevencao-valor-d7.html',
         meta='V1 · 03 · PREVENÇÃO · VALOR & REPESCAGEM · E-mail D7 — Prevenção · Valor\nGatilho: 1 semana sem ativar cartão ou multiconta\nObjetivo CRM: lembrar o valor dos recursos internacionais já liberados\nBlocos: header logo simples · lista linha-divisória · CTA sólido · Zeom AI (CTA secundário)',
-        subject='Seus recursos internacionais continuam por aqui',
-        preheader='Cartão e multiconta, prontos para quando você quiser usar.',
+        subject='Cartão e multiconta, prontos para usar',
+        preheader='Compras, saldos e conversões em outras moedas, direto do app.',
         reason='Você recebeu este e-mail porque os recursos internacionais da sua conta Zeom ainda não foram utilizados.',
         rows=[
             section('seção 1 · contexto + lista + CTA',
-                    eyebrow('Sua conta') + sp(16) + h1('Cartão e multiconta, prontos para usar') + sp(16)
-                    + p('Os recursos internacionais da sua conta Zeom seguem disponíveis no aplicativo, para quando fizer sentido para você.')
+                    eyebrow('Sua conta') + sp(16) + h1('Use sua conta fora do Brasil') + sp(16)
+                    + p('{{first_name}}, os recursos internacionais da sua conta Zeom seguem disponíveis no aplicativo, para quando fizer sentido para você.')
                     + sp(24) + item_list([
                         ('cartao', 'Cartão internacional', 'Compras no exterior debitadas do seu saldo em dólar.'),
                         ('globo', 'Multiconta', 'Saldos em diferentes moedas, organizados em um só lugar.'),
@@ -215,13 +215,13 @@ EMAILS = [
     dict(
         file='v1-06-churn-win-back.html',
         meta='V1 · 06 · CHURN · WIN BACK · E-mail — PROPOSTA DE COPY (aguardando aprovação)\nGatilho: inativo por longo período / esgotou qualquer régua de prevenção\nObjetivo CRM: reabrir a porta sem pressão + entender o motivo da inatividade\nAssinatura: Equipe Zeom (CEO não participa)\nBlocos: header logo simples · lista linha-divisória · CTA sólido · pesquisa (CTA secundário) · assinatura',
-        subject='Sua conta Zeom continua ativa',
-        preheader='Seus recursos seguem disponíveis, para quando fizer sentido retomar.',
+        subject='Sua conta Zeom está do jeito que você deixou',
+        preheader='Veja o que segue disponível e conte como podemos melhorar.',
         reason='Você recebeu este e-mail porque sua conta Zeom está sem movimentações há um longo período.',
         rows=[
             section('seção 1 · contexto + lista + CTA',
-                    eyebrow('Sua conta Zeom') + sp(16) + h1('Sua conta continua aqui, do jeito que você deixou') + sp(16)
-                    + p('Faz um tempo que você não movimenta sua conta Zeom. Ela segue ativa, com seus dados e saldos preservados, para quando você quiser retomar.')
+                    eyebrow('Sua conta Zeom') + sp(16) + h1('Quando quiser retomar, é só entrar') + sp(16)
+                    + p('{{first_name}}, faz um tempo que você não movimenta sua conta Zeom. Ela segue ativa, com seus dados e saldos preservados.')
                     + sp(24) + eyebrow('O que segue disponível') + sp(16) + item_list([
                         ('enviar', 'Transferências Globais', 'Envio e conversão de moedas de forma direta.'),
                         ('cartao', 'Cartão em Dólar', 'Disponível para uso em compras internacionais.'),
@@ -230,7 +230,7 @@ EMAILS = [
                     ]) + sp(24) + solid_btn('Acessar minha conta', '{{LINK_acessar_conta}}')),
             section('seção 2 · pesquisa (cta secundário) + assinatura',
                     eyebrow('Conte para a gente') + sp(16)
-                    + p('Se algo não funcionou como você esperava, queremos saber. A pesquisa leva menos de 2 minutos e ajuda a melhorar a Zeom.', 13, 19)
+                    + p('Se algo não funcionou como você esperava, queremos saber. São 3 perguntas, e as respostas ajudam a melhorar a Zeom.', 13, 19)
                     + sp(20) + ghost_btn('Responder a pesquisa', '{{LINK_pesquisa_win_back}}')
                     + sp(32) + p('Até breve,<br><span style="font-weight:600;color:#282621">Equipe Zeom</span>', 14, 21)),
         ]),

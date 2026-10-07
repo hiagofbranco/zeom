@@ -21,6 +21,15 @@ REUSED = {
     'v1-05-oportunidades-cambio.html': '15-ongoing-oportunidades-cambio.html',
 }
 
+# ajustes de copy aplicados só na cópia V1
+COPY_EDITS = {
+    'v1-04-engajamento-d14.html': [
+        ('<title>Zeom · Seus recursos continuam disponíveis</title>', '<title>Zeom · Por onde começar na sua conta Zeom</title>'),
+        ('>A sua conta Zeom permanece ativa', '>{{first_name}}, a sua conta Zeom permanece ativa'),
+        ('porque sua conta Zeom está inativa há 14 dias', 'porque sua conta Zeom está sem movimentações há 14 dias'),
+    ],
+}
+
 FASES = {
     'ativacao': dict(nome='Prevenção · Valor & Repescagem', classe='pre',
                      desc='Cartão, investimento e multiconta parados. Espaço reservado para uma trilha de conteúdo educacional futura, no tom do Zeom AI.'),
@@ -35,33 +44,33 @@ FASES = {
 PROPOSTA = 'Proposta de copy'
 DATA = [
     dict(fase='ativacao', canal='email', dia='D7', trigger='1 semana sem ativar o cartão — Repescagem · Cartão',
-         campos=[dict(label='Assunto', value='Seu cartão internacional está esperando')],
+         campos=[dict(label='Assunto', value='Seu cartão em dólar está pronto')],
          corpo='Ative quando quiser — sem prazo para isso mudar.', emailId='v1-01-repescagem-cartao-d7'),
     dict(fase='ativacao', canal='email', dia='D+X', trigger='Fez Pix mas nunca investiu, X dias depois — Repescagem · Investimento',
          campos=[dict(label='Assunto', value='Seus investimentos internacionais estão disponíveis')],
          corpo='Sem valor mínimo para começar, no seu tempo.', emailId='v1-02-repescagem-investimento'),
     dict(fase='ativacao', canal='email', dia='D7', trigger='1 semana sem ativar cartão ou multiconta — Prevenção · Valor',
-         campos=[dict(label='Assunto', value='Seus recursos internacionais continuam por aqui')],
-         corpo='Cartão e multiconta, prontos para quando você quiser usar.', emailId='v1-03-prevencao-valor-d7'),
+         campos=[dict(label='Assunto', value='Cartão e multiconta, prontos para usar')],
+         corpo='Compras, saldos e conversões em outras moedas, direto do app.', emailId='v1-03-prevencao-valor-d7'),
     dict(fase='engajamento', canal='push', dia='D7', trigger='7 dias sem transação (cliente já ativado)',
-         campos=[dict(label='Título', value='Sua conta segue disponível')], corpo='Seus recursos continuam ali, no app.'),
+         campos=[dict(label='Título', value='Sua conta segue disponível')], corpo='Converta, envie ou use o cartão quando quiser.'),
     dict(fase='engajamento', canal='email', dia='D14', trigger='14 dias sem transação',
-         campos=[dict(label='Assunto', value='Seus recursos continuam disponíveis')],
+         campos=[dict(label='Assunto', value='Por onde começar na sua conta Zeom')],
          corpo='Sua conta permanece pronta para acompanhar suas movimentações.', emailId='v1-04-engajamento-d14'),
     dict(fase='engajamento', canal='push', dia='D21', trigger='21 dias sem transação — fechamento da régua',
          campos=[dict(label='Título', value='No seu ritmo')], corpo='Um Pix é suficiente para voltar a movimentar sua conta.'),
     dict(fase='oportunidades', canal='push', dia='Evento', trigger='Variação cambial — hoje manual, futuramente automatizado',
-         campos=[dict(label='Título', value='Acompanhe as moedas que você usa')],
-         corpo='Consulte cotações atualizadas e acompanhe o mercado pela sua conta.'),
+         campos=[dict(label='Título', value='Cotações atualizadas no app')],
+         corpo='Dólar, euro e outras moedas, sempre visíveis na sua conta.'),
     dict(fase='oportunidades', canal='email', dia='Evento', trigger='Variação cambial — versão neutra, sem gatilho de urgência',
          campos=[dict(label='Assunto', value='Câmbio, de forma simples')],
          corpo='Consulte cotações de diferentes moedas e acompanhe o mercado pela sua conta.', emailId='v1-05-oportunidades-cambio'),
     dict(fase='churn', canal='push', dia='A detalhar', trigger='Inativo por longo período / esgotou qualquer régua de prevenção',
-         campos=[dict(label='Título', value='Sua conta Zeom continua ativa')],
-         corpo='Seus recursos seguem disponíveis no app, quando fizer sentido retomar.', status=PROPOSTA),
+         campos=[dict(label='Título', value='Tudo pronto quando você voltar')],
+         corpo='Sua conta segue ativa, com seus dados e saldos preservados.', status=PROPOSTA),
     dict(fase='churn', canal='email', dia='A detalhar', trigger='Inativo por longo período / esgotou qualquer régua de prevenção · assinado Equipe Zeom',
-         campos=[dict(label='Assunto', value='Sua conta Zeom continua ativa')],
-         corpo='Seus recursos seguem disponíveis, para quando fizer sentido retomar.', emailId='v1-06-churn-win-back', status=PROPOSTA),
+         campos=[dict(label='Assunto', value='Sua conta Zeom está do jeito que você deixou')],
+         corpo='Veja o que segue disponível e conte como podemos melhorar.', emailId='v1-06-churn-win-back', status=PROPOSTA),
 ]
 
 # fluxograma (viewBox 900 × H) — espinha em x=260, desvios em x=650
@@ -127,7 +136,10 @@ def main():
     files = emails.build()
     for new, old in REUSED.items():
         src = (ROOT / 'emails/reguas' / old).read_text()
-        files[new] = f'<!-- Régua V1 · cópia de emails/reguas/{old} -->\n' + src
+        for before, after in COPY_EDITS.get(new, []):
+            assert before in src, before
+            src = src.replace(before, after)
+        files[new] = f'<!-- Régua V1 · cópia de emails/reguas/{old} (com os ajustes de COPY_EDITS) -->\n' + src
     for name, html in files.items():
         (OUT_DIR / name).write_text(html)
 
