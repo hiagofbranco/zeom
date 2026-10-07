@@ -1,35 +1,34 @@
 # Régua V1
 
-Régua separada da régua atual (`comunicacoes-zeom.html`), com as comunicações
-marcadas como "V1 · futuro": 10 comunicações (6 e-mails, 4 pushes).
+Modernização da régua V0 para a V1, montada a partir da planilha
+"Revisão Régua CRM para Implementação V1" (aba "Proposta para Régua V1").
+São 41 comunicações (20 e-mails e 21 pushes) em 9 etapas: Prevenção · KYC,
+Engajamento · 1º depósito, Repescagem · Cartão, Prevenção · Valor,
+Repescagem · Multiconta, Repescagem · Investimento, Ongoing,
+Engajamento · Inatividade e Churn.
 
-| Etapa | Canal · dia | Assunto / título | E-mail |
-|---|---|---|---|
-| Valor & Repescagem | E-mail D7 | Seu cartão internacional está esperando | `emails/reguas-v1/v1-01-repescagem-cartao-d7.html` (novo) |
-| Valor & Repescagem | E-mail D+X | Seus investimentos internacionais estão disponíveis | `v1-02-repescagem-investimento.html` (novo) |
-| Valor & Repescagem | E-mail D7 | Seus recursos internacionais continuam por aqui | `v1-03-prevencao-valor-d7.html` (novo) |
-| Engajamento | Push D7 | Sua conta segue disponível | — |
-| Engajamento | E-mail D14 | Seus recursos continuam disponíveis | `v1-04-engajamento-d14.html` (cópia do 11) |
-| Engajamento | Push D21 | No seu ritmo | — |
-| Oportunidades | Push · evento | Acompanhe as moedas que você usa | — |
-| Oportunidades | E-mail · evento | Câmbio, de forma simples | `v1-05-oportunidades-cambio.html` (cópia do 15) |
-| Churn · Win Back | Push | Sua conta Zeom continua ativa — **proposta** | — |
-| Churn · Win Back | E-mail | Sua conta Zeom continua ativa — **proposta** | `v1-06-churn-win-back.html` (novo) |
+- `regua-v1.html`: fluxograma + comunicações + preview (layout de `comunicacoes-zeom.html`).
+- `emails/reguas-v1/`: os 20 e-mails. 17 são novos (`regua-v1/emails.py`) e 3 são
+  cópias da V0 que a planilha manda reaproveitar: KYC D14 (era o D6), KYC D21 (era o
+  D15) e Inatividade D14 (e-mail 11). Os originais em `emails/reguas/` não mudam.
 
-Os e-mails seguem os mesmos padrões de `emails/reguas/` (header logo simples, card de
-intuito, CTA sólido com fallback VML para Outlook, lista linha-divisória, rodapé dark).
+## Pendências
 
-Variáveis novas, a cadastrar na ferramenta de disparo: `{{LINK_app_investimentos}}`
-(v1-02) e `{{LINK_pesquisa_win_back}}` (v1-06).
+- **Cupom Taxa Zero** (KYC D5/D7, Inatividade D21): regras, validade e código entram
+  como `{{CUPOM_codigo}}`, `{{CUPOM_validade}}` e `{{LINK_regras_cupom}}`.
+- **Validar com compliance:** "Dólar recuou" (usa `{{variacao_usd}}` e precisa do limiar
+  de disparo) e os pushes de investimento ("resgate 24/7").
+- **Leads da calculadora** (KYC D+1/D+3) dependem da calculadora no site.
+- **Taxa zero no 1º mês** para quem não depositou: regra a ver com Perillo/Dani.
+- **Novas variáveis:** `{{first_name}}`, `{{LINK_download_app}}`, `{{LINK_app_multiconta}}`,
+  `{{LINK_app_investimentos}}`, `{{LINK_novo_servico}}`, `{{LINK_pesquisa_churn}}`,
+  `{{saldo_disponivel}}`.
 
 ## Atualizar
 
-Copy e e-mails ficam em `regua-v1/emails.py`; dados da régua e fluxograma em
+Copy dos e-mails em `regua-v1/emails.py`; pushes, gatilhos e fluxograma em
 `regua-v1/build.py`. Depois de editar:
 
 ```bash
 python3 regua-v1/build.py
 ```
-
-Isso regera `emails/reguas-v1/*.html` e `regua-v1.html` (a página reaproveita o layout de
-`comunicacoes-zeom.html`).

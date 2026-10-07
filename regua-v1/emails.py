@@ -129,6 +129,7 @@ table{{border-collapse:collapse}}
   .container{{width:100% !important;max-width:100% !important}}
   .px{{padding-left:24px !important;padding-right:24px !important}}
   .card-pad{{padding:24px !important}}
+  .code-val{{font-size:20px !important;letter-spacing:1px !important}}
 }}
 </style>
 </head>
@@ -149,91 +150,242 @@ table{{border-collapse:collapse}}
 '''
 
 
+def coupon(title, note):
+    return f"""<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="{MARFIM}" style="background-color:{MARFIM};border-radius:12px;border:1px dashed {BEGE}"><tr><td align="center" class="card-pad" style="padding:28px 24px">
+<div style="{G};font-size:12px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:{OLIVA};line-height:16px">{title}</div>
+<div style="height:10px;line-height:10px;font-size:0">&nbsp;</div>
+<div class="code-val" style="{G};font-size:26px;font-weight:600;letter-spacing:2px;color:{INK};line-height:32px;word-break:break-all">{{{{CUPOM_codigo}}}}</div>
+<div style="height:10px;line-height:10px;font-size:0">&nbsp;</div>
+<div style="{G};font-size:12px;font-weight:300;color:{BROWN};line-height:18px">{note}</div>
+</td></tr></table>"""
+
+
+def sign(t='Até breve,'):
+    return p(f'{t}<br><span style="font-weight:600;color:{INK}">Equipe Zeom</span>', 14, 21)
+
+
+INVEST_DISCLAIMER = small('Conteúdo informativo. Não constitui oferta, recomendação ou análise individualizada de investimentos. Rentabilidade passada não é garantia de resultado futuro. Investimentos em ativos internacionais estão sujeitos a riscos e à variação cambial.')
+COUPON_RULES = small('Cupom de uso único, válido para a primeira conversão até {{CUPOM_validade}}. Condições completas em {{LINK_regras_cupom}}.')
+SUPPORT = (eyebrow('Dúvidas e suporte') + sp(16)
+           + p('Se algo travou no caminho, nossa equipe de atendimento ajuda pelo WhatsApp.', 13, 19)
+           + sp(20) + ghost_btn('Falar com o suporte', '{{LINK_whatsapp_suporte}}'))
+
+
+def E(file, meta, subject, preheader, reason, *rows):
+    return dict(file=file, meta=meta, subject=subject, preheader=preheader, reason=reason, rows=list(rows))
+
+
 EMAILS = [
-    dict(
-        file='v1-01-repescagem-cartao-d7.html',
-        meta='V1 · 01 · PREVENÇÃO · VALOR & REPESCAGEM · E-mail D7 — Repescagem · Cartão\nGatilho: 1 semana sem ativar o cartão\nObjetivo CRM: ativação do cartão internacional, sem prazo nem urgência\nBlocos: header logo simples · card de intuito · CTA sólido · passos numerados · suporte (CTA secundário)',
-        subject='Seu cartão em dólar está pronto',
-        preheader='Ative quando quiser — sem prazo para isso mudar.',
-        reason='Você recebeu este e-mail porque o cartão internacional da sua conta Zeom ainda não foi ativado.',
-        rows=[
-            section('seção 1 · contexto + intuito + CTA',
-                    eyebrow('Cartão internacional') + sp(16) + h1('Compras no exterior com o saldo que você já tem') + sp(16)
-                    + p('{{first_name}}, o cartão internacional da sua conta Zeom já está disponível. As compras no exterior são debitadas do seu saldo em dólar, com a cotação visível antes de cada recarga.')
-                    + sp(24) + intent('cartao', 'Ativação em poucos passos', 'Tudo é feito pelo aplicativo, quando fizer sentido para você. Não há prazo para ativar.')
-                    + sp(24) + solid_btn('Ativar cartão', '{{LINK_app_cartao}}')),
-            section('seção 2 · passos numerados',
-                    eyebrow('Como ativar') + sp(16) + steps([
-                        ('Abra o aplicativo e acesse Cartão', 'O cartão aparece na tela inicial da sua conta.'),
-                        ('Confirme seus dados e crie a senha', 'A senha é pessoal e fica só com você.'),
-                        ('Use em compras internacionais', 'Em lojas físicas e online, onde a bandeira for aceita.'),
-                    ])),
-            section('seção 3 · suporte (cta secundário)',
-                    eyebrow('Dúvidas e suporte') + sp(16)
-                    + p('Se precisar de ajuda na ativação, nossa equipe de atendimento está disponível.', 13, 19)
-                    + sp(20) + ghost_btn('Falar com o suporte no WhatsApp', '{{LINK_whatsapp_suporte}}')),
-        ]),
-    dict(
-        file='v1-02-repescagem-investimento.html',
-        meta='V1 · 02 · PREVENÇÃO · VALOR & REPESCAGEM · E-mail D+X — Repescagem · Investimento\nGatilho: fez Pix mas nunca investiu, X dias depois\nObjetivo CRM: apresentar a área de investimentos, sem recomendação nem urgência\nBlocos: header logo simples · card de intuito · CTA sólido · lista linha-divisória · disclaimer de investimentos',
-        subject='Seus investimentos internacionais estão disponíveis',
-        preheader='Sem valor mínimo para começar, no seu tempo.',
-        reason='Você recebeu este e-mail porque sua conta Zeom tem acesso à área de investimentos internacionais.',
-        rows=[
-            section('seção 1 · contexto + intuito + CTA',
-                    eyebrow('Investimentos') + sp(16) + h1('Seu saldo em dólar também pode render') + sp(16)
-                    + p('{{first_name}}, com sua conta ativa e o primeiro Pix concluído, a área de investimentos internacionais já está liberada no aplicativo.')
-                    + sp(24) + intent('investir', 'Você define quanto e quando', 'Comece com o valor que fizer sentido para você e acompanhe a evolução dos ativos direto no painel do app.')
-                    + sp(24) + solid_btn('Conhecer os investimentos', '{{LINK_app_investimentos}}')),
-            section('seção 2 · lista linha-divisória + disclaimer',
-                    eyebrow('O que você encontra no app') + sp(16) + item_list([
-                        ('globo', 'Ativos no exterior', 'Opções de investimento internacional reunidas em um só lugar.'),
-                        ('olho', 'Acompanhamento no painel', 'Evolução, saldo investido e movimentações em tempo real.'),
-                        ('chat', 'Consultas com o Zeom AI', 'Tire dúvidas sobre alocação e métricas, 24 horas por dia.'),
-                    ]) + sp(24)
-                    + small('Conteúdo informativo. Não constitui oferta, recomendação ou análise individualizada de investimentos. Rentabilidade passada não é garantia de resultado futuro. Investimentos em ativos internacionais estão sujeitos a riscos e à variação cambial.')),
-        ]),
-    dict(
-        file='v1-03-prevencao-valor-d7.html',
-        meta='V1 · 03 · PREVENÇÃO · VALOR & REPESCAGEM · E-mail D7 — Prevenção · Valor\nGatilho: 1 semana sem ativar cartão ou multiconta\nObjetivo CRM: lembrar o valor dos recursos internacionais já liberados\nBlocos: header logo simples · lista linha-divisória · CTA sólido · Zeom AI (CTA secundário)',
-        subject='Cartão e multiconta, prontos para usar',
-        preheader='Compras, saldos e conversões em outras moedas, direto do app.',
-        reason='Você recebeu este e-mail porque os recursos internacionais da sua conta Zeom ainda não foram utilizados.',
-        rows=[
-            section('seção 1 · contexto + lista + CTA',
-                    eyebrow('Sua conta') + sp(16) + h1('Use sua conta fora do Brasil') + sp(16)
-                    + p('{{first_name}}, os recursos internacionais da sua conta Zeom seguem disponíveis no aplicativo, para quando fizer sentido para você.')
-                    + sp(24) + item_list([
-                        ('cartao', 'Cartão internacional', 'Compras no exterior debitadas do seu saldo em dólar.'),
-                        ('globo', 'Multiconta', 'Saldos em diferentes moedas, organizados em um só lugar.'),
-                        ('transferir', 'Conversão entre moedas', 'Cotação visível antes de cada operação.'),
-                    ]) + sp(24) + solid_btn('Acessar minha conta', '{{LINK_acessar_conta}}')),
-            section('seção 2 · zeom ai (cta secundário)',
-                    intent('chat', 'Ficou alguma dúvida?', 'O Zeom AI responde sobre cartão, saldos e limites a qualquer hora, direto no aplicativo.')
-                    + sp(20) + ghost_btn('Conversar com o Zeom AI', '{{LINK_zeom_ai_chat}}')),
-        ]),
-    dict(
-        file='v1-06-churn-win-back.html',
-        meta='V1 · 06 · CHURN · WIN BACK · E-mail — PROPOSTA DE COPY (aguardando aprovação)\nGatilho: inativo por longo período / esgotou qualquer régua de prevenção\nObjetivo CRM: reabrir a porta sem pressão + entender o motivo da inatividade\nAssinatura: Equipe Zeom (CEO não participa)\nBlocos: header logo simples · lista linha-divisória · CTA sólido · pesquisa (CTA secundário) · assinatura',
-        subject='Sua conta Zeom está do jeito que você deixou',
-        preheader='Veja o que segue disponível e conte como podemos melhorar.',
-        reason='Você recebeu este e-mail porque sua conta Zeom está sem movimentações há um longo período.',
-        rows=[
-            section('seção 1 · contexto + lista + CTA',
-                    eyebrow('Sua conta Zeom') + sp(16) + h1('Quando quiser retomar, é só entrar') + sp(16)
-                    + p('{{first_name}}, faz um tempo que você não movimenta sua conta Zeom. Ela segue ativa, com seus dados e saldos preservados.')
-                    + sp(24) + eyebrow('O que segue disponível') + sp(16) + item_list([
-                        ('enviar', 'Transferências Globais', 'Envio e conversão de moedas de forma direta.'),
-                        ('cartao', 'Cartão em Dólar', 'Disponível para uso em compras internacionais.'),
-                        ('investir', 'Investimentos', 'Painel para acompanhamento de ativos no exterior.'),
-                        ('chat', 'Zeom AI', 'Consultas e suporte 24 horas por dia, no aplicativo.'),
-                    ]) + sp(24) + solid_btn('Acessar minha conta', '{{LINK_acessar_conta}}')),
-            section('seção 2 · pesquisa (cta secundário) + assinatura',
-                    eyebrow('Conte para a gente') + sp(16)
-                    + p('Se algo não funcionou como você esperava, queremos saber. São 3 perguntas, e as respostas ajudam a melhorar a Zeom.', 13, 19)
-                    + sp(20) + ghost_btn('Responder a pesquisa', '{{LINK_pesquisa_win_back}}')
-                    + sp(32) + p('Até breve,<br><span style="font-weight:600;color:#282621">Equipe Zeom</span>', 14, 21)),
-        ]),
+    # ---------------- PREVENÇÃO · KYC ----------------
+    E('kyc-01-lead-d1.html',
+      'V1 · KYC · E-mail D+1 — lead da calculadora do site\nGatilho: e-mail coletado pela calculadora, cadastro sem KYC\nObjetivo: baixar o app e concluir a abertura',
+      'Sua simulação de câmbio na Zeom', 'Abra sua conta para converter com a cotação que você viu.',
+      'Você recebeu este e-mail porque fez uma simulação no site da Zeom e informou este endereço.',
+      section('seção 1 · contexto + CTA',
+              eyebrow('Sua simulação') + sp(16) + h1('Do cálculo à conversão, no mesmo app') + sp(16)
+              + p('Você simulou uma conversão no site da Zeom. Com a conta aberta, você converte, envia e guarda dólar com a cotação visível antes de confirmar.')
+              + sp(24) + intent('transferir', 'Abertura 100% pelo app', 'Seu cadastro já começou. Falta baixar o aplicativo e concluir a verificação de identidade.')
+              + sp(24) + solid_btn('Baixar o app', '{{LINK_download_app}}')),
+      section('seção 2 · passos',
+              eyebrow('Como concluir') + sp(16) + steps([
+                  ('Baixe o app Zeom', 'Disponível para iPhone e Android.'),
+                  ('Entre com este e-mail', 'Seu cadastro continua de onde parou.'),
+                  ('Conclua a verificação de identidade', 'Documento e selfie, direto pelo celular.'),
+              ]))),
+    E('kyc-02-lead-d3.html',
+      'V1 · KYC · E-mail D+3 — lead da calculadora do site\nGatilho: lead sem KYC 3 dias depois\nObjetivo: mostrar o valor da conta e levar ao app',
+      'O que você encontra na conta Zeom', 'Câmbio, cartão em dólar e investimentos no exterior em um só app.',
+      'Você recebeu este e-mail porque fez uma simulação no site da Zeom e informou este endereço.',
+      section('seção 1 · lista + CTA',
+              eyebrow('Conta global') + sp(16) + h1('Uma conta para usar seu dinheiro fora do Brasil') + sp(16)
+              + p('Depois da simulação, veja o que fica disponível quando você conclui a abertura da conta.')
+              + sp(24) + item_list([
+                  ('transferir', 'Conversão com cotação visível', 'A taxa e o valor final aparecem antes de você confirmar.'),
+                  ('cartao', 'Cartão em Dólar', 'Compras no exterior debitadas do seu saldo em dólar.'),
+                  ('investir', 'Investimentos', 'Ativos no exterior, acompanhados no painel do app.'),
+                  ('chat', 'Zeom AI', 'Consultas e suporte 24 horas por dia.'),
+              ]) + sp(24) + solid_btn('Concluir minha abertura', '{{LINK_download_app}}'))),
+    E('kyc-03-cupom-d5.html',
+      'V1 · KYC · E-mail D5 — cupom Taxa Zero (PROPOSTA · validar regras do cupom e compliance)\nGatilho: 5 dias sem concluir KYC (junto do push)\nObjetivo: concluir KYC e fazer o primeiro depósito',
+      'Seu primeiro câmbio com taxa zero', 'Conclua a verificação e use o cupom na sua primeira conversão.',
+      'Você recebeu este e-mail porque a verificação de identidade da sua conta Zeom ainda não foi concluída.',
+      section('seção 1 · cupom + CTA',
+              eyebrow('Verificação de identidade') + sp(16) + h1('Conclua a verificação e converta sem taxa') + sp(16)
+              + p('{{first_name}}, sua conta está a um passo de ser liberada. Ao concluir a verificação de identidade, você pode usar o cupom abaixo na sua primeira conversão para dólar.')
+              + sp(24) + coupon('Cupom Taxa Zero', 'Use na sua primeira conversão para dólar.')
+              + sp(24) + solid_btn('Concluir verificação', '{{LINK_continuar_verificacao}}') + sp(16) + COUPON_RULES),
+      section('seção 2 · passos',
+              eyebrow('Como usar o cupom') + sp(16) + steps([
+                  ('Conclua a verificação no app', 'Documento e selfie, em poucos minutos.'),
+                  ('Faça um Pix para a sua conta', 'O valor entra em reais na sua conta Zeom.'),
+                  ('Aplique o cupom na conversão', 'A taxa zero aparece antes de você confirmar.'),
+              ]))),
+    E('kyc-04-cupom-d7.html',
+      'V1 · KYC · E-mail D7 — lembrete do cupom Taxa Zero (PROPOSTA · validar regras do cupom e compliance)\nGatilho: 7 dias sem concluir KYC (junto do push)\nObjetivo: concluir KYC e fazer o primeiro depósito',
+      'Seu cupom taxa zero vale até {{CUPOM_validade}}', 'Conclua a verificação para usar na sua primeira conversão.',
+      'Você recebeu este e-mail porque a verificação de identidade da sua conta Zeom ainda não foi concluída.',
+      section('seção 1 · cupom + CTA',
+              eyebrow('Cupom Taxa Zero') + sp(16) + h1('Seu cupom segue reservado') + sp(16)
+              + p('{{first_name}}, o cupom de taxa zero para a sua primeira conversão continua disponível. Para usar, basta concluir a verificação de identidade no aplicativo.')
+              + sp(24) + coupon('Seu cupom', 'Válido até {{CUPOM_validade}} na primeira conversão.')
+              + sp(24) + solid_btn('Concluir verificação', '{{LINK_continuar_verificacao}}') + sp(16) + COUPON_RULES),
+      section('seção 2 · suporte', SUPPORT)),
+    E('kyc-05-fechamento-d10.html',
+      'V1 · KYC · E-mail D10 — fechamento 1 (assinado Equipe Zeom)\nGatilho: 10 dias sem concluir KYC\nObjetivo: destravar quem parou por dificuldade',
+      'Continue de onde parou', 'Sua verificação fica salva. Se algo travou, a gente ajuda.',
+      'Você recebeu este e-mail porque a verificação de identidade da sua conta Zeom ainda não foi concluída.',
+      section('seção 1 · contexto + dicas + CTA',
+              eyebrow('Verificação de identidade') + sp(16) + h1('Sua verificação fica salva no app') + sp(16)
+              + p('{{first_name}}, os dados que você já enviou continuam guardados. Quando quiser, é só abrir o aplicativo e seguir do ponto em que parou.')
+              + sp(24) + eyebrow('Dicas para concluir') + sp(16) + item_list([
+                  ('perfil', 'Foto do documento', 'Use boa iluminação e mostre o documento inteiro, sem reflexo.'),
+                  ('olho', 'Selfie', 'Retire óculos e acessórios e fique em um lugar claro.'),
+                  ('escudo', 'Dados pessoais', 'Confira se nome e CPF estão iguais aos do documento.'),
+              ]) + sp(24) + solid_btn('Continuar verificação', '{{LINK_continuar_verificacao}}')),
+      section('seção 2 · suporte + assinatura', SUPPORT + sp(32) + sign())),
+    E('eng-01-inatividade-d7.html',
+      'V1 · ENGAJAMENTO · E-mail D7 — inatividade\nGatilho: 7 dias sem qualquer atividade no app (junto do push)\nObjetivo: reabrir consideração de uso, sem pedir nada específico',
+      'Sua conta Zeom, sempre à mão', 'Saldo, cotações e cartão em um só lugar, quando você quiser.',
+      'Você recebeu este e-mail porque sua conta Zeom está sem movimentações há 7 dias.',
+      section('seção 1 · contexto + CTA',
+              eyebrow('Sua conta') + sp(16) + h1('Tudo o que você precisa, no app') + sp(16)
+              + p('{{first_name}}, sua conta Zeom segue pronta para quando você precisar converter, enviar ou acompanhar seu saldo em outras moedas.')
+              + sp(24) + intent('olho', 'Cotações sempre visíveis', 'Acompanhe dólar, euro e outras moedas direto na tela inicial do app.')
+              + sp(24) + solid_btn('Abrir o app', '{{LINK_app_home}}'))),
+    E('eng-03-fechamento-d21.html',
+      'V1 · ENGAJAMENTO · E-mail D21 — fechamento + cupom no próximo depósito (PROPOSTA · validar regras do cupom)\nGatilho: 21 dias sem qualquer atividade no app\nObjetivo: deixar a porta aberta sem cobrança',
+      'Quando quiser voltar, é só um Pix', 'E a conversão do seu próximo depósito vem com taxa zero.',
+      'Você recebeu este e-mail porque sua conta Zeom está sem movimentações há 21 dias.',
+      section('seção 1 · cupom + CTA',
+              eyebrow('Sua conta') + sp(16) + h1('Seu próximo câmbio com taxa zero') + sp(16)
+              + p('{{first_name}}, sua conta Zeom continua ativa. Para quando fizer sentido voltar a usar, reservamos um cupom de taxa zero para a conversão do seu próximo depósito.')
+              + sp(24) + coupon('Cupom Taxa Zero', 'Válido na conversão do seu próximo depósito.')
+              + sp(24) + solid_btn('Fazer um Pix', '{{LINK_fazer_pix}}') + sp(16)
+              + small('Cupom de uso único, válido até {{CUPOM_validade}}. Condições completas em {{LINK_regras_cupom}}.'))),
+    # ---------------- REPESCAGEM · MULTICONTA ----------------
+    E('mc-01-ativar-d7.html',
+      'V1 · REPESCAGEM · MULTICONTA · E-mail D+7\nGatilho: abriu a conta e não ativou a multiconta\nObjetivo: ativar as contas virtuais em dólar e euro',
+      'Sua multiconta está pronta para ativar', 'Contas em dólar e euro para receber e enviar transferências.',
+      'Você recebeu este e-mail porque a multiconta da sua conta Zeom ainda não foi ativada.',
+      section('seção 1 · contexto + CTA',
+              eyebrow('Multiconta') + sp(16) + h1('Uma conta em cada moeda, no mesmo app') + sp(16)
+              + p('{{first_name}}, a multiconta da Zeom cria contas virtuais em dólar e euro. Com elas, você recebe e envia transferências internacionais na moeda de origem.')
+              + sp(24) + intent('globo', 'Receba do exterior', 'Use os dados da conta virtual para receber pagamentos e transferências em outras moedas.')
+              + sp(24) + solid_btn('Ativar multiconta', '{{LINK_app_multiconta}}')),
+      section('seção 2 · passos',
+              eyebrow('Como ativar') + sp(16) + steps([
+                  ('Acesse Multiconta no app', 'A opção fica na tela inicial da sua conta.'),
+                  ('Escolha as moedas', 'Dólar, euro ou as duas.'),
+                  ('Compartilhe os dados da conta', 'Para receber transferências de fora do Brasil.'),
+              ]))),
+    E('mc-02-usos-d21.html',
+      'V1 · REPESCAGEM · MULTICONTA · E-mail D+21\nGatilho: 21 dias sem ativar a multiconta\nObjetivo: mostrar usos concretos e levar à ativação',
+      'Três usos para a sua multiconta', 'Receber, enviar e guardar em dólar ou euro.',
+      'Você recebeu este e-mail porque a multiconta da sua conta Zeom ainda não foi ativada.',
+      section('seção 1 · lista + CTA',
+              eyebrow('Multiconta') + sp(16) + h1('Para que serve uma conta em outra moeda') + sp(16)
+              + p('{{first_name}}, a multiconta segue disponível para ativar no app. Veja como ela costuma ser usada:')
+              + sp(24) + item_list([
+                  ('depositar', 'Receber do exterior', 'Pagamentos de clientes, salários ou reembolsos em dólar ou euro.'),
+                  ('enviar', 'Enviar para fora', 'Transferências internacionais direto da moeda de destino.'),
+                  ('globo', 'Guardar em outras moedas', 'Saldo separado por moeda, com conversão quando você quiser.'),
+              ]) + sp(24) + solid_btn('Ativar multiconta', '{{LINK_app_multiconta}}'))),
+    # ---------------- REPESCAGEM · CARTÃO ----------------
+    E('cartao-01-ativar-d7.html',
+      'V1 · REPESCAGEM · CARTÃO · E-mail D+7 (régua própria, pedido do André)\nGatilho: abriu a conta e não ativou o cartão\nObjetivo: ativar o cartão internacional',
+      'Seu cartão em dólar está pronto', 'Ative quando quiser — sem prazo para isso mudar.',
+      'Você recebeu este e-mail porque o cartão internacional da sua conta Zeom ainda não foi ativado.',
+      section('seção 1 · contexto + intuito + CTA',
+              eyebrow('Cartão internacional') + sp(16) + h1('Compras no exterior com o saldo que você já tem') + sp(16)
+              + p('{{first_name}}, o cartão internacional da sua conta Zeom já está disponível. As compras no exterior são debitadas do seu saldo em dólar, com a cotação visível antes de cada recarga.')
+              + sp(24) + intent('cartao', 'Ativação em poucos passos', 'Tudo é feito pelo aplicativo, quando fizer sentido para você. Não há prazo para ativar.')
+              + sp(24) + solid_btn('Ativar cartão', '{{LINK_app_cartao}}')),
+      section('seção 2 · passos',
+              eyebrow('Como ativar') + sp(16) + steps([
+                  ('Abra o aplicativo e acesse Cartão', 'O cartão aparece na tela inicial da sua conta.'),
+                  ('Confirme seus dados e crie a senha', 'A senha é pessoal e fica só com você.'),
+                  ('Use em compras internacionais', 'Em lojas físicas e online, onde a bandeira for aceita.'),
+              ])),
+      section('seção 3 · suporte', SUPPORT)),
+    E('cartao-02-usos-d21.html',
+      'V1 · REPESCAGEM · CARTÃO · E-mail D+21\nGatilho: 21 dias sem ativar o cartão\nObjetivo: mostrar usos concretos e levar à ativação',
+      'Onde usar seu cartão em dólar', 'Viagens, compras online e assinaturas internacionais.',
+      'Você recebeu este e-mail porque o cartão internacional da sua conta Zeom ainda não foi ativado.',
+      section('seção 1 · lista + CTA',
+              eyebrow('Cartão em Dólar') + sp(16) + h1('Um cartão para os gastos em outras moedas') + sp(16)
+              + p('{{first_name}}, seu cartão internacional segue disponível para ativar no app. Veja onde ele costuma fazer diferença:')
+              + sp(24) + item_list([
+                  ('globo', 'Viagens', 'Compras no exterior com o saldo em dólar.'),
+                  ('cartao', 'Compras online', 'Lojas internacionais que cobram em dólar.'),
+                  ('sino', 'Assinaturas', 'Serviços e aplicativos cobrados em moeda estrangeira.'),
+              ]) + sp(24) + solid_btn('Ativar cartão', '{{LINK_app_cartao}}'))),
+    # ---------------- ONGOING ----------------
+    E('ong-01-dolar-recuou.html',
+      'V1 · ONGOING · E-mail — variação cambial (dólar recuou) (PROPOSTA · validar com compliance e definir limiar)\nGatilho: queda relevante do dólar — hoje manual, futuramente automatizado\nObjetivo: levar à tela do Pix ou de investimento, sem tom de campanha',
+      'O dólar recuou hoje', 'Cotação atualizada no app, com a taxa visível antes de confirmar.',
+      'Você recebeu este e-mail porque sua conta Zeom está ativa.',
+      section('seção 1 · contexto + CTA + disclaimer',
+              eyebrow('Câmbio') + sp(16) + h1('Dólar com queda de {{variacao_usd}} nas últimas 24 horas') + sp(16)
+              + p('{{first_name}}, se você planeja converter, pode acompanhar a cotação em tempo real no app e decidir o melhor momento para você.')
+              + sp(24) + intent('olho', 'Sem surpresa na conversão', 'A taxa e o valor final aparecem antes de você confirmar.')
+              + sp(24) + solid_btn('Ver cotação no app', '{{LINK_cotacoes_app}}') + sp(16)
+              + small('Informação de mercado com caráter informativo. Variações passadas não indicam movimentos futuros da cotação.'))),
+    E('ong-02-novo-servico.html',
+      'V1 · ONGOING · E-mail — novos serviços e produtos (MODELO · preencher a cada lançamento)\nGatilho: lançamento de um novo serviço da Zeom\nObjetivo: apresentar a novidade e levar ao app',
+      'Novidade na Zeom: [nome do serviço]', '[Uma frase sobre o que muda para o cliente]',
+      'Você recebeu este e-mail porque sua conta Zeom está ativa.',
+      section('seção 1 · novidade + CTA',
+              eyebrow('Novidade') + sp(16) + h1('[Título · o benefício em 4 a 7 palavras]') + sp(16)
+              + p('{{first_name}}, [o que é o novo serviço e para quem ele é, em até duas frases].')
+              + sp(24) + item_list([
+                  ('estrela', '[Benefício 1]', '[Uma linha explicando o benefício]'),
+                  ('seta', '[Benefício 2]', '[Uma linha explicando o benefício]'),
+                  ('escudo', '[Benefício 3]', '[Uma linha explicando o benefício]'),
+              ]) + sp(24) + solid_btn('Conhecer no app', '{{LINK_novo_servico}}'))),
+    E('ong-03-novos-aportes-d30.html',
+      'V1 · ONGOING · E-mail D+30 — investidor com saldo ocioso (junto do push)\nGatilho: investidor com saldo parado em conta há 30 dias\nObjetivo: novo aporte com o saldo disponível',
+      'Você tem saldo disponível para investir', 'Veja as opções de investimento no app e decida no seu tempo.',
+      'Você recebeu este e-mail porque sua conta Zeom tem saldo disponível e acesso à área de investimentos.',
+      section('seção 1 · contexto + CTA + disclaimer',
+              eyebrow('Investimentos') + sp(16) + h1('Seu saldo pode ser aplicado') + sp(16)
+              + p('{{first_name}}, você tem {{saldo_disponivel}} parado na sua conta. Se fizer sentido, esse valor pode ser aplicado nos investimentos internacionais do app.')
+              + sp(24) + intent('resgatar', 'Resgate quando precisar', 'O valor investido pode ser resgatado pelo app, para uso ou saque.')
+              + sp(24) + solid_btn('Ver investimentos', '{{LINK_app_investimentos}}') + sp(16) + INVEST_DISCLAIMER)),
+    E('ong-04-novos-depositos-d30.html',
+      'V1 · ONGOING · E-mail D+30 — investidor sem novos depósitos (junto do push)\nGatilho: investidor sem saldo ocioso e sem depósito há 30 dias\nObjetivo: novo depósito para aporte',
+      'Consistência também conta nos investimentos', 'Faça um novo aporte quando fizer sentido para você.',
+      'Você recebeu este e-mail porque sua conta Zeom tem investimentos ativos.',
+      section('seção 1 · contexto + passos + CTA + disclaimer',
+              eyebrow('Investimentos') + sp(16) + h1('Um novo aporte, no seu ritmo') + sp(16)
+              + p('{{first_name}}, seus investimentos seguem no painel do app. Para quem constrói patrimônio no longo prazo, aportes regulares costumam pesar mais do que o momento de cada aplicação.')
+              + sp(24) + steps([
+                  ('Faça um Pix para a sua conta', 'O valor entra em reais na sua conta Zeom.'),
+                  ('Converta para dólar', 'Com a cotação visível antes de confirmar.'),
+                  ('Escolha onde aplicar', 'Nos investimentos internacionais do app.'),
+              ]) + sp(24) + solid_btn('Fazer um aporte', '{{LINK_fazer_pix}}') + sp(16) + INVEST_DISCLAIMER)),
+    # ---------------- CHURN ----------------
+    E('churn-01-win-back-d30.html',
+      'V1 · CHURN · WIN BACK · E-mail D+30 (assinado Equipe Zeom, CEO não participa)\nGatilho: inativo por longo período, sem saldo em conta / esgotou qualquer prevenção\nObjetivo: reativar o cliente',
+      'Sua conta Zeom está do jeito que você deixou', 'Quando quiser retomar, é só um Pix.',
+      'Você recebeu este e-mail porque sua conta Zeom está sem movimentações há 30 dias.',
+      section('seção 1 · contexto + lista + CTA + assinatura',
+              eyebrow('Sua conta Zeom') + sp(16) + h1('Quando quiser retomar, é só entrar') + sp(16)
+              + p('{{first_name}}, faz um tempo que você não movimenta sua conta Zeom. Ela segue ativa, com seus dados preservados.')
+              + sp(24) + eyebrow('O que segue disponível') + sp(16) + item_list([
+                  ('enviar', 'Transferências Globais', 'Envio e conversão de moedas de forma direta.'),
+                  ('cartao', 'Cartão em Dólar', 'Disponível para uso em compras internacionais.'),
+                  ('investir', 'Investimentos', 'Painel para acompanhamento de ativos no exterior.'),
+                  ('chat', 'Zeom AI', 'Consultas e suporte 24 horas por dia, no aplicativo.'),
+              ]) + sp(24) + solid_btn('Acessar minha conta', '{{LINK_acessar_conta}}') + sp(32) + sign())),
+    E('churn-02-pesquisa-d35.html',
+      'V1 · CHURN · BATTLE IS LOST · E-mail D+35 — pesquisa (assinado Equipe Zeom)\nGatilho: 5 dias após o Win Back, sem reativação\nObjetivo: capturar feedback qualitativo, não reconverter',
+      'O que poderíamos ter feito melhor?', 'Sua opinião ajuda a melhorar a Zeom. São 3 perguntas.',
+      'Você recebeu este e-mail porque sua conta Zeom está sem movimentações há mais de 30 dias.',
+      section('seção 1 · pesquisa + assinatura',
+              eyebrow('Sua opinião') + sp(16) + h1('Conte como foi sua experiência') + sp(16)
+              + p('{{first_name}}, percebemos que você deixou de usar a Zeom. Queremos entender o que aconteceu e o que poderia ter sido diferente.')
+              + sp(24) + solid_btn('Responder a pesquisa', '{{LINK_pesquisa_churn}}') + sp(24)
+              + p('Sua conta segue ativa. Se quiser voltar, é só entrar no app.', 13, 19) + sp(32) + sign('Obrigado,'))),
 ]
 
 
