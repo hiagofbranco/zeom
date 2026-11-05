@@ -218,7 +218,7 @@ def main():
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     files = emails.build()
     for new, old in REUSED.items():
-        src = (ROOT / 'emails/reguas' / old).read_text()
+        src = (ROOT / 'emails/reguas/v0' / old).read_text()
         for before, after in COPY_EDITS.get(new, []):
             assert before in src, before
             src = src.replace(before, after)
