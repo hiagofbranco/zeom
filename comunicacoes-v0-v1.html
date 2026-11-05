@@ -34,7 +34,7 @@
   .flow-legend span{display:inline-flex; align-items:center; gap:6px;}
   .flow-legend .sw{width:10px; height:10px; border-radius:3px; display:inline-block;}
   .flow-scroll{overflow-x:auto; -webkit-overflow-scrolling:touch; padding-bottom:4px;}
-  .flow-wrap{position:relative; width:100%; min-width:900px; padding-bottom:97%;}
+  .flow-wrap{position:relative; width:100%; min-width:900px; padding-bottom:129%;}
   .flow-wrap svg{position:absolute; inset:0; width:100%; height:100%;}
 
   .fnode{
@@ -295,6 +295,13 @@
     display:flex; justify-content:flex-end; align-items:center; gap:4px; margin-top:2px;
     font-size:11px; color:#667781;
   }
+  .vchip.v0{background:#E7F0FF; color:#1E52C0;}
+  .vchip.v1{background:#FFF0C2; color:#7A5200;}
+  .sub-head{font-size:11px; font-weight:700; letter-spacing:.5px; text-transform:uppercase; color:var(--muted); margin:14px 0 2px;}
+  .sub-head:first-child{margin-top:0;}
+  .fnode.empty{opacity:.35;}
+  .fnode.n-churn{background:#EDEBE0; color:#6B6656; border-color:#BFBA99;}
+  .fase-churn{background:#EDEBE0; color:#6B6656;}
 </style>
 </head>
 <body>
@@ -319,10 +326,10 @@
       <span><span class="sw" style="background:var(--ong);"></span>Ongoing</span>
       <span><span class="sw" style="background:var(--pre);"></span>Prevenção</span>
       <span><span class="sw" style="background:#F6C244; border:1px solid #D9A420;"></span>Decisão</span>
-      <span><span class="sw" style="background:#FFF8E6; border:1.5px dashed #C98A00;"></span>V1</span>
+      <span><span class="sw" style="background:#E7F0FF;"></span>V0</span>
+      <span><span class="sw" style="background:#FFF0C2;"></span>V1</span>
     </div>
     <p class="flow-hint" style="display:none; font-size:12px; color:var(--muted); margin-bottom:10px;">↔ Arraste pro lado pra ver o fluxograma completo</p>
-    <div class="v1-grid" id="v1-grid-wrap"></div>
     <div class="flow-scroll"><div class="flow-wrap" id="flow-wrap"></div></div>
   </div>
 
@@ -414,110 +421,52 @@ const FASES = {
  "onboarding": {
   "nome": "Onboarding",
   "classe": "onb",
-  "desc": "Cadastro → conta ativa",
-  "ver": "v0"
+  "desc": "Cadastro → conta ativa"
  },
  "aquisicao": {
   "nome": "Prevenção · Aquisição",
   "classe": "pre",
-  "desc": "Código não confirmado · 7 dias",
-  "ver": "v0"
+  "desc": "Código não confirmado · 7 dias"
  },
  "kyc": {
   "nome": "Prevenção · KYC",
   "classe": "pre",
-  "desc": "Verificação não concluída · 6+15 dias",
-  "ver": "v0"
+  "desc": "Verificação não concluída · 6+15 dias"
  },
  "semana1": {
   "nome": "Exploração · Semana 1 (Pix)",
   "classe": "exp",
-  "desc": "Ativação da primeira conversão",
-  "ver": "v0"
+  "desc": "Ativação da primeira conversão"
  },
  "engajamento": {
   "nome": "Prevenção · Engajamento",
   "classe": "pre",
-  "desc": "21 dias · 2 pontos de entrada",
-  "ver": "v0"
+  "desc": "Primeiro depósito e inatividade · V0 + V1"
  },
  "semana2": {
   "nome": "Exploração · Semana 2 (Zeom AI)",
   "classe": "exp",
-  "desc": "Apresentação funcional do assistente",
-  "ver": "v0"
+  "desc": "Apresentação funcional do assistente"
  },
  "semana3": {
   "nome": "Exploração · Semana 3",
   "classe": "exp",
-  "desc": "Fechamento & pesquisa",
-  "ver": "v0"
+  "desc": "Fechamento & pesquisa"
  },
  "valor": {
   "nome": "Prevenção · Valor & Repescagem",
   "classe": "pre",
-  "desc": "Repescagem e valor · prioridade V1",
-  "ver": "v0"
+  "desc": "Repescagem de cartão, multiconta e investimento · Prevenção de valor"
  },
  "oportunidades": {
   "nome": "Ongoing · Oportunidades",
   "classe": "ong",
-  "desc": "Gatilho de mercado · V1",
-  "ver": "v0"
+  "desc": "Variação cambial, novos serviços e investidores · V0 + V1"
  },
- "v1_kyc": {
-  "nome": "Prevenção · KYC",
-  "classe": "pre",
-  "desc": "Verificação não concluída",
-  "ver": "v1"
- },
- "v1_dep": {
-  "nome": "Engajamento · 1º depósito",
-  "classe": "pre",
-  "desc": "Abriu a conta e não depositou",
-  "ver": "v1"
- },
- "v1_car": {
-  "nome": "Repescagem · Cartão",
-  "classe": "exp",
-  "desc": "Cartão não ativado",
-  "ver": "v1"
- },
- "v1_val": {
-  "nome": "Prevenção · Valor",
-  "classe": "pre",
-  "desc": "Cartão ativo, sem saldo",
-  "ver": "v1"
- },
- "v1_mc": {
-  "nome": "Repescagem · Multiconta",
-  "classe": "exp",
-  "desc": "Multiconta não ativada",
-  "ver": "v1"
- },
- "v1_inv": {
-  "nome": "Repescagem · Investimento",
-  "classe": "exp",
-  "desc": "Dinheiro parado em conta",
-  "ver": "v1"
- },
- "v1_ong": {
-  "nome": "Ongoing",
-  "classe": "ong",
-  "desc": "Eventos, lançamentos e investidores",
-  "ver": "v1"
- },
- "v1_ina": {
-  "nome": "Engajamento · Inatividade",
-  "classe": "pre",
-  "desc": "Sem atividade no app · aguarda regras",
-  "ver": "v1"
- },
- "v1_chu": {
+ "churn": {
   "nome": "Churn",
-  "classe": "pre",
-  "desc": "Win back e pesquisa · aguarda regras",
-  "ver": "v1"
+  "classe": "churn",
+  "desc": "Win back e pesquisa · V1"
  }
 };
 
@@ -805,7 +754,8 @@ const DATA = [
   ],
   "corpo": "Ative quando quiser — sem prazo para isso mudar.",
   "ver": "v0",
-  "file": "emails/reguas/v0/13-repescagem-cartao.html"
+  "file": "emails/reguas/v0/13-repescagem-cartao.html",
+  "sub": "Repescagem · Cartão"
  },
  {
   "fase": "valor",
@@ -820,7 +770,8 @@ const DATA = [
   ],
   "corpo": "A partir de R$ 50, no seu tempo.",
   "ver": "v0",
-  "file": "emails/reguas/v0/14-repescagem-investimento.html"
+  "file": "emails/reguas/v0/14-repescagem-investimento.html",
+  "sub": "Repescagem · Investimento"
  },
  {
   "fase": "valor",
@@ -835,7 +786,8 @@ const DATA = [
   ],
   "corpo": "Cartão e multiconta, prontos para quando você quiser usar.",
   "ver": "v0",
-  "file": "emails/reguas/v0/15-prevencao-valor.html"
+  "file": "emails/reguas/v0/15-prevencao-valor.html",
+  "sub": "Prevenção · Valor"
  },
  {
   "fase": "semana1",
@@ -878,7 +830,8 @@ const DATA = [
    }
   ],
   "corpo": "Adicione saldo à sua conta e tenha acesso aos recursos da Zeom.",
-  "ver": "v0"
+  "ver": "v0",
+  "sub": "1º depósito"
  },
  {
   "fase": "engajamento",
@@ -893,7 +846,8 @@ const DATA = [
   ],
   "corpo": "Adicione saldo para movimentar sua conta e acessar seus recursos.",
   "ver": "v0",
-  "file": "emails/reguas/v0/10-prevencao-engajamento-entrada-imediata.html"
+  "file": "emails/reguas/v0/10-prevencao-engajamento-entrada-imediata.html",
+  "sub": "1º depósito"
  },
  {
   "fase": "engajamento",
@@ -907,7 +861,8 @@ const DATA = [
    }
   ],
   "corpo": "Seus recursos continuam ali, no app.",
-  "ver": "v0"
+  "ver": "v0",
+  "sub": "Inatividade"
  },
  {
   "fase": "engajamento",
@@ -922,7 +877,8 @@ const DATA = [
   ],
   "corpo": "Sua conta permanece pronta para acompanhar suas movimentações.",
   "ver": "v0",
-  "file": "emails/reguas/v0/11-prevencao-engajamento-d14.html"
+  "file": "emails/reguas/v0/11-prevencao-engajamento-d14.html",
+  "sub": "Inatividade"
  },
  {
   "fase": "engajamento",
@@ -936,7 +892,8 @@ const DATA = [
    }
   ],
   "corpo": "Um Pix é suficiente para voltar a movimentar sua conta.",
-  "ver": "v0"
+  "ver": "v0",
+  "sub": "Inatividade"
  },
  {
   "fase": "semana2",
@@ -1003,7 +960,8 @@ const DATA = [
    }
   ],
   "corpo": "Consulte cotações atualizadas e acompanhe o mercado pela sua conta.",
-  "ver": "v0"
+  "ver": "v0",
+  "sub": "Variação cambial"
  },
  {
   "fase": "oportunidades",
@@ -1018,10 +976,11 @@ const DATA = [
   ],
   "corpo": "Consulte cotações de diferentes moedas e acompanhe o mercado pela sua conta.",
   "ver": "v0",
-  "file": "emails/reguas/v0/15-ongoing-oportunidades-cambio.html"
+  "file": "emails/reguas/v0/15-ongoing-oportunidades-cambio.html",
+  "sub": "Variação cambial"
  },
  {
-  "fase": "v1_kyc",
+  "fase": "kyc",
   "canal": "email",
   "dia": "D+1 (A · app)",
   "trigger": "D+1 · cadastro existe, falta concluir o KYC (A: Sign up do app · B: lead da calculadora, on-hold) — versão A, ativa",
@@ -1036,7 +995,7 @@ const DATA = [
   "file": "emails/reguas/v1/KYC-01A-app-d1.html"
  },
  {
-  "fase": "v1_kyc",
+  "fase": "kyc",
   "canal": "email",
   "dia": "D+1 (B · calculadora)",
   "trigger": "D+1 · cadastro existe, falta concluir o KYC (A: Sign up do app · B: lead da calculadora, on-hold) — versão B, ON-HOLD",
@@ -1051,7 +1010,7 @@ const DATA = [
   "file": "emails/reguas/v1/KYC-01B-calculadora-d1.html"
  },
  {
-  "fase": "v1_kyc",
+  "fase": "kyc",
   "canal": "email",
   "dia": "D+3",
   "trigger": "D+3 · 3 dias depois, ainda sem KYC (calculadora, on-hold)",
@@ -1066,7 +1025,7 @@ const DATA = [
   "file": "emails/reguas/v1/KYC-02-calculadora-d3.html"
  },
  {
-  "fase": "v1_kyc",
+  "fase": "kyc",
   "canal": "push",
   "dia": "D5",
   "trigger": "D5 · 5 dias sem concluir o KYC",
@@ -1080,7 +1039,7 @@ const DATA = [
   "ver": "v1"
  },
  {
-  "fase": "v1_kyc",
+  "fase": "kyc",
   "canal": "email",
   "dia": "D5",
   "trigger": "D5 · 5 dias sem concluir o KYC (junto do push)",
@@ -1095,7 +1054,7 @@ const DATA = [
   "file": "emails/reguas/v1/KYC-04-d5-email.html"
  },
  {
-  "fase": "v1_kyc",
+  "fase": "kyc",
   "canal": "push",
   "dia": "D7",
   "trigger": "D7 · 7 dias sem concluir o KYC",
@@ -1109,7 +1068,7 @@ const DATA = [
   "ver": "v1"
  },
  {
-  "fase": "v1_kyc",
+  "fase": "kyc",
   "canal": "email",
   "dia": "D7",
   "trigger": "D7 · 7 dias sem concluir o KYC (junto do push)",
@@ -1124,7 +1083,7 @@ const DATA = [
   "file": "emails/reguas/v1/KYC-06-d7-email.html"
  },
  {
-  "fase": "v1_kyc",
+  "fase": "kyc",
   "canal": "email",
   "dia": "D10",
   "trigger": "D10 · fechamento 1, assinado Equipe Zeom",
@@ -1139,7 +1098,7 @@ const DATA = [
   "file": "emails/reguas/v1/KYC-07-d10-fechamento.html"
  },
  {
-  "fase": "v1_kyc",
+  "fase": "kyc",
   "canal": "email",
   "dia": "D14",
   "trigger": "D14 · fechamento final (conteúdo do D6 da V0)",
@@ -1154,7 +1113,7 @@ const DATA = [
   "file": "emails/reguas/v1/KYC-08-d14-fechamento.html"
  },
  {
-  "fase": "v1_kyc",
+  "fase": "kyc",
   "canal": "email",
   "dia": "D21",
   "trigger": "D21 · pesquisa de abandono (era o D15 da V0)",
@@ -1169,7 +1128,7 @@ const DATA = [
   "file": "emails/reguas/v1/KYC-09-d21-pesquisa.html"
  },
  {
-  "fase": "v1_dep",
+  "fase": "engajamento",
   "canal": "push",
   "dia": "D+1",
   "trigger": "D+1 · abriu a conta e não fez depósito",
@@ -1180,10 +1139,11 @@ const DATA = [
    }
   ],
   "corpo": "Faça um Pix para começar a usar sua conta em dólar, com câmbio de taxa zero, por tempo limitado.*",
-  "ver": "v1"
+  "ver": "v1",
+  "sub": "1º depósito"
  },
  {
-  "fase": "v1_dep",
+  "fase": "engajamento",
   "canal": "push",
   "dia": "D+3",
   "trigger": "D+3 · abriu a conta e não fez depósito",
@@ -1194,10 +1154,11 @@ const DATA = [
    }
   ],
   "corpo": "Adicione saldo por Pix e converta para dólar com taxa zero, por tempo limitado.*",
-  "ver": "v1"
+  "ver": "v1",
+  "sub": "1º depósito"
  },
  {
-  "fase": "v1_dep",
+  "fase": "engajamento",
   "canal": "push",
   "dia": "+2 min",
   "trigger": "+2 min · gerou um Pix e não pagou",
@@ -1208,10 +1169,11 @@ const DATA = [
    }
   ],
   "corpo": "Conclua o pagamento antes de o QR Code expirar.",
-  "ver": "v1"
+  "ver": "v1",
+  "sub": "1º depósito"
  },
  {
-  "fase": "v1_car",
+  "fase": "valor",
   "canal": "push",
   "dia": "D+1",
   "trigger": "D+1 · não ativou o cartão",
@@ -1222,10 +1184,11 @@ const DATA = [
    }
   ],
   "corpo": "Ative pelo app e use o saldo em dólar nas compras no exterior.",
-  "ver": "v1"
+  "ver": "v1",
+  "sub": "Repescagem · Cartão"
  },
  {
-  "fase": "v1_car",
+  "fase": "valor",
   "canal": "push",
   "dia": "D+3",
   "trigger": "D+3 · não ativou o cartão",
@@ -1236,10 +1199,11 @@ const DATA = [
    }
   ],
   "corpo": "Aceito em mais de 190 países. Confirme seus dados no app e crie a senha para começar a usar.",
-  "ver": "v1"
+  "ver": "v1",
+  "sub": "Repescagem · Cartão"
  },
  {
-  "fase": "v1_car",
+  "fase": "valor",
   "canal": "email",
   "dia": "D+7",
   "trigger": "D+7 · não ativou o cartão",
@@ -1251,10 +1215,11 @@ const DATA = [
   ],
   "corpo": "Falta pouco para ativar seu Cartão Internacional Zeom, aceito em mais de 190 países.",
   "ver": "v1",
-  "file": "emails/reguas/v1/CAR-03-d7-email.html"
+  "file": "emails/reguas/v1/CAR-03-d7-email.html",
+  "sub": "Repescagem · Cartão"
  },
  {
-  "fase": "v1_car",
+  "fase": "valor",
   "canal": "email",
   "dia": "D+21",
   "trigger": "D+21 · não ativou o cartão",
@@ -1266,10 +1231,11 @@ const DATA = [
   ],
   "corpo": "Viagens, compras online e assinaturas internacionais.",
   "ver": "v1",
-  "file": "emails/reguas/v1/CAR-04-d21-email.html"
+  "file": "emails/reguas/v1/CAR-04-d21-email.html",
+  "sub": "Repescagem · Cartão"
  },
  {
-  "fase": "v1_val",
+  "fase": "valor",
   "canal": "push",
   "dia": "D+0",
   "trigger": "D+0 · cartão ativado, sem saldo",
@@ -1280,10 +1246,11 @@ const DATA = [
    }
   ],
   "corpo": "Adicione saldo à conta do cartão para começar a usar.",
-  "ver": "v1"
+  "ver": "v1",
+  "sub": "Prevenção · Valor"
  },
  {
-  "fase": "v1_val",
+  "fase": "valor",
   "canal": "push",
   "dia": "D+7",
   "trigger": "D+7 · conta cartão sem saldo",
@@ -1294,10 +1261,11 @@ const DATA = [
    }
   ],
   "corpo": "Seu cartão está ativo. Adicione saldo sempre que quiser utilizá-lo.",
-  "ver": "v1"
+  "ver": "v1",
+  "sub": "Prevenção · Valor"
  },
  {
-  "fase": "v1_val",
+  "fase": "valor",
   "canal": "push",
   "dia": "D+14",
   "trigger": "D+14 · conta cartão sem saldo",
@@ -1308,10 +1276,11 @@ const DATA = [
    }
   ],
   "corpo": "Para usar o cartão, transfira saldo da sua conta em dólar para a conta do cartão.",
-  "ver": "v1"
+  "ver": "v1",
+  "sub": "Prevenção · Valor"
  },
  {
-  "fase": "v1_val",
+  "fase": "valor",
   "canal": "push",
   "dia": "Após cada Pix",
   "trigger": "Após cada Pix · no máximo 1 por semana",
@@ -1322,10 +1291,11 @@ const DATA = [
    }
   ],
   "corpo": "Agora você pode converter, investir ou usar no cartão.",
-  "ver": "v1"
+  "ver": "v1",
+  "sub": "Prevenção · Valor"
  },
  {
-  "fase": "v1_mc",
+  "fase": "valor",
   "canal": "push",
   "dia": "D+1",
   "trigger": "D+1 · não ativou a multiconta",
@@ -1336,10 +1306,11 @@ const DATA = [
    }
   ],
   "corpo": "Ative suas contas em moedas para receber e transferir no exterior.",
-  "ver": "v1"
+  "ver": "v1",
+  "sub": "Repescagem · Multiconta"
  },
  {
-  "fase": "v1_mc",
+  "fase": "valor",
   "canal": "push",
   "dia": "D+3",
   "trigger": "D+3 · não ativou a multiconta",
@@ -1350,10 +1321,11 @@ const DATA = [
    }
   ],
   "corpo": "Com a multiconta, você tem uma conta virtual em cada moeda.",
-  "ver": "v1"
+  "ver": "v1",
+  "sub": "Repescagem · Multiconta"
  },
  {
-  "fase": "v1_mc",
+  "fase": "valor",
   "canal": "email",
   "dia": "D+7",
   "trigger": "D+7 · não ativou a multiconta",
@@ -1365,10 +1337,11 @@ const DATA = [
   ],
   "corpo": "Contas em dólar e euro para receber e enviar transferências.",
   "ver": "v1",
-  "file": "emails/reguas/v1/MC-03-d7-email.html"
+  "file": "emails/reguas/v1/MC-03-d7-email.html",
+  "sub": "Repescagem · Multiconta"
  },
  {
-  "fase": "v1_mc",
+  "fase": "valor",
   "canal": "email",
   "dia": "D+21",
   "trigger": "D+21 · não ativou a multiconta",
@@ -1380,10 +1353,11 @@ const DATA = [
   ],
   "corpo": "Receber, enviar e guardar em dólar ou euro — tudo num único lugar, a poucos cliques e disponível 24/7.",
   "ver": "v1",
-  "file": "emails/reguas/v1/MC-04-d21-email.html"
+  "file": "emails/reguas/v1/MC-04-d21-email.html",
+  "sub": "Repescagem · Multiconta"
  },
  {
-  "fase": "v1_inv",
+  "fase": "valor",
   "canal": "push",
   "dia": "D+1",
   "trigger": "D+1 · dinheiro parado em conta corrente",
@@ -1394,10 +1368,11 @@ const DATA = [
    }
   ],
   "corpo": "Ativos internacionais disponíveis para investir ou resgatar 24 horas por dia, direto no app.",
-  "ver": "v1"
+  "ver": "v1",
+  "sub": "Repescagem · Investimento"
  },
  {
-  "fase": "v1_inv",
+  "fase": "valor",
   "canal": "push",
   "dia": "D+3",
   "trigger": "D+3 · dinheiro parado em conta corrente",
@@ -1408,10 +1383,11 @@ const DATA = [
    }
   ],
   "corpo": "Invista ou resgate quando precisar, 24 horas por dia, direto no app.",
-  "ver": "v1"
+  "ver": "v1",
+  "sub": "Repescagem · Investimento"
  },
  {
-  "fase": "v1_ong",
+  "fase": "oportunidades",
   "canal": "push",
   "dia": "Evento",
   "trigger": "Evento · queda relevante do dólar (limiar a definir)",
@@ -1422,10 +1398,11 @@ const DATA = [
    }
   ],
   "corpo": "Converta no app, sem taxa, por tempo limitado.*",
-  "ver": "v1"
+  "ver": "v1",
+  "sub": "Variação cambial"
  },
  {
-  "fase": "v1_ong",
+  "fase": "oportunidades",
   "canal": "email",
   "dia": "Evento",
   "trigger": "Evento · queda relevante do dólar",
@@ -1437,10 +1414,11 @@ const DATA = [
   ],
   "corpo": "Acesse o app, veja a cotação atualizada e converta o dólar sem taxa, por tempo limitado.*",
   "ver": "v1",
-  "file": "emails/reguas/v1/ONG-02-evento-dolar.html"
+  "file": "emails/reguas/v1/ONG-02-evento-dolar.html",
+  "sub": "Variação cambial"
  },
  {
-  "fase": "v1_ong",
+  "fase": "oportunidades",
   "canal": "email",
   "dia": "Lançamento",
   "trigger": "Lançamento · novo serviço ou produto (modelo)",
@@ -1452,10 +1430,11 @@ const DATA = [
   ],
   "corpo": "[Uma frase sobre o que muda para o cliente]",
   "ver": "v1",
-  "file": "emails/reguas/v1/ONG-03-lancamento-modelo.html"
+  "file": "emails/reguas/v1/ONG-03-lancamento-modelo.html",
+  "sub": "Novos serviços"
  },
  {
-  "fase": "v1_ong",
+  "fase": "oportunidades",
   "canal": "push",
   "dia": "D+30",
   "trigger": "D+30 · investidor com saldo ocioso",
@@ -1466,10 +1445,11 @@ const DATA = [
    }
   ],
   "corpo": "Você tem saldo parado na conta. Veja as opções no app.",
-  "ver": "v1"
+  "ver": "v1",
+  "sub": "Investidores"
  },
  {
-  "fase": "v1_ong",
+  "fase": "oportunidades",
   "canal": "email",
   "dia": "D+30",
   "trigger": "D+30 · investidor com saldo ocioso (junto do push)",
@@ -1481,10 +1461,11 @@ const DATA = [
   ],
   "corpo": "Use o Zeom AI para analisar opções de investimento e entender como elas se encaixam no seu perfil.",
   "ver": "v1",
-  "file": "emails/reguas/v1/ONG-05-d30-saldo.html"
+  "file": "emails/reguas/v1/ONG-05-d30-saldo.html",
+  "sub": "Investidores"
  },
  {
-  "fase": "v1_ong",
+  "fase": "oportunidades",
   "canal": "push",
   "dia": "D+30",
   "trigger": "D+30 · investidor sem novos depósitos",
@@ -1495,10 +1476,11 @@ const DATA = [
    }
   ],
   "corpo": "Adicione saldo e invista em ativos internacionais, 24 horas por dia.",
-  "ver": "v1"
+  "ver": "v1",
+  "sub": "Investidores"
  },
  {
-  "fase": "v1_ong",
+  "fase": "oportunidades",
   "canal": "email",
   "dia": "D+30",
   "trigger": "D+30 · investidor sem novos depósitos (junto do push)",
@@ -1510,10 +1492,11 @@ const DATA = [
   ],
   "corpo": "Faça um novo aporte e continue construindo seu patrimônio, com diversificação em ativos internacionais.",
   "ver": "v1",
-  "file": "emails/reguas/v1/ONG-07-d30-aporte.html"
+  "file": "emails/reguas/v1/ONG-07-d30-aporte.html",
+  "sub": "Investidores"
  },
  {
-  "fase": "v1_ina",
+  "fase": "engajamento",
   "canal": "push",
   "dia": "D7",
   "trigger": "D7 · sem atividade no app · status Zeom: Pendente",
@@ -1524,10 +1507,11 @@ const DATA = [
    }
   ],
   "corpo": "Saldo, cartão e cotações a um toque, no app.",
-  "ver": "v1"
+  "ver": "v1",
+  "sub": "Inatividade"
  },
  {
-  "fase": "v1_ina",
+  "fase": "engajamento",
   "canal": "email",
   "dia": "D7",
   "trigger": "D7 · sem atividade no app (junto do push) · status Zeom: Pendente",
@@ -1539,10 +1523,11 @@ const DATA = [
   ],
   "corpo": "Saldo, cotações e cartão em um só lugar, quando você quiser.",
   "ver": "v1",
-  "file": "emails/reguas/v1/INA-02-d7-email.html"
+  "file": "emails/reguas/v1/INA-02-d7-email.html",
+  "sub": "Inatividade"
  },
  {
-  "fase": "v1_ina",
+  "fase": "engajamento",
   "canal": "email",
   "dia": "D14",
   "trigger": "D14 · sem atividade no app · status Zeom: Pendente",
@@ -1554,10 +1539,11 @@ const DATA = [
   ],
   "corpo": "Acesse sua conta e acompanhe as opções para a gestão dos seus recursos.",
   "ver": "v1",
-  "file": "emails/reguas/v1/INA-03-d14-email.html"
+  "file": "emails/reguas/v1/INA-03-d14-email.html",
+  "sub": "Inatividade"
  },
  {
-  "fase": "v1_ina",
+  "fase": "engajamento",
   "canal": "email",
   "dia": "D21",
   "trigger": "D21 · fechamento · status Zeom: Pendente",
@@ -1569,10 +1555,11 @@ const DATA = [
   ],
   "corpo": "Converta em dólar com taxa zero, por tempo limitado.*",
   "ver": "v1",
-  "file": "emails/reguas/v1/INA-04-d21-fechamento.html"
+  "file": "emails/reguas/v1/INA-04-d21-fechamento.html",
+  "sub": "Inatividade"
  },
  {
-  "fase": "v1_chu",
+  "fase": "churn",
   "canal": "push",
   "dia": "D+30",
   "trigger": "D+30 · inativo, sem saldo · status Zeom: Pendente",
@@ -1586,7 +1573,7 @@ const DATA = [
   "ver": "v1"
  },
  {
-  "fase": "v1_chu",
+  "fase": "churn",
   "canal": "email",
   "dia": "D+30",
   "trigger": "D+30 · win back (junto do push) · status Zeom: Pendente",
@@ -1601,7 +1588,7 @@ const DATA = [
   "file": "emails/reguas/v1/CHU-02-d30-winback.html"
  },
  {
-  "fase": "v1_chu",
+  "fase": "churn",
   "canal": "email",
   "dia": "D+35",
   "trigger": "D+35 · só entender o que houve · status Zeom: Pendente",
@@ -1621,6 +1608,7 @@ const DATA = [
 // canvas: viewBox 0 0 900 1000 — main spine x=260, side (prevenção) x=650
 const flowWrap = document.getElementById('flow-wrap');
 
+let MODE = 'all';
 function countOf(key){ return DATA.filter(d => d.fase === key).length; }
 
 const svgNS = 'http://www.w3.org/2000/svg';
@@ -1643,21 +1631,23 @@ let svgLines = `
   <line x1="305" y1="235" x2="520" y2="290" stroke="#D9A420" stroke-width="1.6" stroke-dasharray="4 4" marker-end="url(#arAmber)"/>
   <line x1="305" y1="445" x2="520" y2="445" stroke="#D9A420" stroke-width="1.6" stroke-dasharray="4 4" marker-end="url(#arAmber)"/>
   <line x1="440" y1="650" x2="520" y2="650" stroke="#D9A420" stroke-width="1.6" stroke-dasharray="4 4" marker-end="url(#arAmber)"/>
+  <line x1="305" y1="845" x2="520" y2="845" stroke="#B3AD98" stroke-width="1.6" stroke-dasharray="4 4" marker-end="url(#arGray)"/>
 `;
-flowWrap.innerHTML = `<svg viewBox="0 0 1200 1160" preserveAspectRatio="none">${svgLines}</svg>`;
+flowWrap.innerHTML = `<svg viewBox="0 0 900 1160" preserveAspectRatio="none">${svgLines}</svg>`;
 
 function addNode({x, y, w, h, cls, label, faseKey, extraLabel}){
   const el = document.createElement('div');
   el.className = 'fnode ' + cls + (faseKey ? ' clickable' : '');
-  el.style.left = (x/1200*100) + '%';
+  if(faseKey) el.dataset.fase = faseKey;
+  el.style.left = (x/900*100) + '%';
   el.style.top = (y/1160*100) + '%';
-  el.style.width = (w/1200*100) + '%';
+  el.style.width = (w/900*100) + '%';
   el.style.height = (h/1160*100) + '%';
   if(cls === 'diamond'){
     el.innerHTML = `<span class="dtext">${label}</span>`;
   } else {
     const count = faseKey ? countOf(faseKey) : null;
-    el.innerHTML = `<span class="flabel">${label}</span>${count!==null ? `<span class="fcount">${count} comunicaç${count===1?'ão':'ões'}</span>` : (extraLabel ? `<span class="fcount" style="opacity:.65;">${extraLabel}</span>` : '')}`;
+    el.innerHTML = `<span class="flabel">${label}</span>${count!==null ? `<span class="fcount">${countText(faseKey)}</span>` : (extraLabel ? `<span class="fcount" style="opacity:.65;">${extraLabel}</span>` : '')}`;
   }
   if(faseKey){ el.onclick = () => showStage2(faseKey); }
   flowWrap.appendChild(el);
@@ -1680,14 +1670,15 @@ addNode({x:650, y:205, w:260, h:64, cls:'n-pre', label:FASES.aquisicao.nome, fas
 addNode({x:650, y:290, w:260, h:64, cls:'n-pre', label:FASES.kyc.nome, faseKey:'kyc'});
 addNode({x:650, y:445, w:260, h:64, cls:'n-pre', label:FASES.engajamento.nome, faseKey:'engajamento'});
 addNode({x:650, y:650, w:260, h:64, cls:'n-pre', label:FASES.valor.nome, faseKey:'valor'});
+addNode({x:650, y:845, w:260, h:64, cls:'n-churn', label:FASES.churn.nome, faseKey:'churn'});
 
 // "não" labels on branch lines
-['não','não','não','parou'].forEach((t,i)=>{
-  const positions = [[420,197],[420,275],[420,432],[480,640]];
+['não','não','não','parou','não'].forEach((t,i)=>{
+  const positions = [[420,197],[420,275],[420,432],[480,640],[420,832]];
   const [lx,ly] = positions[i];
   const lbl = document.createElement('div');
   lbl.className = 'flabel-not';
-  lbl.style.left = (lx/1200*100)+'%';
+  lbl.style.left = (lx/900*100)+'%';
   lbl.style.top = (ly/1160*100)+'%';
   lbl.textContent = t;
   flowWrap.appendChild(lbl);
@@ -1695,30 +1686,23 @@ addNode({x:650, y:650, w:260, h:64, cls:'n-pre', label:FASES.valor.nome, faseKey
 
 
 
-// ---------- V1 no mesmo fluxograma ----------
-const V1ROWS=[['v1_kyc',290],['v1_dep',445],['v1_car',560],['v1_val',650],['v1_mc',730],['v1_inv',810],['v1_ong',890],['v1_ina',970],['v1_chu',1050]];
-flowWrap.querySelector('svg').insertAdjacentHTML('beforeend',`<g class="v1-svg">
-  <rect x="850" y="228" width="320" height="866" rx="18" fill="#FFF8E6" fill-opacity=".55" stroke="#C98A00" stroke-width="1.4" stroke-dasharray="6 5"/>
-  <text x="1010" y="256" text-anchor="middle" font-size="13" font-weight="700" fill="#7A5200" font-family="Arial">V1 · RÉGUA NOVA</text>
-  <line x1="780" y1="290" x2="875" y2="290" stroke="#C98A00" stroke-width="1.6" stroke-dasharray="4 4" marker-end="url(#arAmber)"/>
-  <line x1="780" y1="445" x2="875" y2="445" stroke="#C98A00" stroke-width="1.6" stroke-dasharray="4 4" marker-end="url(#arAmber)"/>
-  <line x1="440" y1="560" x2="875" y2="560" stroke="#C98A00" stroke-width="1.6" stroke-dasharray="4 4" marker-end="url(#arAmber)"/>
-  <line x1="780" y1="650" x2="875" y2="650" stroke="#C98A00" stroke-width="1.6" stroke-dasharray="4 4" marker-end="url(#arAmber)"/></g>`);
-V1ROWS.forEach(([k,y])=>addNode({x:1010,y:y,w:270,h:64,cls:'v1',label:FASES[k].nome,faseKey:k}));
-// grid "Só V1"
-const g1=document.getElementById('v1-grid-wrap');
-Object.keys(FASES).filter(k=>FASES[k].ver==='v1').forEach(k=>{
-  const items=DATA.filter(d=>d.fase===k), em=items.filter(d=>d.canal==='email').length, pu=items.filter(d=>d.canal==='push').length;
-  const c=document.createElement('div'); c.className='v1-card'; c.onclick=()=>showStage2(k);
-  c.innerHTML=`<div class="v1-name">${FASES[k].nome}</div><div class="v1-desc">${FASES[k].desc}</div><div class="v1-count">${em} e-mail${em===1?'':'s'} · ${pu} push${pu===1?'':'es'}</div>`; g1.appendChild(c);
-});
+// ---------- V0 + V1 na mesma régua ----------
+function modeItems(key){ return DATA.filter(d => d.fase === key && (MODE === 'all' || d.ver === MODE)); }
+function countText(key){
+  const all = DATA.filter(d => d.fase === key), v0 = all.filter(d => d.ver === 'v0').length, v1 = all.length - v0;
+  if(MODE === 'v0') return `${v0} comunicaç${v0===1?'ão':'ões'} · V0`;
+  if(MODE === 'v1') return `${v1} comunicaç${v1===1?'ão':'ões'} · V1`;
+  return `${all.length} comunicaç${all.length===1?'ão':'ões'} · V0 ${v0} · V1 ${v1}`;
+}
 function setMode(m){
-  document.querySelectorAll('#seg button').forEach(b=>b.classList.toggle('on',b.dataset.m===m));
-  const flow=document.querySelector('.flow-scroll'), legend=document.querySelector('.flow-legend');
+  MODE = m;
+  document.querySelectorAll('#seg button').forEach(b => b.classList.toggle('on', b.dataset.m === m));
+  document.querySelectorAll('.fnode[data-fase]').forEach(el => {
+    const k = el.dataset.fase, c = el.querySelector('.fcount');
+    if(c) c.textContent = countText(k);
+    el.classList.toggle('empty', modeItems(k).length === 0);
+  });
   showStage1();
-  if(m==='v1'){flow.style.display='none'; g1.style.display='grid'; if(legend) legend.style.display='none';}
-  else{flow.style.display=''; g1.style.display='none'; if(legend) legend.style.display='';
-    document.querySelectorAll('.fnode.v1, .v1-svg').forEach(e=>{e.style.display = m==='v0'?'none':'';});}
 }
 setMode('all');
 
@@ -1782,29 +1766,43 @@ function showStage2(faseKey){
   document.getElementById('stage-reguas').style.display = 'none';
   document.getElementById('stage-comms').style.display = 'block';
   document.getElementById('comms-fase-tag').className = 'fase-tag fase-' + f.classe;
-  document.getElementById('comms-fase-tag').textContent = (f.ver==='v1'?'V1 · ':'')+f.nome.split('·')[0].trim();
-  document.getElementById('comms-title').textContent = f.nome + (f.ver==='v1'?' · V1':'');
+  document.getElementById('comms-fase-tag').textContent = f.nome.split('·')[0].trim();
+  document.getElementById('comms-title').textContent = f.nome;
   document.getElementById('comms-sub').textContent = f.desc;
 
   const list = document.getElementById('bubble-list');
   list.innerHTML = '';
-  const items = DATA.filter(d => d.fase === faseKey);
-  items.forEach((item, idx) => {
-    const headline = item.campos[0] ? item.campos[0].value : item.corpo.split('\n')[0];
-    const bubble = document.createElement('div');
-    bubble.className = 'bubble chan-' + item.canal;
-    bubble.innerHTML = `
-      <div class="chan-icon">${ICONS[item.canal]}</div>
-      <div class="info">
-        <div class="headline">${headline}${item.ver==='v1'?'<span class="vchip">V1</span>':''}</div>
-        <div class="trigger">${item.trigger}</div>
-      </div>
-      <span class="day-chip">${item.dia}</span>
-      <button class="ver-mais">Ver mais</button>
-    `;
-    bubble.querySelector('.ver-mais').onclick = () => openModal(faseKey, idx);
-    list.appendChild(bubble);
+  const all = DATA.filter(d => d.fase === faseKey);
+  const rows = all.map((item, idx) => ({item, idx})).filter(r => MODE === 'all' || r.item.ver === MODE);
+  const groups = [];
+  rows.forEach(r => {
+    const g = r.item.sub || '';
+    let grp = groups.find(x => x.name === g);
+    if(!grp){ grp = {name: g, rows: []}; groups.push(grp); }
+    grp.rows.push(r);
   });
+  groups.forEach(grp => {
+    if(grp.name && groups.length > 1){
+      const h = document.createElement('div'); h.className = 'sub-head'; h.textContent = grp.name; list.appendChild(h);
+    }
+    grp.rows.forEach(({item, idx}) => {
+      const headline = item.campos[0] ? item.campos[0].value : item.corpo.split('\n')[0];
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble chan-' + item.canal;
+      bubble.innerHTML = `
+        <div class="chan-icon">${ICONS[item.canal]}</div>
+        <div class="info">
+          <div class="headline">${headline}<span class="vchip ${item.ver}">${item.ver.toUpperCase()}</span></div>
+          <div class="trigger">${item.trigger}</div>
+        </div>
+        <span class="day-chip">${item.dia}</span>
+        <button class="ver-mais">Ver mais</button>
+      `;
+      bubble.querySelector('.ver-mais').onclick = () => openModal(faseKey, idx);
+      list.appendChild(bubble);
+    });
+  });
+  if(!rows.length) list.innerHTML = '<p class="comms-sub">Nenhuma comunicação desta versão nesta régua.</p>';
   window.scrollTo({top:0, behavior:'smooth'});
 }
 
@@ -1818,7 +1816,7 @@ function openModal(faseKey, idx){
   const item = items[idx];
 
   document.getElementById('m-fase').className = 'm-fase';
-  document.getElementById('m-fase').style.color = ({onb:'#2B6EF5',pre:'#9A6B00',exp:'#7C4DFF',ong:'#0A7A6C'})[f.classe];
+  document.getElementById('m-fase').style.color = ({onb:'#2B6EF5',pre:'#9A6B00',exp:'#7C4DFF',ong:'#0A7A6C',churn:'#6B6656'})[f.classe];
   document.getElementById('m-fase').textContent = f.nome;
 
   document.getElementById('m-chan-row').innerHTML = `
