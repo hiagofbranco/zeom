@@ -302,6 +302,27 @@
   .fnode.empty{opacity:.35;}
   .fnode.n-churn{background:#EDEBE0; color:#6B6656; border-color:#BFBA99;}
   .fase-churn{background:#EDEBE0; color:#6B6656;}
+
+  /* ===== atenção (incoerências) + régua única ===== */
+  .warn{position:relative; display:inline-flex; align-items:center; gap:4px; margin-left:8px; font-size:10px; font-weight:800; letter-spacing:.3px; padding:2px 8px; border-radius:20px; background:#FDE8E4; color:#B42318; cursor:help; vertical-align:middle; text-transform:none;}
+  .warn.media{background:#FFF1D6; color:#9A6B00;}
+  .warn.baixa{background:#EDEBE0; color:#6B6656;}
+  .warn .tip{display:none; position:absolute; left:0; top:calc(100% + 8px); z-index:60; width:320px; max-width:80vw; background:#0A1628; color:#fff; border-radius:12px; padding:12px 14px; font-size:12px; font-weight:500; line-height:1.5; letter-spacing:0; box-shadow:0 12px 30px rgba(10,22,40,.3); white-space:normal; text-align:left;}
+  .warn .tip::before{content:""; position:absolute; top:-5px; left:18px; width:10px; height:10px; background:#0A1628; transform:rotate(45deg);}
+  .warn:hover .tip, .warn:focus .tip{display:block;}
+  .tip .tip-i{margin-top:8px;} .tip .tip-i:first-child{margin-top:0;}
+  .tip b{display:block; font-size:12px; margin-bottom:2px;}
+  .tip em{display:block; font-style:normal; color:#9FD8CF; margin-top:3px;}
+  .tip .lv{font-size:9.5px; font-weight:800; letter-spacing:.5px; text-transform:uppercase; opacity:.7;}
+  .m-alerts{margin:0 0 16px; padding:10px 12px; background:#FDE8E4; border-radius:10px; font-size:12px; color:#7A271A; line-height:1.5;}
+  .m-alerts div + div{margin-top:6px;}
+  .un-bar{display:flex; flex-wrap:wrap; gap:14px; align-items:center; justify-content:space-between; margin:6px 0 14px; font-size:12.5px; color:var(--muted);}
+  .un-bar label{display:inline-flex; align-items:center; gap:6px; cursor:pointer; font-weight:600; color:var(--ink);}
+  .un-fase{display:flex; align-items:center; gap:10px; margin:26px 0 10px; font-size:15px; font-weight:800; letter-spacing:-.2px;}
+  .un-fase small{font-size:11px; font-weight:600; color:var(--muted); letter-spacing:0;}
+  .un-fase:first-child{margin-top:4px;}
+  .seg.view{margin-right:10px;}
+  .ver-left{display:flex; flex-wrap:wrap; gap:10px; align-items:center;}
 </style>
 </head>
 <body>
@@ -312,7 +333,8 @@
     <h1>Comunicações <span class="z">Zeom</span></h1>
     <p class="sub">Momento Zero (V0) e V1 juntos na mesma régua. Clique numa régua pra ver as comunicações que a compõem. Clique em "Ver mais" pra abrir o texto completo de cada uma.</p>
     <div class="ver-bar">
-      <div class="seg" id="seg"><button data-m="all" class="on" onclick="setMode('all')">V0 + V1</button><button data-m="v0" onclick="setMode('v0')">Só V0</button><button data-m="v1" onclick="setMode('v1')">Só V1</button></div>
+      <div class="ver-left"><div class="seg view" id="seg-view"><button data-v="fluxo" class="on" onclick="setView('fluxo')">Fluxograma</button><button data-v="unica" onclick="setView('unica')">Régua única</button></div>
+      <div class="seg" id="seg"><button data-m="all" class="on" onclick="setMode('all')">V0 + V1</button><button data-m="v0" onclick="setMode('v0')">Só V0</button><button data-m="v1" onclick="setMode('v1')">Só V1</button></div></div>
       <label style="font-size:12px;color:var(--muted);">Versão&nbsp;<select class="vsel" id="vsel"><option>02/11/2026 · V0 + V1 (hoje)</option></select></label>
     </div>
   </header>
@@ -328,9 +350,16 @@
       <span><span class="sw" style="background:#F6C244; border:1px solid #D9A420;"></span>Decisão</span>
       <span><span class="sw" style="background:#E7F0FF;"></span>V0</span>
       <span><span class="sw" style="background:#FFF0C2;"></span>V1</span>
+      <span><span class="sw" style="background:#FDE8E4;"></span>⚠ Atenção (incoerência)</span>
     </div>
     <p class="flow-hint" style="display:none; font-size:12px; color:var(--muted); margin-bottom:10px;">↔ Arraste pro lado pra ver o fluxograma completo</p>
     <div class="flow-scroll"><div class="flow-wrap" id="flow-wrap"></div></div>
+  </div>
+
+  <!-- RÉGUA ÚNICA -->
+  <div id="stage-unica" style="display:none;">
+    <div class="un-bar"><span id="un-count"></span><label><input type="checkbox" id="only-warn" onchange="renderUnica()"> Mostrar só comunicações com atenção</label></div>
+    <div class="bubble-list" id="unica-list"></div>
   </div>
 
   <!-- STAGE 2 -->
@@ -471,6 +500,104 @@ const FASES = {
 };
 
 // Cada comunicação: { fase, canal, dia, trigger, campos:[{label,value}], corpo }
+const ALERTAS = {
+ "A01": {
+  "nivel": "alta",
+  "titulo": "Inatividade D7 duplicada (V0 + V1)",
+  "texto": "O mesmo gatilho (7 dias sem atividade) existe na V0 e na V1: até 3 comunicações no mesmo dia, 2 pushes e 1 e-mail.",
+  "sugestao": "Manter só uma versão; a V1 substitui a V0."
+ },
+ "A02": {
+  "nivel": "alta",
+  "titulo": "Inatividade D14 duplicada (V0 + V1)",
+  "texto": "Dois e-mails no mesmo dia para o mesmo gatilho (14 dias sem atividade), um da V0 e um da V1.",
+  "sugestao": "Manter só um e-mail D14."
+ },
+ "A03": {
+  "nivel": "alta",
+  "titulo": "Inatividade D21 duplicada (V0 + V1)",
+  "texto": "Push da V0 e e-mail da V1 no mesmo dia (21 dias sem atividade), os dois com a ideia de \"só um Pix\".",
+  "sugestao": "Escolher um fechamento (push ou e-mail) ou assumir os dois como par e retirar o da V0."
+ },
+ "A04": {
+  "nivel": "alta",
+  "titulo": "KYC D1: assunto e pré-header iguais",
+  "texto": "A V0 (D1) e a V1 (D+1, versão A) têm o mesmo assunto, \"Sua verificação de identidade\", e o mesmo pré-header, no mesmo dia.",
+  "sugestao": "Manter só uma. A V1 versão A substitui a V0 D1."
+ },
+ "A05": {
+  "nivel": "alta",
+  "titulo": "KYC: fechamento e pesquisa repetidos entre V0 e V1",
+  "texto": "A V1 reaproveita o conteúdo do D6 (agora D14) e do D15 (agora D21) da V0, com os mesmos assuntos. Se a V0 continuar ativa, o cliente recebe os dois.",
+  "sugestao": "Desativar o D6 e o D15 da V0 quando a V1 entrar."
+ },
+ "A06": {
+  "nivel": "media",
+  "titulo": "KYC: mesmo texto no push D5 e no e-mail D7",
+  "texto": "O push do D5 e o e-mail do D7 trazem o mesmo texto (\"Conclua sua verificação e tenha acesso ao câmbio com taxa zero, por tempo limitado.*\").",
+  "sugestao": "Diferenciar os textos ou rever a cadência D5/D7."
+ },
+ "A07": {
+  "nivel": "alta",
+  "titulo": "Oferta de taxa zero em 9 comunicações",
+  "texto": "A oferta aparece no KYC (D5 e D7), no 1º depósito (D+1 e D+3), no \"dólar recuou\" e na Inatividade D21, sempre \"por tempo limitado\". Sem regra única de quem recebe e por quanto tempo, o cliente pode ver ofertas diferentes ao mesmo tempo.",
+  "sugestao": "Definir uma regra única: elegibilidade, prazo, quantas vezes e como o cupom é resgatado."
+ },
+ "A08": {
+  "nivel": "alta",
+  "titulo": "Valor: até 4 e-mails no D7 para o mesmo público",
+  "texto": "Quem não ativou o cartão (e a multiconta) recebe no D7 e-mails da V0 (cartão e valor) e da V1 (cartão e multiconta).",
+  "sugestao": "Reduzir a um e-mail por público e dia; a V1 substitui os da V0."
+ },
+ "A09": {
+  "nivel": "alta",
+  "titulo": "D+1: até 4 pushes no mesmo dia",
+  "texto": "Depois de abrir a conta, o cliente pode receber no D+1 os pushes de 1º depósito, cartão, multiconta e investimento. Não há limite de envios por cliente definido.",
+  "sugestao": "Definir limite e prioridade entre as réguas (por exemplo, 1 push por dia)."
+ },
+ "A10": {
+  "nivel": "alta",
+  "titulo": "D+3: até 4 pushes no mesmo dia",
+  "texto": "Mesma situação do D+1: 1º depósito, cartão, multiconta e investimento no D+3.",
+  "sugestao": "Escalonar as réguas ou aplicar limite diário."
+ },
+ "A11": {
+  "nivel": "alta",
+  "titulo": "Variação cambial: 4 comunicações para o mesmo evento",
+  "texto": "A V0 (\"Câmbio, de forma simples\", manual) e a V1 (\"O dólar recuou hoje\", por limiar) disparam no mesmo evento, cada uma com push e e-mail.",
+  "sugestao": "Definir qual versão vale e se o disparo é manual ou por limiar."
+ },
+ "A12": {
+  "nivel": "media",
+  "titulo": "1º depósito: duas cadências para o mesmo público",
+  "texto": "A V0 fala com quem não fez o 1º Pix por dia da semana (quarta e sexta) e a V1 por D+1 e D+3. O mesmo cliente pode receber as duas.",
+  "sugestao": "Escolher uma cadência e retirar a outra."
+ },
+ "A13": {
+  "nivel": "media",
+  "titulo": "Mesmo título em momentos diferentes",
+  "texto": "\"Sua conta está pronta\" é o assunto do e-mail de aprovação do KYC (onboarding) e o título do push do 1º depósito (D+1).",
+  "sugestao": "Trocar um dos dois para não confundir os momentos."
+ },
+ "A14": {
+  "nivel": "media",
+  "titulo": "D+30: até 3 pushes e 3 e-mails no mesmo dia",
+  "texto": "O Win Back (churn) e as comunicações de investidor (saldo ocioso e novos aportes) disparam no D+30 e o público pode se sobrepor.",
+  "sugestao": "Definir prioridade entre Churn e Ongoing no D+30."
+ },
+ "A15": {
+  "nivel": "baixa",
+  "titulo": "KYC aprovado: 3 comunicações no mesmo momento",
+  "texto": "Push \"Sua conta está ativa\" e dois e-mails (panorama e carta do CEO) saem juntos quando o KYC é aprovado. O e-mail de panorama já está marcado para confirmar se mantém.",
+  "sugestao": "Confirmar se os dois e-mails precisam sair juntos."
+ },
+ "A16": {
+  "nivel": "media",
+  "titulo": "Gatilho \"fez Pix\" em V0 e V1",
+  "texto": "A V0 envia o push de quarta (\"Mais para o seu saldo\") para quem já fez o Pix, e a V1 envia \"Pix recebido na sua conta\" após cada Pix.",
+  "sugestao": "Escolher um dos dois ou diferenciar o público."
+ }
+};
 const BASE = '';
 const DATA = [
  {
@@ -539,7 +666,10 @@ const DATA = [
    }
   ],
   "corpo": "Tudo pronto para você começar.",
-  "ver": "v0"
+  "ver": "v0",
+  "alertas": [
+   "A15"
+  ]
  },
  {
   "fase": "onboarding",
@@ -554,7 +684,11 @@ const DATA = [
   ],
   "corpo": "Sua conta Zeom foi aprovada e já está pronta para você acessar.",
   "ver": "v0",
-  "file": "emails/reguas/v0/16-onboarding-boas-vindas-1.html"
+  "file": "emails/reguas/v0/16-onboarding-boas-vindas-1.html",
+  "alertas": [
+   "A13",
+   "A15"
+  ]
  },
  {
   "fase": "onboarding",
@@ -569,7 +703,10 @@ const DATA = [
   ],
   "corpo": "Uma mensagem do André sobre o que estamos construindo.",
   "ver": "v0",
-  "file": "emails/reguas/v0/02-onboarding-boas-vindas-ceo.html"
+  "file": "emails/reguas/v0/02-onboarding-boas-vindas-ceo.html",
+  "alertas": [
+   "A15"
+  ]
  },
  {
   "fase": "onboarding",
@@ -680,7 +817,10 @@ const DATA = [
   ],
   "corpo": "A etapa de verificação continua disponível para concluir sua abertura de conta.",
   "ver": "v0",
-  "file": "emails/reguas/v0/06-prevencao-kyc-d1.html"
+  "file": "emails/reguas/v0/06-prevencao-kyc-d1.html",
+  "alertas": [
+   "A04"
+  ]
  },
  {
   "fase": "kyc",
@@ -724,7 +864,10 @@ const DATA = [
   ],
   "corpo": "Você pode concluir essa etapa pelo aplicativo.",
   "ver": "v0",
-  "file": "emails/reguas/v0/07-prevencao-kyc-d6-fechamento.html"
+  "file": "emails/reguas/v0/07-prevencao-kyc-d6-fechamento.html",
+  "alertas": [
+   "A05"
+  ]
  },
  {
   "fase": "kyc",
@@ -739,7 +882,10 @@ const DATA = [
   ],
   "corpo": "Conte como foi o seu processo e o que podemos melhorar.",
   "ver": "v0",
-  "file": "emails/reguas/v0/08-prevencao-kyc-d15-pesquisa.html"
+  "file": "emails/reguas/v0/08-prevencao-kyc-d15-pesquisa.html",
+  "alertas": [
+   "A05"
+  ]
  },
  {
   "fase": "valor",
@@ -755,7 +901,10 @@ const DATA = [
   "corpo": "Ative quando quiser — sem prazo para isso mudar.",
   "ver": "v0",
   "file": "emails/reguas/v0/13-repescagem-cartao.html",
-  "sub": "Repescagem · Cartão"
+  "sub": "Repescagem · Cartão",
+  "alertas": [
+   "A08"
+  ]
  },
  {
   "fase": "valor",
@@ -787,7 +936,10 @@ const DATA = [
   "corpo": "Cartão e multiconta, prontos para quando você quiser usar.",
   "ver": "v0",
   "file": "emails/reguas/v0/15-prevencao-valor.html",
-  "sub": "Prevenção · Valor"
+  "sub": "Prevenção · Valor",
+  "alertas": [
+   "A08"
+  ]
  },
  {
   "fase": "semana1",
@@ -816,7 +968,10 @@ const DATA = [
    }
   ],
   "corpo": "Use seu saldo em dólar no cartão internacional ou explore as opções de investimento.",
-  "ver": "v0"
+  "ver": "v0",
+  "alertas": [
+   "A16"
+  ]
  },
  {
   "fase": "engajamento",
@@ -831,7 +986,10 @@ const DATA = [
   ],
   "corpo": "Adicione saldo à sua conta e tenha acesso aos recursos da Zeom.",
   "ver": "v0",
-  "sub": "1º depósito"
+  "sub": "1º depósito",
+  "alertas": [
+   "A12"
+  ]
  },
  {
   "fase": "engajamento",
@@ -847,7 +1005,10 @@ const DATA = [
   "corpo": "Adicione saldo para movimentar sua conta e acessar seus recursos.",
   "ver": "v0",
   "file": "emails/reguas/v0/10-prevencao-engajamento-entrada-imediata.html",
-  "sub": "1º depósito"
+  "sub": "1º depósito",
+  "alertas": [
+   "A12"
+  ]
  },
  {
   "fase": "engajamento",
@@ -862,7 +1023,10 @@ const DATA = [
   ],
   "corpo": "Seus recursos continuam ali, no app.",
   "ver": "v0",
-  "sub": "Inatividade"
+  "sub": "Inatividade",
+  "alertas": [
+   "A01"
+  ]
  },
  {
   "fase": "engajamento",
@@ -878,7 +1042,10 @@ const DATA = [
   "corpo": "Sua conta permanece pronta para acompanhar suas movimentações.",
   "ver": "v0",
   "file": "emails/reguas/v0/11-prevencao-engajamento-d14.html",
-  "sub": "Inatividade"
+  "sub": "Inatividade",
+  "alertas": [
+   "A02"
+  ]
  },
  {
   "fase": "engajamento",
@@ -893,7 +1060,10 @@ const DATA = [
   ],
   "corpo": "Um Pix é suficiente para voltar a movimentar sua conta.",
   "ver": "v0",
-  "sub": "Inatividade"
+  "sub": "Inatividade",
+  "alertas": [
+   "A03"
+  ]
  },
  {
   "fase": "semana2",
@@ -961,7 +1131,10 @@ const DATA = [
   ],
   "corpo": "Consulte cotações atualizadas e acompanhe o mercado pela sua conta.",
   "ver": "v0",
-  "sub": "Variação cambial"
+  "sub": "Variação cambial",
+  "alertas": [
+   "A11"
+  ]
  },
  {
   "fase": "oportunidades",
@@ -977,7 +1150,10 @@ const DATA = [
   "corpo": "Consulte cotações de diferentes moedas e acompanhe o mercado pela sua conta.",
   "ver": "v0",
   "file": "emails/reguas/v0/15-ongoing-oportunidades-cambio.html",
-  "sub": "Variação cambial"
+  "sub": "Variação cambial",
+  "alertas": [
+   "A11"
+  ]
  },
  {
   "fase": "kyc",
@@ -992,7 +1168,10 @@ const DATA = [
   ],
   "corpo": "A etapa de verificação continua disponível para concluir sua abertura de conta.",
   "ver": "v1",
-  "file": "emails/reguas/v1/KYC-01A-app-d1.html"
+  "file": "emails/reguas/v1/KYC-01A-app-d1.html",
+  "alertas": [
+   "A04"
+  ]
  },
  {
   "fase": "kyc",
@@ -1036,7 +1215,11 @@ const DATA = [
    }
   ],
   "corpo": "Conclua sua verificação e tenha acesso ao câmbio com taxa zero, por tempo limitado.*",
-  "ver": "v1"
+  "ver": "v1",
+  "alertas": [
+   "A06",
+   "A07"
+  ]
  },
  {
   "fase": "kyc",
@@ -1051,7 +1234,10 @@ const DATA = [
   ],
   "corpo": "Conclua sua verificação e tenha acesso ao câmbio com taxa zero na Zeom, por tempo limitado.*",
   "ver": "v1",
-  "file": "emails/reguas/v1/KYC-04-d5-email.html"
+  "file": "emails/reguas/v1/KYC-04-d5-email.html",
+  "alertas": [
+   "A07"
+  ]
  },
  {
   "fase": "kyc",
@@ -1065,7 +1251,10 @@ const DATA = [
    }
   ],
   "corpo": "Conclua a verificação e converta em dólar com taxa zero, por tempo limitado.*",
-  "ver": "v1"
+  "ver": "v1",
+  "alertas": [
+   "A07"
+  ]
  },
  {
   "fase": "kyc",
@@ -1080,7 +1269,11 @@ const DATA = [
   ],
   "corpo": "Conclua sua verificação e tenha acesso ao câmbio com taxa zero, por tempo limitado.*",
   "ver": "v1",
-  "file": "emails/reguas/v1/KYC-06-d7-email.html"
+  "file": "emails/reguas/v1/KYC-06-d7-email.html",
+  "alertas": [
+   "A06",
+   "A07"
+  ]
  },
  {
   "fase": "kyc",
@@ -1110,7 +1303,10 @@ const DATA = [
   ],
   "corpo": "Suas informações enviadas permanecem salvas no aplicativo.",
   "ver": "v1",
-  "file": "emails/reguas/v1/KYC-08-d14-fechamento.html"
+  "file": "emails/reguas/v1/KYC-08-d14-fechamento.html",
+  "alertas": [
+   "A05"
+  ]
  },
  {
   "fase": "kyc",
@@ -1125,7 +1321,10 @@ const DATA = [
   ],
   "corpo": "Compartilhe como foi sua experiência e nos ajude a aprimorar o processo.",
   "ver": "v1",
-  "file": "emails/reguas/v1/KYC-09-d21-pesquisa.html"
+  "file": "emails/reguas/v1/KYC-09-d21-pesquisa.html",
+  "alertas": [
+   "A05"
+  ]
  },
  {
   "fase": "engajamento",
@@ -1140,7 +1339,13 @@ const DATA = [
   ],
   "corpo": "Faça um Pix para começar a usar sua conta em dólar, com câmbio de taxa zero, por tempo limitado.*",
   "ver": "v1",
-  "sub": "1º depósito"
+  "sub": "1º depósito",
+  "alertas": [
+   "A07",
+   "A09",
+   "A12",
+   "A13"
+  ]
  },
  {
   "fase": "engajamento",
@@ -1155,7 +1360,12 @@ const DATA = [
   ],
   "corpo": "Adicione saldo por Pix e converta para dólar com taxa zero, por tempo limitado.*",
   "ver": "v1",
-  "sub": "1º depósito"
+  "sub": "1º depósito",
+  "alertas": [
+   "A07",
+   "A10",
+   "A12"
+  ]
  },
  {
   "fase": "engajamento",
@@ -1185,7 +1395,10 @@ const DATA = [
   ],
   "corpo": "Ative pelo app e use o saldo em dólar nas compras no exterior.",
   "ver": "v1",
-  "sub": "Repescagem · Cartão"
+  "sub": "Repescagem · Cartão",
+  "alertas": [
+   "A09"
+  ]
  },
  {
   "fase": "valor",
@@ -1200,7 +1413,10 @@ const DATA = [
   ],
   "corpo": "Aceito em mais de 190 países. Confirme seus dados no app e crie a senha para começar a usar.",
   "ver": "v1",
-  "sub": "Repescagem · Cartão"
+  "sub": "Repescagem · Cartão",
+  "alertas": [
+   "A10"
+  ]
  },
  {
   "fase": "valor",
@@ -1216,7 +1432,10 @@ const DATA = [
   "corpo": "Falta pouco para ativar seu Cartão Internacional Zeom, aceito em mais de 190 países.",
   "ver": "v1",
   "file": "emails/reguas/v1/CAR-03-d7-email.html",
-  "sub": "Repescagem · Cartão"
+  "sub": "Repescagem · Cartão",
+  "alertas": [
+   "A08"
+  ]
  },
  {
   "fase": "valor",
@@ -1292,7 +1511,10 @@ const DATA = [
   ],
   "corpo": "Agora você pode converter, investir ou usar no cartão.",
   "ver": "v1",
-  "sub": "Prevenção · Valor"
+  "sub": "Prevenção · Valor",
+  "alertas": [
+   "A16"
+  ]
  },
  {
   "fase": "valor",
@@ -1307,7 +1529,10 @@ const DATA = [
   ],
   "corpo": "Ative suas contas em moedas para receber e transferir no exterior.",
   "ver": "v1",
-  "sub": "Repescagem · Multiconta"
+  "sub": "Repescagem · Multiconta",
+  "alertas": [
+   "A09"
+  ]
  },
  {
   "fase": "valor",
@@ -1322,7 +1547,10 @@ const DATA = [
   ],
   "corpo": "Com a multiconta, você tem uma conta virtual em cada moeda.",
   "ver": "v1",
-  "sub": "Repescagem · Multiconta"
+  "sub": "Repescagem · Multiconta",
+  "alertas": [
+   "A10"
+  ]
  },
  {
   "fase": "valor",
@@ -1338,7 +1566,10 @@ const DATA = [
   "corpo": "Contas em dólar e euro para receber e enviar transferências.",
   "ver": "v1",
   "file": "emails/reguas/v1/MC-03-d7-email.html",
-  "sub": "Repescagem · Multiconta"
+  "sub": "Repescagem · Multiconta",
+  "alertas": [
+   "A08"
+  ]
  },
  {
   "fase": "valor",
@@ -1369,7 +1600,10 @@ const DATA = [
   ],
   "corpo": "Ativos internacionais disponíveis para investir ou resgatar 24 horas por dia, direto no app.",
   "ver": "v1",
-  "sub": "Repescagem · Investimento"
+  "sub": "Repescagem · Investimento",
+  "alertas": [
+   "A09"
+  ]
  },
  {
   "fase": "valor",
@@ -1384,7 +1618,10 @@ const DATA = [
   ],
   "corpo": "Invista ou resgate quando precisar, 24 horas por dia, direto no app.",
   "ver": "v1",
-  "sub": "Repescagem · Investimento"
+  "sub": "Repescagem · Investimento",
+  "alertas": [
+   "A10"
+  ]
  },
  {
   "fase": "oportunidades",
@@ -1399,7 +1636,11 @@ const DATA = [
   ],
   "corpo": "Converta no app, sem taxa, por tempo limitado.*",
   "ver": "v1",
-  "sub": "Variação cambial"
+  "sub": "Variação cambial",
+  "alertas": [
+   "A07",
+   "A11"
+  ]
  },
  {
   "fase": "oportunidades",
@@ -1415,7 +1656,11 @@ const DATA = [
   "corpo": "Acesse o app, veja a cotação atualizada e converta o dólar sem taxa, por tempo limitado.*",
   "ver": "v1",
   "file": "emails/reguas/v1/ONG-02-evento-dolar.html",
-  "sub": "Variação cambial"
+  "sub": "Variação cambial",
+  "alertas": [
+   "A07",
+   "A11"
+  ]
  },
  {
   "fase": "oportunidades",
@@ -1446,7 +1691,10 @@ const DATA = [
   ],
   "corpo": "Você tem saldo parado na conta. Veja as opções no app.",
   "ver": "v1",
-  "sub": "Investidores"
+  "sub": "Investidores",
+  "alertas": [
+   "A14"
+  ]
  },
  {
   "fase": "oportunidades",
@@ -1462,7 +1710,10 @@ const DATA = [
   "corpo": "Use o Zeom AI para analisar opções de investimento e entender como elas se encaixam no seu perfil.",
   "ver": "v1",
   "file": "emails/reguas/v1/ONG-05-d30-saldo.html",
-  "sub": "Investidores"
+  "sub": "Investidores",
+  "alertas": [
+   "A14"
+  ]
  },
  {
   "fase": "oportunidades",
@@ -1477,7 +1728,10 @@ const DATA = [
   ],
   "corpo": "Adicione saldo e invista em ativos internacionais, 24 horas por dia.",
   "ver": "v1",
-  "sub": "Investidores"
+  "sub": "Investidores",
+  "alertas": [
+   "A14"
+  ]
  },
  {
   "fase": "oportunidades",
@@ -1493,7 +1747,10 @@ const DATA = [
   "corpo": "Faça um novo aporte e continue construindo seu patrimônio, com diversificação em ativos internacionais.",
   "ver": "v1",
   "file": "emails/reguas/v1/ONG-07-d30-aporte.html",
-  "sub": "Investidores"
+  "sub": "Investidores",
+  "alertas": [
+   "A14"
+  ]
  },
  {
   "fase": "engajamento",
@@ -1508,7 +1765,10 @@ const DATA = [
   ],
   "corpo": "Saldo, cartão e cotações a um toque, no app.",
   "ver": "v1",
-  "sub": "Inatividade"
+  "sub": "Inatividade",
+  "alertas": [
+   "A01"
+  ]
  },
  {
   "fase": "engajamento",
@@ -1524,7 +1784,10 @@ const DATA = [
   "corpo": "Saldo, cotações e cartão em um só lugar, quando você quiser.",
   "ver": "v1",
   "file": "emails/reguas/v1/INA-02-d7-email.html",
-  "sub": "Inatividade"
+  "sub": "Inatividade",
+  "alertas": [
+   "A01"
+  ]
  },
  {
   "fase": "engajamento",
@@ -1540,7 +1803,10 @@ const DATA = [
   "corpo": "Acesse sua conta e acompanhe as opções para a gestão dos seus recursos.",
   "ver": "v1",
   "file": "emails/reguas/v1/INA-03-d14-email.html",
-  "sub": "Inatividade"
+  "sub": "Inatividade",
+  "alertas": [
+   "A02"
+  ]
  },
  {
   "fase": "engajamento",
@@ -1556,7 +1822,11 @@ const DATA = [
   "corpo": "Converta em dólar com taxa zero, por tempo limitado.*",
   "ver": "v1",
   "file": "emails/reguas/v1/INA-04-d21-fechamento.html",
-  "sub": "Inatividade"
+  "sub": "Inatividade",
+  "alertas": [
+   "A03",
+   "A07"
+  ]
  },
  {
   "fase": "churn",
@@ -1570,7 +1840,10 @@ const DATA = [
    }
   ],
   "corpo": "Sua conta segue ativa, com seus dados preservados.",
-  "ver": "v1"
+  "ver": "v1",
+  "alertas": [
+   "A14"
+  ]
  },
  {
   "fase": "churn",
@@ -1585,7 +1858,10 @@ const DATA = [
   ],
   "corpo": "Quando quiser retomar, é só um Pix.",
   "ver": "v1",
-  "file": "emails/reguas/v1/CHU-02-d30-winback.html"
+  "file": "emails/reguas/v1/CHU-02-d30-winback.html",
+  "alertas": [
+   "A14"
+  ]
  },
  {
   "fase": "churn",
@@ -1609,6 +1885,7 @@ const DATA = [
 const flowWrap = document.getElementById('flow-wrap');
 
 let MODE = 'all';
+let VIEW = 'fluxo';
 function countOf(key){ return DATA.filter(d => d.fase === key).length; }
 
 const svgNS = 'http://www.w3.org/2000/svg';
@@ -1692,7 +1969,8 @@ function countText(key){
   const all = DATA.filter(d => d.fase === key), v0 = all.filter(d => d.ver === 'v0').length, v1 = all.length - v0;
   if(MODE === 'v0') return `${v0} comunicaç${v0===1?'ão':'ões'} · V0`;
   if(MODE === 'v1') return `${v1} comunicaç${v1===1?'ão':'ões'} · V1`;
-  return `${all.length} comunicaç${all.length===1?'ão':'ões'} · V0 ${v0} · V1 ${v1}`;
+  const w = all.filter(d => (d.alertas||[]).length).length;
+  return `${all.length} comunicaç${all.length===1?'ão':'ões'} · V0 ${v0} · V1 ${v1}` + (w ? ` · ⚠ ${w}` : '');
 }
 function setMode(m){
   MODE = m;
@@ -1756,24 +2034,45 @@ function switchTab(which){
 
 // ---------- stage navigation ----------
 function showStage1(){
-  document.getElementById('stage-reguas').style.display = 'block';
+  document.getElementById('stage-reguas').style.display = VIEW === 'fluxo' ? 'block' : 'none';
+  document.getElementById('stage-unica').style.display = VIEW === 'unica' ? 'block' : 'none';
   document.getElementById('stage-comms').style.display = 'none';
+  if(VIEW === 'unica') renderUnica();
   window.scrollTo({top:0, behavior:'smooth'});
 }
 
-function showStage2(faseKey){
-  const f = FASES[faseKey];
-  document.getElementById('stage-reguas').style.display = 'none';
-  document.getElementById('stage-comms').style.display = 'block';
-  document.getElementById('comms-fase-tag').className = 'fase-tag fase-' + f.classe;
-  document.getElementById('comms-fase-tag').textContent = f.nome.split('·')[0].trim();
-  document.getElementById('comms-title').textContent = f.nome;
-  document.getElementById('comms-sub').textContent = f.desc;
-
-  const list = document.getElementById('bubble-list');
-  list.innerHTML = '';
+const NIVEL = {alta:0, media:1, baixa:2};
+function warnHtml(item){
+  const ids = (item.alertas || []).slice().sort((x,y) => NIVEL[ALERTAS[x].nivel] - NIVEL[ALERTAS[y].nivel]);
+  if(!ids.length) return '';
+  const lv = ALERTAS[ids[0]].nivel, nomes = {alta:'alta', media:'média', baixa:'baixa'};
+  const tip = ids.map(id => { const al = ALERTAS[id]; return `<div class="tip-i"><span class="lv">Atenção · ${nomes[al.nivel]}</span><b>${al.titulo}</b>${al.texto}<em>Decidir: ${al.sugestao}</em></div>`; }).join('');
+  return `<span class="warn ${lv}" tabindex="0">⚠ Atenção${ids.length>1?' ×'+ids.length:''}<span class="tip">${tip}</span></span>`;
+}
+function alertsBlock(item){
+  const ids = item.alertas || [];
+  if(!ids.length) return '';
+  return '<div class="m-alerts">' + ids.map(id => `<div>⚠ <b>${ALERTAS[id].titulo}.</b> ${ALERTAS[id].texto} <i>Decidir: ${ALERTAS[id].sugestao}</i></div>`).join('') + '</div>';
+}
+function makeBubble(item, faseKey, idx){
+  const headline = item.campos[0] ? item.campos[0].value : item.corpo.split('\n')[0];
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble chan-' + item.canal;
+  bubble.innerHTML = `
+    <div class="chan-icon">${ICONS[item.canal]}</div>
+    <div class="info">
+      <div class="headline">${headline}<span class="vchip ${item.ver}">${item.ver.toUpperCase()}</span>${warnHtml(item)}</div>
+      <div class="trigger">${item.trigger}</div>
+    </div>
+    <span class="day-chip">${item.dia}</span>
+    <button class="ver-mais">Ver mais</button>
+  `;
+  bubble.querySelector('.ver-mais').onclick = () => openModal(faseKey, idx);
+  return bubble;
+}
+function fillBubbles(list, faseKey, onlyWarn){
   const all = DATA.filter(d => d.fase === faseKey);
-  const rows = all.map((item, idx) => ({item, idx})).filter(r => MODE === 'all' || r.item.ver === MODE);
+  const rows = all.map((item, idx) => ({item, idx})).filter(r => (MODE === 'all' || r.item.ver === MODE) && (!onlyWarn || (r.item.alertas || []).length));
   const groups = [];
   rows.forEach(r => {
     const g = r.item.sub || '';
@@ -1785,25 +2084,48 @@ function showStage2(faseKey){
     if(grp.name && groups.length > 1){
       const h = document.createElement('div'); h.className = 'sub-head'; h.textContent = grp.name; list.appendChild(h);
     }
-    grp.rows.forEach(({item, idx}) => {
-      const headline = item.campos[0] ? item.campos[0].value : item.corpo.split('\n')[0];
-      const bubble = document.createElement('div');
-      bubble.className = 'bubble chan-' + item.canal;
-      bubble.innerHTML = `
-        <div class="chan-icon">${ICONS[item.canal]}</div>
-        <div class="info">
-          <div class="headline">${headline}<span class="vchip ${item.ver}">${item.ver.toUpperCase()}</span></div>
-          <div class="trigger">${item.trigger}</div>
-        </div>
-        <span class="day-chip">${item.dia}</span>
-        <button class="ver-mais">Ver mais</button>
-      `;
-      bubble.querySelector('.ver-mais').onclick = () => openModal(faseKey, idx);
-      list.appendChild(bubble);
-    });
+    grp.rows.forEach(({item, idx}) => list.appendChild(makeBubble(item, faseKey, idx)));
   });
-  if(!rows.length) list.innerHTML = '<p class="comms-sub">Nenhuma comunicação desta versão nesta régua.</p>';
+  return rows.length;
+}
+function showStage2(faseKey){
+  const f = FASES[faseKey];
+  document.getElementById('stage-reguas').style.display = 'none';
+  document.getElementById('stage-unica').style.display = 'none';
+  document.getElementById('stage-comms').style.display = 'block';
+  document.getElementById('comms-fase-tag').className = 'fase-tag fase-' + f.classe;
+  document.getElementById('comms-fase-tag').textContent = f.nome.split('·')[0].trim();
+  document.getElementById('comms-title').textContent = f.nome;
+  document.getElementById('comms-sub').textContent = f.desc;
+  const list = document.getElementById('bubble-list');
+  list.innerHTML = '';
+  if(!fillBubbles(list, faseKey, false)) list.innerHTML = '<p class="comms-sub">Nenhuma comunicação desta versão nesta régua.</p>';
   window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// ---------- régua única ----------
+function renderUnica(){
+  const only = document.getElementById('only-warn').checked;
+  const list = document.getElementById('unica-list');
+  list.innerHTML = '';
+  let total = 0, avisos = 0;
+  Object.keys(FASES).forEach(k => {
+    const box = document.createElement('div');
+    const n = fillBubbles(box, k, only);
+    if(!n) return;
+    total += n;
+    avisos += [...box.querySelectorAll('.warn')].length;
+    const h = document.createElement('div'); h.className = 'un-fase';
+    h.innerHTML = `<span class="fase-tag fase-${FASES[k].classe}">${FASES[k].nome.split('·')[0].trim()}</span>${FASES[k].nome.includes('·') ? FASES[k].nome.split('·').slice(1).join('·').trim() : ''}<small>${n} comunicaç${n===1?'ão':'ões'}</small>`;
+    list.appendChild(h);
+    while(box.firstChild) list.appendChild(box.firstChild);
+  });
+  document.getElementById('un-count').textContent = `${total} comunicações · ${avisos} com atenção (${Object.keys(ALERTAS).length} incoerências mapeadas)`;
+}
+function setView(v){
+  VIEW = v;
+  document.querySelectorAll('#seg-view button').forEach(b => b.classList.toggle('on', b.dataset.v === v));
+  showStage1();
 }
 
 // ---------- modal ----------
@@ -1825,7 +2147,7 @@ function openModal(faseKey, idx){
     </span>
     <span class="day-chip">${item.dia}</span>
   `;
-  document.getElementById('m-trigger').innerHTML = '<b>Trigger:</b> ' + item.trigger;
+  document.getElementById('m-trigger').innerHTML = '<b>Trigger:</b> ' + item.trigger + alertsBlock(item);
 
   let fieldsHtml = '';
   let copyParts = [];
