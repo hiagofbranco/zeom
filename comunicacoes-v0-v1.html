@@ -34,7 +34,7 @@
   .flow-legend span{display:inline-flex; align-items:center; gap:6px;}
   .flow-legend .sw{width:10px; height:10px; border-radius:3px; display:inline-block;}
   .flow-scroll{overflow-x:auto; -webkit-overflow-scrolling:touch; padding-bottom:4px;}
-  .flow-wrap{position:relative; width:100%; min-width:900px; padding-bottom:129%;}
+  .flow-wrap{position:relative; width:100%; min-width:900px; padding-bottom:114.5%;}
   .flow-wrap svg{position:absolute; inset:0; width:100%; height:100%;}
 
   .fnode{
@@ -1633,16 +1633,16 @@ let svgLines = `
   <line x1="440" y1="650" x2="520" y2="650" stroke="#D9A420" stroke-width="1.6" stroke-dasharray="4 4" marker-end="url(#arAmber)"/>
   <line x1="305" y1="845" x2="520" y2="845" stroke="#B3AD98" stroke-width="1.6" stroke-dasharray="4 4" marker-end="url(#arGray)"/>
 `;
-flowWrap.innerHTML = `<svg viewBox="0 0 900 1160" preserveAspectRatio="none">${svgLines}</svg>`;
+flowWrap.innerHTML = `<svg viewBox="0 0 900 1030" preserveAspectRatio="none">${svgLines}</svg>`;
 
 function addNode({x, y, w, h, cls, label, faseKey, extraLabel}){
   const el = document.createElement('div');
   el.className = 'fnode ' + cls + (faseKey ? ' clickable' : '');
   if(faseKey) el.dataset.fase = faseKey;
   el.style.left = (x/900*100) + '%';
-  el.style.top = (y/1160*100) + '%';
+  el.style.top = (y/1030*100) + '%';
   el.style.width = (w/900*100) + '%';
-  el.style.height = (h/1160*100) + '%';
+  el.style.height = (h/1030*100) + '%';
   if(cls === 'diamond'){
     el.innerHTML = `<span class="dtext">${label}</span>`;
   } else {
@@ -1679,7 +1679,7 @@ addNode({x:650, y:845, w:260, h:64, cls:'n-churn', label:FASES.churn.nome, faseK
   const lbl = document.createElement('div');
   lbl.className = 'flabel-not';
   lbl.style.left = (lx/900*100)+'%';
-  lbl.style.top = (ly/1160*100)+'%';
+  lbl.style.top = (ly/1030*100)+'%';
   lbl.textContent = t;
   flowWrap.appendChild(lbl);
 });
